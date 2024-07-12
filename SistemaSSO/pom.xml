@@ -11,8 +11,8 @@
 	<groupId>com.example</groupId>
 	<artifactId>SistemaSSO</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Doker</name>
-	<description>Demo project for Spring Boot</description>
+	<name>app_sso</name>
+	<description>Sistema de seguimiento de operaciones</description>
 	<url/>
 	<licenses>
 		<license/>
