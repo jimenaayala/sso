@@ -29,7 +29,7 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
-    @GetMapping("/buscarCliente")
+    @GetMapping("/buscar")
     public ResponseEntity<Cliente> getClienteByRazonSocial(@RequestParam String razonSocial) {
         Optional<Cliente> cliente = clienteService.findByRazonSocial(razonSocial);
         return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());

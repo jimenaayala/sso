@@ -22,4 +22,6 @@ public class Equipo {
     private String marca;
     private String modelo;
 
+
+
 }
