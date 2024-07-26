@@ -11,13 +11,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Equipo {
+public class TipoEquipo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String numSerieEquipo;
-    @OneToOne
-    @JoinColumn(name = "tipoequipo_id")
-    private TipoEquipo tipoEquipo;
+    private String tipo;
+    private String marca;
+    private String modelo;
+
 
 }

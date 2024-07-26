@@ -17,9 +17,10 @@ public class Cliente {
     private Long id;
     private String cuit;
     private String razonSocial;
+    private String nombreFantasia;
     private String area;
     private String nombreContacto;
-    private String telefonoContacto;
+    private String telefono;
     private String mail;
 
 }

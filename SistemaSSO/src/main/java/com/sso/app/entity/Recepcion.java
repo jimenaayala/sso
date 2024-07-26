@@ -1,6 +1,9 @@
 package com.sso.app.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,13 +14,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Equipo {
+public class Recepcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String numSerieEquipo;
-    @OneToOne
-    @JoinColumn(name = "tipoequipo_id")
-    private TipoEquipo tipoEquipo;
-
+    private String comentario;
 }

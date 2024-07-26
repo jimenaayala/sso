@@ -1,28 +1,29 @@
 package com.sso.app.service;
 
-import com.sso.app.entity.Equipo;
-import com.sso.app.repository.EquipoRepository;
+import com.sso.app.entity.TipoEquipo;
+import com.sso.app.repository.TipoEquipoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class EquipoService {
+public class TipoEquipoService {
     //Buscamos por tipo y/o marca
-    private final EquipoRepository equipoRepository;
+    private final TipoEquipoRepository equipoRepository;
 
-    public Equipo addEquipos(Equipo equipo){
+    public TipoEquipo addEquipos(TipoEquipo equipo){
         return this.equipoRepository.save(equipo);
     }
-    public List<Equipo> findByModelo(String modelo){
+    public List<TipoEquipo> findByModelo(String modelo){
         return this.equipoRepository.findByModelo(modelo);
     }
-    public List<Equipo> findAll(){
-        return (List<Equipo>) this.equipoRepository.findAll();
+    public List<TipoEquipo> findAll(){
+        return (List<TipoEquipo>) this.equipoRepository.findAll();
     }
+
+    //C
     public void deleteById (Long id){
         equipoRepository.deleteById(id);
     }
