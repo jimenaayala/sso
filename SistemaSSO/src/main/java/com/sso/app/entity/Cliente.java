@@ -22,5 +22,5 @@ public class Cliente {
     private String nombreContacto;
     private String telefono;
     private String mail;
-
+    private boolean eliminado = false;
 }

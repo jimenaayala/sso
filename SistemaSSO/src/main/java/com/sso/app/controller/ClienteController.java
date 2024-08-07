@@ -3,6 +3,7 @@ package com.sso.app.controller;
 import com.sso.app.entity.Cliente;
 import com.sso.app.service.ClienteService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class ClienteController {
 
     @GetMapping
     public ResponseEntity<List<Cliente>> getAllClientes() {
-        List<Cliente> clientes = clienteService.findAll();
+        List<Cliente> clientes = clienteService.findAllActive();
         return ResponseEntity.ok(clientes);
     }
 
@@ -35,9 +36,14 @@ public class ClienteController {
         return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCliente(@PathVariable Long id) {
-        clienteService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @PutMapping("/softdelete/{id}")
+    public ResponseEntity<Void> softDeleteCliente(@PathVariable Long id) {
+        try {
+            clienteService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
 }

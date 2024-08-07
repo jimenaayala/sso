@@ -16,14 +16,16 @@ public class ClienteService {
     public Cliente save(Cliente cliente){
         return this.clienteRepository.save(cliente);
     }
-    public List<Cliente> findAll(){
-        return (List<Cliente>)this.clienteRepository.findAll();
+    public List<Cliente> findAllActive(){
+        return (List<Cliente>)this.clienteRepository.findAllActive();
     }
     public Optional<Cliente> findByRazonSocial(String razonSocial){
         return this.clienteRepository.findByRazonSocial(razonSocial);
     }
-    public void deleteById(Long id) {
-        clienteRepository.deleteById(id);
+    public void deleteById(Long id){
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+        cliente.setEliminado(true);
+        clienteRepository.save(cliente);
     }
-
 }

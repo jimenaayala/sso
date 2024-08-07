@@ -20,7 +20,9 @@ public class Orden {
     private LocalDateTime fecha;
     private String comentario;
     private String remitoTransporte;
-    private boolean activa;
+    private String etapaAcual;
+    private boolean activa = true;
+    private boolean eliminado = false;
 
     @PrePersist
     protected void onCreate() {
