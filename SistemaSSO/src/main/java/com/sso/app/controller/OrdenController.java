@@ -47,10 +47,20 @@ public class OrdenController {
         Orden updatedOrden = ordenService.save(orden);
         return ResponseEntity.ok(updatedOrden);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrden(@PathVariable Long id) {
-        ordenService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    //softdeleted para Orden
+    @PutMapping("/softdelete/{id}")
+    public ResponseEntity<Void> softDeleteCliente(@PathVariable Long id) {
+        try {
+            ordenService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
+   // @DeleteMapping("/{id}")
+   // public ResponseEntity<Void> deleteOrden(@PathVariable Long id) {
+   //     ordenService.deleteById(id);
+   //     return ResponseEntity.noContent().build();
+   // }
 }

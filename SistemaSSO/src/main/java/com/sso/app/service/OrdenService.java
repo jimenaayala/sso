@@ -1,5 +1,6 @@
 package com.sso.app.service;
 
+import com.sso.app.entity.Cliente;
 import com.sso.app.entity.Orden;
 import com.sso.app.repository.OrdenRepository;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrdenService {
     private final OrdenRepository ordenRepository;
-
     public List<Orden> findAll(){
         return (List<Orden>) this.ordenRepository.findAll();
     }
@@ -26,7 +26,12 @@ public class OrdenService {
         return ordenRepository.save(orden);
     }
 
-    public void deleteById(Long id) {
-        ordenRepository.deleteById(id);
+    //sofDeleted para Orden
+    public void deleteById(Long id){
+        Orden orden = ordenRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
+        orden.setEliminado(true);
+        ordenRepository.save(orden);
     }
+
 }
