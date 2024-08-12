@@ -13,8 +13,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrdenService {
     private final OrdenRepository ordenRepository;
-    public List<Orden> findAll(){
-        return (List<Orden>) this.ordenRepository.findAll();
+    public List<Orden> findAllAllActive(){
+        return (List<Orden>) this.ordenRepository.findAllActive();
     }
     public Orden findById(Long id) {
         return ordenRepository.findById(id).orElse(null);

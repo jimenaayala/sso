@@ -48,4 +48,6 @@ public class Orden {
     @OneToOne
     @JoinColumn(name = "salida_id")
     private Salida salida;
+
+    
 }

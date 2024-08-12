@@ -12,8 +12,7 @@ import java.util.Optional;
 @Repository
 public interface OrdenRepository extends CrudRepository<Orden,Long> {
     Optional<Orden> findByNumeroOT(String numeroOT);
-    List<Orden> findByEliminadoFalse();
-    List<Orden> findByEliminadoFalseAndActivaTrue();
+
     //query para el softDeleted para Orden
     @Query("SELECT o FROM Orden o WHERE o.eliminado = false")
     List<Orden> findAllActive();
