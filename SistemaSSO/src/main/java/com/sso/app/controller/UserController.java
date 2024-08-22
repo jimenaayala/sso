@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class UserController {
 
@@ -30,7 +30,7 @@ public class UserController {
 
     private final RoleRepository roleRepository;
 
-    @PostMapping("/create")
+    @PostMapping("/createUser")
     public ResponseEntity<String> createUser(@RequestBody CreateUserDTO createUserDTO) {
         Set<RoleEntity> roles = new HashSet<>();
 
@@ -39,29 +39,37 @@ public class UserController {
             try {
                 roleEnum = RoleEnum.valueOf(roleName.toUpperCase());
             } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body("Role " + roleName + " does not exist.");
+                return ResponseEntity
+                        .badRequest()
+                        .body("Role " + roleName + " does not exist.");
             }
 
-            RoleEntity role = roleRepository.findByRoleEnum(roleEnum)
-                    .orElseThrow(() -> new RuntimeException("Role " + roleEnum + " not found."));
+            RoleEntity role = roleRepository.findByRoleEnum(roleEnum).orElseGet(() -> {
+                // Si el rol no existe, lo creamos y guardamos en la base de datos
+                RoleEntity newRole = RoleEntity.builder()
+                        .roleEnum(roleEnum)
+                        .build();
+                return roleRepository.save(newRole);
+            });
+
             roles.add(role);
         }
+UserEntity userEntity = UserEntity.builder()
+        .username(createUserDTO.getUsername())
+        .password(passwordEncoder.encode(createUserDTO.getPassword())) // Encriptar la contraseña
+        .roles(roles)
+        .isEnabled(true)
+        .accountNoExpired(true)
+        .accountNoLocked(true)
+        .credentialNoExpired(true)
+        .build();
 
-        UserEntity userEntity = UserEntity.builder()
-                .username(createUserDTO.getUsername())
-                .password(passwordEncoder.encode(createUserDTO.getPassword())) // Encriptar la contraseña
-                .roles(roles)
-                .isEnabled(true)
-                .accountNoExpired(true)
-                .accountNoLocked(true)
-                .credentialNoExpired(true)
-                .build();
+    userRepository.save(userEntity);
+    return ResponseEntity.ok("User created successfully.");}
 
-        userRepository.save(userEntity);
-        return ResponseEntity.ok("User created successfully.");
-    }
 
-    @GetMapping("/validate")
+
+    @GetMapping("/login")
     public ResponseEntity<String> validateUser(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             return ResponseEntity.ok("User " + authentication.getName() + " is authenticated.");

@@ -31,10 +31,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(http -> {
                     // Configurar los endpoints públicos
 
+                    http.requestMatchers(HttpMethod.POST, "/api/createUser").permitAll();
 
 
                     // Configurar los endpoints privados
-                    http.requestMatchers(HttpMethod.POST, "/users/create").hasAnyRole("ADMIN");
+                   // http.requestMatchers(HttpMethod.POST, "/users/create").hasAnyRole("ADMIN");
 
 
                     // Configurar el resto de endpoint - NO ESPECIFICADOS
