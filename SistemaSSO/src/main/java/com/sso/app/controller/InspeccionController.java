@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/inspeccion")
-@AllArgsConstructor // en el controller es necesario?
+@AllArgsConstructor
 @CrossOrigin
 public class InspeccionController {
 
