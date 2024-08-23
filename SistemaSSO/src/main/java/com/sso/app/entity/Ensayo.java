@@ -18,6 +18,6 @@ public class Ensayo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String comentario;
+    private boolean eliminado=false;
 }
