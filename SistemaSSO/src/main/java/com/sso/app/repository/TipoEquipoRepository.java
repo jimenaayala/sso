@@ -13,4 +13,6 @@ public interface TipoEquipoRepository extends CrudRepository<TipoEquipo,Long> {
     @Query("SELECT e FROM TipoEquipo e WHERE e.modelo LIKE %:modelo%")
     List<TipoEquipo> findByModelo(String modelo);
 
+    @Query ("SELECT t FROM TipoEquipo t WHERE t.eliminado=false")
+    List<TipoEquipo> findAllActive();
 }

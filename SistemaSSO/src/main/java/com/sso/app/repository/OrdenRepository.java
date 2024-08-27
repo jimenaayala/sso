@@ -1,6 +1,5 @@
 package com.sso.app.repository;
 
-import com.sso.app.entity.Cliente;
 import com.sso.app.entity.Orden;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

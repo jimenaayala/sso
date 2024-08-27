@@ -1,6 +1,5 @@
 package com.sso.app.service;
 
-import com.sso.app.entity.Cliente;
 import com.sso.app.entity.Orden;
 import com.sso.app.repository.OrdenRepository;
 import lombok.AllArgsConstructor;
@@ -13,11 +12,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrdenService {
     private final OrdenRepository ordenRepository;
-    public List<Orden> findAllAllActive(){
+    public List<Orden> findAllActive(){
         return (List<Orden>) this.ordenRepository.findAllActive();
     }
-    public Orden findById(Long id) {
-        return ordenRepository.findById(id).orElse(null);
+    public Optional<Orden> findById(Long id) {
+        return this.ordenRepository.findById(id);
     }
     public Optional<Orden> findByNumeroOT(String numeroOT) {
         return ordenRepository.findByNumeroOT(numeroOT);

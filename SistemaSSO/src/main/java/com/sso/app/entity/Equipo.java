@@ -16,6 +16,7 @@ public class Equipo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String numSerieEquipo;
+    private boolean eliminado=false;
     @OneToOne
     @JoinColumn(name = "tipoequipo_id")
     private TipoEquipo tipoEquipo;

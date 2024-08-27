@@ -3,8 +3,8 @@ package com.sso.app.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List; // Importa List
-import java.util.Optional; // Importa Optional
+import java.util.List;
+import java.util.Optional;
 
 public abstract class BaseController<T> {
 

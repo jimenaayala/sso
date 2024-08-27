@@ -22,6 +22,10 @@ public class ClienteService {
     public Optional<Cliente> findByRazonSocial(String razonSocial){
         return this.clienteRepository.findByRazonSocial(razonSocial);
     }
+    public Optional<Cliente> findById (Long id){
+        return clienteRepository.findById(id);
+    }
+
     public void deleteById(Long id){
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));

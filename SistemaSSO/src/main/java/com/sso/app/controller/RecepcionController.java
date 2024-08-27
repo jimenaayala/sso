@@ -1,6 +1,5 @@
 package com.sso.app.controller;
 
-import com.sso.app.entity.Ensayo;
 import com.sso.app.entity.Recepcion;
 import com.sso.app.service.RecepcionService;
 import lombok.AllArgsConstructor;

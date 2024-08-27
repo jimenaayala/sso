@@ -3,39 +3,42 @@ package com.sso.app.controller;
 import com.sso.app.entity.TipoEquipo;
 import com.sso.app.service.TipoEquipoService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("api/equipos")
+@RequestMapping("api/tipoequipo")
 @AllArgsConstructor
 @CrossOrigin
-public class TipoEquipoController {
-    private final TipoEquipoService equipoService;
+public class TipoEquipoController extends BaseController<TipoEquipo> {
+    private final TipoEquipoService tipoEquipoService;
 
-    @PostMapping
-    public ResponseEntity<TipoEquipo> createEquipo(@RequestBody TipoEquipo equipo) {
-        TipoEquipo savedEquipo = equipoService.addEquipos(equipo);
-        return ResponseEntity.ok(savedEquipo);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<TipoEquipo>> getAllEquipos() {
-        List<TipoEquipo> equipos = equipoService.findAll();
-        return ResponseEntity.ok(equipos);
+    @Override
+    protected List<TipoEquipo> findAllActive(){
+        return tipoEquipoService.findAllActive();
     }
 
-    @GetMapping("/buscar")
-    public ResponseEntity<List<TipoEquipo>> getEquiposByModelo(@RequestParam String modelo) {
-        List<TipoEquipo> equipos = equipoService.findByModelo(modelo);
-        return ResponseEntity.ok(equipos);
+    @Override
+    protected Optional<TipoEquipo> findById(Long id) {
+        return tipoEquipoService.findById(id);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCliente(@PathVariable Long id) {
-        equipoService.deleteById(id);
-        return ResponseEntity.noContent().build();
+
+    @Override
+    protected TipoEquipo save(TipoEquipo entity) {
+        return tipoEquipoService.save(entity);
     }
+
+    @Override
+    protected void deleteById(Long id) {
+        tipoEquipoService.deleteById(id);
+    }
+
+    @Override
+    protected void setId(TipoEquipo entity, Long id) {
+        entity.setId(id);
+    }
+
 
 }

@@ -17,16 +17,12 @@ public class InspeccionService {
 
     public Inspeccion save(Inspeccion inspeccion){ return this.inspeccionRepository.save(inspeccion);}
 
-    //busca todas las que tengan el atributo eliminado en false.
     public List<Inspeccion> findAllActive (){ return (List<Inspeccion>) this.inspeccionRepository.findAllActive();}
-
 
     public Optional<Inspeccion> findById(Long id){
             return this.inspeccionRepository.findById(id);
     }
 
-
-    //Realiza softdelete
     public void deletedById(Long id){
         Inspeccion inspeccion = inspeccionRepository.findById(id).orElseThrow(() -> new RuntimeException("Inspeccion no encontrada"));
         inspeccion.setEliminado(true);

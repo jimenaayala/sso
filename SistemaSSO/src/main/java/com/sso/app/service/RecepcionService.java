@@ -1,8 +1,6 @@
 package com.sso.app.service;
 
-import com.sso.app.entity.Ensayo;
 import com.sso.app.entity.Recepcion;
-import com.sso.app.repository.EnsayoRepository;
 import com.sso.app.repository.RecepcionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

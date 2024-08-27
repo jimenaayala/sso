@@ -18,6 +18,7 @@ public class TipoEquipo {
     private String tipo;
     private String marca;
     private String modelo;
+    private boolean eliminado=false;
 
 
 }
