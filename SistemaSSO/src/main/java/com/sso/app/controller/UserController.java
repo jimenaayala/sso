@@ -69,7 +69,7 @@ UserEntity userEntity = UserEntity.builder()
 
 
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<String> validateUser(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             return ResponseEntity.ok("User " + authentication.getName() + " is authenticated.");
