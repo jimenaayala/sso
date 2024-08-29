@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("api")
 @AllArgsConstructor
 public class UserController {
 
