@@ -17,13 +17,13 @@ public class ClienteService {
         return this.clienteRepository.save(cliente);
     }
     public List<Cliente> findAllActive(){
-        return (List<Cliente>)this.clienteRepository.findAllActive();
+        return (List<Cliente>)this.clienteRepository.findByEliminadoFalse();
     }
     public Optional<Cliente> findByRazonSocial(String razonSocial){
-        return this.clienteRepository.findByRazonSocial(razonSocial);
+        return this.clienteRepository.findByRazonSocialContaining(razonSocial);
     }
     public Optional<Cliente> findById (Long id){
-        return clienteRepository.findById(id);
+        return clienteRepository.findByIdAndEliminadoFalse(id);
     }
 
     public void deleteById(Long id){

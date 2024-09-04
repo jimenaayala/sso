@@ -1,6 +1,7 @@
 package com.sso.app.controller;
 
 import com.sso.app.controller.dto.CreateUserDTO;
+import com.sso.app.controller.dto.LoginRequest;
 import com.sso.app.entity.securityentity.RoleEntity;
 import com.sso.app.entity.securityentity.RoleEnum;
 import com.sso.app.entity.securityentity.UserEntity;
@@ -70,11 +71,24 @@ UserEntity userEntity = UserEntity.builder()
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> validateUser(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            return ResponseEntity.ok("User " + authentication.getName() + " is authenticated.");
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        System.out.println("entro");
+        System.out.println(loginRequest.getUsername());
+        System.out.println(loginRequest.getPassword());
+        // Aquí deberías realizar la autenticación utilizando Spring Security o manualmente
+        if (autenticarUsuario(loginRequest)) {
+            System.out.println("estas logueado");
+            return ResponseEntity.ok("Login exitoso");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated.");
+            System.out.println("estas rebotado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login fallido");
         }
     }
+
+    private boolean autenticarUsuario(LoginRequest loginRequest) {
+
+        // Lógica de autenticación (por ejemplo, verificar el usuario y contraseña en la base de datos)
+        return true; // Cambia esto según tu lógica
+    }
+
 }
