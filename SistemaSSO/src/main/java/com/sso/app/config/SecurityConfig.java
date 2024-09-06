@@ -34,6 +34,9 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults()) // Autenticación básica
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sin estado
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(HttpMethod.POST).permitAll()
+                        .requestMatchers(HttpMethod.GET).permitAll()
+                        .requestMatchers(HttpMethod.PUT).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll() // Permitir el login sin autenticación previa
                         // .requestMatchers(HttpMethod.POST, "/users/create").hasAnyRole("ADMIN") // Restringir este endpoint a "ADMIN"
                         .anyRequest().authenticated() // El resto de endpoints requieren autenticación

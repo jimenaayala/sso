@@ -1,7 +1,7 @@
 package com.sso.app.controller;
 
 import com.sso.app.controller.dto.CreateUserDTO;
-import com.sso.app.controller.dto.LoginRequest;
+import com.sso.app.controller.dto.LoginDTO;
 import com.sso.app.entity.securityentity.RoleEntity;
 import com.sso.app.entity.securityentity.RoleEnum;
 import com.sso.app.entity.securityentity.UserEntity;
@@ -10,10 +10,13 @@ import com.sso.app.repository.securityRepository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.BadCredentialsException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +31,7 @@ public class UserController {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final AuthenticationManager authenticationManager;
 
     private final RoleRepository roleRepository;
 
@@ -71,24 +75,25 @@ UserEntity userEntity = UserEntity.builder()
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        System.out.println("entro");
-        System.out.println(loginRequest.getUsername());
-        System.out.println(loginRequest.getPassword());
-        // Aquí deberías realizar la autenticación utilizando Spring Security o manualmente
-        if (autenticarUsuario(loginRequest)) {
-            System.out.println("estas logueado");
-            return ResponseEntity.ok("Login exitoso");
-        } else {
-            System.out.println("estas rebotado");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login fallido");
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        try {
+            // Crea un token de autenticación con el nombre de usuario y contraseña proporcionados
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+
+            // Autentica al usuario
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+            // Establece el contexto de seguridad
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Aquí puedes devolver algún tipo de respuesta de éxito o información adicional
+            return ResponseEntity.ok("Login successful");
+
+        } catch (BadCredentialsException e) {
+            System.out.println("Error: " + HttpStatus.UNAUTHORIZED.value() + " - " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-    }
-
-    private boolean autenticarUsuario(LoginRequest loginRequest) {
-
-        // Lógica de autenticación (por ejemplo, verificar el usuario y contraseña en la base de datos)
-        return true; // Cambia esto según tu lógica
     }
 
 }
