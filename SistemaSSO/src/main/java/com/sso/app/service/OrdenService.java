@@ -33,4 +33,8 @@ public class OrdenService {
         ordenRepository.save(orden);
     }
 
+    public List<Orden> getActiveOrdenesByClienteId(Long id){
+        return this.ordenRepository.findAllActiveByClienteId(id);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.sso.app.controller;
 import com.sso.app.entity.Orden;
 import com.sso.app.service.OrdenService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -41,5 +42,12 @@ public class OrdenController extends BaseController<Orden>{
     @Override
     protected void setId(Orden entity, Long id) {
         entity.setId(id);
+    }
+
+
+    @GetMapping("cliente/{id}")
+    public ResponseEntity<List<Orden>> findAllActiveByClienteId(@PathVariable Long id) {
+        List<Orden> ordenesClientes = ordenService.getActiveOrdenesByClienteId(id);
+        return ResponseEntity.ok(ordenesClientes);
     }
 }
