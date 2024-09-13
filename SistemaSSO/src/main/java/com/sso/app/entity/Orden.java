@@ -49,5 +49,23 @@ public class Orden {
     @JoinColumn(name = "salida_id")
     private Salida salida;
 
-    
+    public void setRecepcion(Recepcion recepcion) {
+        this.recepcion = recepcion;
+        setEtapaAcual("Recepcion");
+    }
+
+    public void setInspeccion(Inspeccion inspeccion) {
+        this.inspeccion = inspeccion;
+        setEtapaAcual("Inspeccion");
+    }
+
+    public void setEnsayo(Ensayo ensayo) {
+        this.ensayo = ensayo;
+        setEtapaAcual("Ensayo");
+    }
+
+    public void setSalida(Salida salida) {
+        this.salida = salida;
+        setEtapaAcual("Salida");
+    }
 }
