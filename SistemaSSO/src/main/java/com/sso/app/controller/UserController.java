@@ -95,5 +95,4 @@ UserEntity userEntity = UserEntity.builder()
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
-
 }

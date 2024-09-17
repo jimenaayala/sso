@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class SalidaService {
+
     private final SalidaRepository salidaRepository;
 
     public Salida save (Salida salida){
