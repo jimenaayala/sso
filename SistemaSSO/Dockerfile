@@ -1,13 +1,14 @@
-# IMAGEN MODELO
-FROM openjdk:17-jdk-slim
-ARG JAR_FILE=taget/Doker-0.0.1-SNAPSHOT.jar
-# INFORMAR EL PUERTO DONDE SE EJECUTA EL CONTENEDOR (INFORMATIVO)
+# Utiliza una imagen base de OpenJDK
+FROM openjdk:17-jdk-alpine
+
+# Establece el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Copia el archivo JAR a la imagen del contenedor
+COPY target/SistemaSSO-0.0.1-SNAPSHOT.jar /app/app.jar
+
+# Expone el puerto 8080 que usará la aplicación
 EXPOSE 8080
 
-# COPIAR Y PEGAR ARCHIVOS DENTRO DEL CONTENEDOR
-COPY ${JAR_FILE} Docker.jar
-
-
-# LEVANTAR NUESTRA APLICACION CUANDO EL CONTENEDOR INICIE
-ENTRYPOINT ["java","-jar","Doker-0.0.1-SNAPSHOT.jar"]
-
+# Ejecuta el archivo JAR
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
