@@ -20,7 +20,7 @@ public class Orden {
     private LocalDateTime fecha;
     private String comentario;
     private String remitoTransporte;
-    private String etapaAcual;
+    private String etapaActual;
     private boolean activa = true;
     private boolean eliminado = false;
 
