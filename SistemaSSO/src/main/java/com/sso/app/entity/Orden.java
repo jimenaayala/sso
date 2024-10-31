@@ -31,21 +31,21 @@ public class Orden {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "equipo_id")
     private Equipo equipo;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "inspeccion_id")
     private Inspeccion inspeccion;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "recepcion_id")
     private Recepcion recepcion;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ensayo_id")
     private Ensayo ensayo;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "salida_id")
     private Salida salida;
 
