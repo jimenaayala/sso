@@ -23,13 +23,13 @@ public class ClienteService {
         return this.clienteRepository.findByRazonSocialContaining(razonSocial);
     }
     public Optional<Cliente> findById (Long id){
-        return clienteRepository.findByIdAndEliminadoFalse(id);
+        return this.clienteRepository.findByIdAndEliminadoFalse(id);
     }
 
     public void deleteById(Long id){
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         cliente.setEliminado(true);
-        clienteRepository.save(cliente);
+        this.clienteRepository.save(cliente);
     }
 }

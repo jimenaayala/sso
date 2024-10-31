@@ -26,6 +26,6 @@ public class InspeccionService {
     public void deletedById(Long id){
         Inspeccion inspeccion = inspeccionRepository.findById(id).orElseThrow(() -> new RuntimeException("Inspeccion no encontrada"));
         inspeccion.setEliminado(true);
-        inspeccionRepository.save(inspeccion);
+        this.inspeccionRepository.save(inspeccion);
     }
 }

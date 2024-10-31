@@ -19,10 +19,10 @@ public class OrdenService {
         return this.ordenRepository.findById(id);
     }
     public Optional<Orden> findByNumeroOT(String numeroOT) {
-        return ordenRepository.findByNumeroOT(numeroOT);
+        return this.ordenRepository.findByNumeroOT(numeroOT);
     }
     public Orden save(Orden orden) {
-        return ordenRepository.save(orden);
+        return this.ordenRepository.save(orden);
     }
 
     //sofDeleted para Orden
@@ -30,7 +30,7 @@ public class OrdenService {
         Orden orden = ordenRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
         orden.setEliminado(true);
-        ordenRepository.save(orden);
+        this.ordenRepository.save(orden);
     }
 
     public List<Orden> getActiveOrdenesByClienteId(Long id){
