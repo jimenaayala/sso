@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface RecepcionRepository extends CrudRepository <Recepcion, Long>{
-    @Query("SELECT r FROM Recepcion r where r.eliminado = false")
-    List<Recepcion> findAllActive();
+    //@Query("SELECT r FROM Recepcion r where r.eliminado = false")
+    //List<Recepcion> findAllActive();
+
+
 }

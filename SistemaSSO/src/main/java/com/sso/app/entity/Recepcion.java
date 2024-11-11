@@ -18,6 +18,12 @@ public class Recepcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String comentario;
-    private boolean eliminado=false;
+    private ItemEnum item ;
+    private boolean ok;
+    private boolean falta;
+
+    private String Requerimiento;
+    private String observacion;
+
+
 }
