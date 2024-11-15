@@ -20,30 +20,6 @@ public class RecepcionController {
 
     private final RecepcionService recepcionService;
 
-//    @Override
-//    protected List<Recepcion> findAllActive(){
-//        return recepcionService.findAllActive();
-//    }
-//
-//    @Override
-//    protected Optional<Recepcion> findById(Long id) {
-//        return recepcionService.findById(id);
-//    }
-//
-//    @Override
-//    protected Recepcion save(Recepcion entity) {
-//        return recepcionService.save(entity);
-//    }
-//
-//    @Override
-//    protected void deleteById(Long id) {
-//        recepcionService.deleteById(id);
-//    }
-//
-//    @Override
-//    protected void setId(Recepcion entity, Long id) {
-//        entity.setId(id);
-//    }
 
     @PostMapping
     public ResponseEntity<Recepcion> crearRecepcion(@RequestBody Recepcion recepcion) {
