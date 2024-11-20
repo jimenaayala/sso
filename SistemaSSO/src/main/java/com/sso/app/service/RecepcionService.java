@@ -5,6 +5,8 @@ import com.sso.app.entity.ItemRecepcion;
 import com.sso.app.entity.Recepcion;
 
 import com.sso.app.repository.RecepcionRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ public class RecepcionService {
      * Guarda o actualiza una Recepcion de forma parcial, permitiendo persistir
      * progresivamente a medida que se llenan los datos.
      */
+    @Transactional
     public Recepcion guardarOActualizarRecepcion(Recepcion recepcion) {
         // Verificar si la Recepcion ya existe en la base de datos
         if (recepcion.getId() != null) {
@@ -45,6 +48,7 @@ public class RecepcionService {
     /**
      * Actualiza los campos de recepcionDestino con los valores no nulos de recepcionOrigen.
      */
+    @Transactional
     private void actualizarCampos(Recepcion recepcionDestino, Recepcion recepcionOrigen) {
         // Actualizar campos principales usando Optional para evitar nulls
         Optional.ofNullable(recepcionOrigen.getComentario()).ifPresent(recepcionDestino::setComentario);
@@ -93,6 +97,7 @@ public class RecepcionService {
     /**
      * Actualiza los campos no nulos de detalleDestino con los valores de detalleOrigen.
      */
+    @Transactional
     private ItemDetailRecepcion actualizarDetalle(ItemDetailRecepcion detalleDestino, ItemDetailRecepcion detalleOrigen) {
         if (detalleDestino == null) {
             detalleDestino = new ItemDetailRecepcion(); // Crear un nuevo detalle si no existe
@@ -105,6 +110,21 @@ public class RecepcionService {
 
         return detalleDestino;
     }
+
+    @Transactional
+    public void deletedById(Long id) {
+        Recepcion recepcion = recepcionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Recepción no encontrada"));
+        recepcion.setEliminado(true); // Marcar como eliminado
+        recepcionRepository.save(recepcion); // Guardar los cambios
+    }
+
+    @Transactional
+    public Recepcion buscarPorId(Long id) {
+        return recepcionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Recepción no encontrada con id: " + id));
+    }
+
 }
 
 

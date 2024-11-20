@@ -20,6 +20,9 @@ public class RecepcionController {
 
     private final RecepcionService recepcionService;
 
+    //Buscar por id, sofDelete..
+
+
 
     @PostMapping
     public ResponseEntity<Recepcion> crearRecepcion(@RequestBody Recepcion recepcion) {
@@ -41,5 +44,16 @@ public class RecepcionController {
         return ResponseEntity.ok(recepcionActualizada);
     }
 
+    @PutMapping("/{id}/soft-delete")
+    public ResponseEntity<Void> eliminarRecepcionDeFormaLogica(@PathVariable Long id) {
+        recepcionService.deletedById(id); // Llamada al servicio para realizar el soft delete
+        return ResponseEntity.noContent().build(); // Responder con un 204 No Content
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Recepcion> buscarRecepcionPorId(@PathVariable Long id) {
+        Recepcion recepcion = recepcionService.buscarPorId(id);
+        return ResponseEntity.ok(recepcion);
+    }
 
 }
