@@ -17,7 +17,7 @@ public class Equipo {
     private Long id;
     private String numSerieEquipo;
     private boolean eliminado=false;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "tipoequipo_id")
     private TipoEquipo tipoEquipo;
 

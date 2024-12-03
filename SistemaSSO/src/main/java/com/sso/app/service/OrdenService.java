@@ -1,6 +1,8 @@
 package com.sso.app.service;
 
+import com.sso.app.entity.Equipo;
 import com.sso.app.entity.Orden;
+import com.sso.app.repository.EquipoRepository;
 import com.sso.app.repository.OrdenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrdenService {
     private final OrdenRepository ordenRepository;
+    private final EquipoRepository equipoRepository;
+
     public List<Orden> findAllActive(){
         return (List<Orden>) this.ordenRepository.findAllActive();
     }
@@ -22,6 +26,13 @@ public class OrdenService {
         return this.ordenRepository.findByNumeroOT(numeroOT);
     }
     public Orden save(Orden orden) {
+        // Verificar si el equipo existe
+        Equipo equipo = equipoRepository.findById(orden.getEquipo().getId())
+                .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+
+        // Asignar el equipo existente a la orden
+        orden.setEquipo(equipo);
+
         return this.ordenRepository.save(orden);
     }
 

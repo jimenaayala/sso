@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name="orden")
 public class Orden {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
