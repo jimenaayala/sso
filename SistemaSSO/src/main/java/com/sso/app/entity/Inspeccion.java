@@ -20,4 +20,5 @@ public class Inspeccion {
     private Long id;
     private String comentario;
     private boolean eliminado=false;
+
 }
