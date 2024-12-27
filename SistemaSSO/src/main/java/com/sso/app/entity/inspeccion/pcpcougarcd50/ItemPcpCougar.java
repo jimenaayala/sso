@@ -1,5 +1,5 @@
-package com.sso.app.entity.inspeccion.pcpminig;
-import com.sso.app.entity.inspeccion.EstadoLubricante;
+package com.sso.app.entity.inspeccion.pcpcougarcd50;
+import com.sso.app.entity.inspeccion.EstadoItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,12 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class LubricantePcpMiniG {
+public class ItemPcpCougar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoLubricante lubricanteBlockPortaRodamientos;
 }

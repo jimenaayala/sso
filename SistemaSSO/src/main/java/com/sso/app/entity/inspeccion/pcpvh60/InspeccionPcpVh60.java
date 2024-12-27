@@ -1,5 +1,6 @@
 package com.sso.app.entity.inspeccion.pcpvh60;
 
+import com.sso.app.entity.inspeccion.ItemPolea;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +19,7 @@ public class InspeccionPcpVh60 {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lubricantes_id")
-    private LubricantePcpVh60 lubricantePcpVh60;
+    private LubricantePcpVh60 lubricantePcpVh60 = new LubricantePcpVh60();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "items_id")
@@ -36,6 +37,9 @@ public class InspeccionPcpVh60 {
     @JoinColumn(name = "sistema_hidraulico_id")
     private SistemaHidraulicoPcpVh60 sistemaHidraulicoPcpVh60 = new SistemaHidraulicoPcpVh60();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "polea_id")
+    private ItemPolea poleaPcpVh60 = new ItemPolea();
 }
 
 

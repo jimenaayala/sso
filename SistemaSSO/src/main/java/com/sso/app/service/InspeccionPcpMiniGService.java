@@ -37,6 +37,7 @@ public class InspeccionPcpMiniGService {
             inspeccion.setRodamientoPcpMiniG(inspeccionNueva.getRodamientoPcpMiniG());
             inspeccion.setItemCuboPcpMiniG(inspeccionNueva.getItemCuboPcpMiniG());
             inspeccion.setSistemaHidraulicoPcpMiniG(inspeccionNueva.getSistemaHidraulicoPcpMiniG());
+            inspeccion.setPoleaPcpMiniG(inspeccionNueva.getPoleaPcpMiniG());
 
             return inspeccionRepository.save(inspeccion);
         } else {

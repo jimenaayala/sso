@@ -1,4 +1,4 @@
-package com.sso.app.entity.inspeccion.pcpminig;
+package com.sso.app.entity.inspeccion.pcpdv1;
 import com.sso.app.entity.inspeccion.ItemPolea;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InspeccionPcpMiniG {
+public class InspeccionPcpDV1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,26 +18,26 @@ public class InspeccionPcpMiniG {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lubricantes_id")
-    private LubricantePcpMiniG lubricantePcpMiniG = new LubricantePcpMiniG();
+    private LubricantePcpDV1 lubricantePcpDV1 = new LubricantePcpDV1();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id")
-    private ItemPcpMiniG itemPcpMiniG = new ItemPcpMiniG();
+    private ItemPcpDV1 itemPcpDV1 = new ItemPcpDV1();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rodamientos_id")
-    private RodamientoPcpMiniG rodamientoPcpMiniG =new RodamientoPcpMiniG();
+    private RodamientoPcpDV1 rodamientoPcpDV1 = new RodamientoPcpDV1();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_cubo_id")
-    private ItemCuboPcpMiniG itemCuboPcpMiniG = new ItemCuboPcpMiniG();
+    @JoinColumn(name = "transmision_freno_id")
+    private TransmisionFrenoPcpDV1 transmisionFrenoPcpDv1 = new TransmisionFrenoPcpDV1();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sistema_hidraulico_id")
-    private SistemaPcpMiniG sistemaHidraulicoPcpMiniG = new SistemaPcpMiniG();
+    private SistemaHidraulicoPcpDv1 sistemaHidraulicoPcpDV1 =new SistemaHidraulicoPcpDv1();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "polea_id")
-    private ItemPolea poleaPcpMiniG = new ItemPolea();
+    private ItemPolea poleaPcpDV1 = new ItemPolea();
 
 }

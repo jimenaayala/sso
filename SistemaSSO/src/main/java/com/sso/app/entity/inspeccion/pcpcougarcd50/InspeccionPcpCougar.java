@@ -1,5 +1,6 @@
-package com.sso.app.entity.inspeccion.pcpminig;
+package com.sso.app.entity.inspeccion.pcpcougarcd50;
 import com.sso.app.entity.inspeccion.ItemPolea;
+import com.sso.app.entity.inspeccion.pcpvh60.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InspeccionPcpMiniG {
+public class InspeccionPcpCougar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,26 +19,26 @@ public class InspeccionPcpMiniG {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lubricantes_id")
-    private LubricantePcpMiniG lubricantePcpMiniG = new LubricantePcpMiniG();
+    private LubricantePcpCougar lubricantePcpCoguar = new LubricantePcpCougar();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_id")
-    private ItemPcpMiniG itemPcpMiniG = new ItemPcpMiniG();
+    @JoinColumn(name = "items_id")
+    private ItemPcpCougar itemPcpCoguar = new ItemPcpCougar();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rodamientos_id")
-    private RodamientoPcpMiniG rodamientoPcpMiniG =new RodamientoPcpMiniG();
+    private RodamientoPcpCougar rodamientoPcpCoguar = new RodamientoPcpCougar();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_cubo_id")
-    private ItemCuboPcpMiniG itemCuboPcpMiniG = new ItemCuboPcpMiniG();
+    @JoinColumn(name = "transmision_freno_id")
+    private TransmisionFrenoPcpCougar transmisionFrenoPcpCoguar = new TransmisionFrenoPcpCougar();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sistema_hidraulico_id")
-    private SistemaPcpMiniG sistemaHidraulicoPcpMiniG = new SistemaPcpMiniG();
+    private SistemaPcpCougar sistemaHidraulicoPcpCoguar = new SistemaPcpCougar();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "polea_id")
-    private ItemPolea poleaPcpMiniG = new ItemPolea();
+    private ItemPolea poleaPcpCoguar = new ItemPolea();
 
 }
