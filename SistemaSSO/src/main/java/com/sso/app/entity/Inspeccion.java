@@ -22,3 +22,4 @@ public class Inspeccion {
     private boolean eliminado=false;
 
 }
+

@@ -1,9 +1,7 @@
 package com.sso.app.service;
 
 import com.sso.app.entity.inspeccion.pcpcougarcd50.InspeccionPcpCougar;
-import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDV1;
 import com.sso.app.repository.InspeccionPcpCoguarRepository;
-import com.sso.app.repository.InspeccionPcpDv1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

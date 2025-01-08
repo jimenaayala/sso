@@ -1,9 +1,7 @@
 package com.sso.app.controller;
 
 import com.sso.app.entity.inspeccion.pcpcougarcd50.InspeccionPcpCougar;
-import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
 import com.sso.app.service.InspeccionPcpCoguarService;
-import com.sso.app.service.InspeccionPcpVh60Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

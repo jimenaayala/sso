@@ -1,6 +1,5 @@
 package com.sso.app.entity.inspeccion.pcpcougarcd50;
 import com.sso.app.entity.inspeccion.ItemPolea;
-import com.sso.app.entity.inspeccion.pcpvh60.*;
 import jakarta.persistence.*;
 import lombok.*;
 

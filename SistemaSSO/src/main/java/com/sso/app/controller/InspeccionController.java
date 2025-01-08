@@ -1,6 +1,4 @@
 package com.sso.app.controller;
-import com.sso.app.controller.BaseController;
-
 import com.sso.app.entity.Inspeccion;
 import com.sso.app.service.InspeccionService;
 import lombok.AllArgsConstructor;

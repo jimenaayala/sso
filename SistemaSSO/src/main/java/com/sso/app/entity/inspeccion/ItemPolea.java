@@ -19,3 +19,4 @@ public class ItemPolea {
     @OneToOne(cascade = CascadeType.ALL)
     private EstadoItemPolea polea;
 }
+
