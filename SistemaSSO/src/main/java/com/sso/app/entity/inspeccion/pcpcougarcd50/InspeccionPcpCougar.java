@@ -1,4 +1,5 @@
 package com.sso.app.entity.inspeccion.pcpcougarcd50;
+import com.sso.app.entity.Inspeccion;
 import com.sso.app.entity.inspeccion.ItemPolea;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,12 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InspeccionPcpCougar {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String comentario;
-    private boolean eliminado=false;
+public class InspeccionPcpCougar extends Inspeccion {
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lubricantes_id")

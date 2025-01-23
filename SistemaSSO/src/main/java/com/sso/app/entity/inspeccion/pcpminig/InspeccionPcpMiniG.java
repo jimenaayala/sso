@@ -1,4 +1,5 @@
 package com.sso.app.entity.inspeccion.pcpminig;
+import com.sso.app.entity.Inspeccion;
 import com.sso.app.entity.inspeccion.ItemPolea;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,12 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InspeccionPcpMiniG {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String comentario;
-    private boolean eliminado=false;
+public class InspeccionPcpMiniG extends Inspeccion {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lubricantes_id")
