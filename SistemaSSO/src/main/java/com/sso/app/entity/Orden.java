@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,6 +25,10 @@ public class Orden {
     private String etapaActual;
     private boolean activa = true;
     private boolean eliminado = false;
+
+    //proximo dos atributos para el borrado de imagenes
+    private boolean salida = false;
+    private LocalDate fechaSalida;
 
     @PrePersist
     protected void onCreate() {
@@ -48,7 +53,7 @@ public class Orden {
     private Ensayo ensayo;
     @ManyToOne
     @JoinColumn(name = "salida_id")
-    private Salida salida;
+    private Salida salidaEtapa;
 
     
 }

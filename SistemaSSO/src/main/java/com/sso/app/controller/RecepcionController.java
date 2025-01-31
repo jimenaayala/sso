@@ -1,15 +1,18 @@
 package com.sso.app.controller;
 
+import com.sso.app.entity.Imagen;
 import com.sso.app.entity.Recepcion;
+import com.sso.app.repository.ImagenRepository;
+import com.sso.app.service.ImagenService;
 import com.sso.app.service.RecepcionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/recepcion")
@@ -19,10 +22,10 @@ import java.util.Optional;
 public class RecepcionController {
 
     private final RecepcionService recepcionService;
+    private final ImagenService imagenService;
+    private final ImagenRepository imagenRepository;
 
     //Buscar por id, sofDelete..
-
-
 
     @PostMapping
     public ResponseEntity<Recepcion> crearRecepcion(@RequestBody Recepcion recepcion) {
@@ -55,5 +58,25 @@ public class RecepcionController {
         Recepcion recepcion = recepcionService.buscarPorId(id);
         return ResponseEntity.ok(recepcion);
     }
+    // Nuevo endpoint para subir imágenes a una Recepción
+    @PostMapping("/{recepcionId}/subir-imagen")
+    public ResponseEntity<String> subirImagen(@PathVariable Long recepcionId, @RequestParam("file") MultipartFile file) {
+        try {
+            Recepcion recepcion = recepcionService.buscarPorId(recepcionId);
+            if (recepcion == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recepción no encontrada");
+            }
 
+            String imageUrl = imagenService.subirImagen(file);
+
+            Imagen imagen = new Imagen();
+            imagen.setUrl(imageUrl);
+            imagen.setRecepcion(recepcion);
+            imagenRepository.save(imagen);
+
+            return ResponseEntity.ok(imageUrl);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir la imagen");
+        }
+    }
 }

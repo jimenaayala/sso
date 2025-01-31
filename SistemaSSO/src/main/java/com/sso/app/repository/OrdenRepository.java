@@ -6,6 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,7 @@ public interface OrdenRepository extends CrudRepository<Orden,Long> {
     @Query("SELECT o FROM Orden o WHERE o.eliminado = false AND o.activa = true AND o.cliente.id = :clienteId")
     List<Orden> findAllActiveByClienteId(@Param("clienteId") Long clienteId);
 
+    List<Orden> findBySalidaTrueAndFechaSalidaBefore(@Param("fecha") LocalDate fecha);
 
 
 }
