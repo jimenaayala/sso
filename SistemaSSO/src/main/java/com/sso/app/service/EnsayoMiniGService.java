@@ -1,10 +1,9 @@
 package com.sso.app.service;
 
 import com.sso.app.entity.ensayo.EnsayoMiniG;
-import com.sso.app.entity.inspeccion.pcpminig.InspeccionPcpMiniG;
+
 import com.sso.app.repository.EnsayoMiniGRepository;
-import com.sso.app.repository.EnsayoRepository;
-import com.sso.app.repository.InspeccionPcpMiniGRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
