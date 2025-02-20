@@ -16,13 +16,13 @@ public class EnsayoMiniG {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private EstadoEnsayo Rpm200;
+    private EstadoEnsayo rpm200=new EstadoEnsayo();
     @OneToOne(cascade = CascadeType.ALL)
-    private EstadoEnsayo Rpm300;
+    private EstadoEnsayo rpm300=new EstadoEnsayo();
     @OneToOne(cascade = CascadeType.ALL)
-    private EstadoEnsayo Rpm400;
+    private EstadoEnsayo rpm400=new EstadoEnsayo();
     @OneToOne(cascade = CascadeType.ALL)
-    private EstadoEnsayo Rpm500;
+    private EstadoEnsayo rpm500=new EstadoEnsayo();
     @OneToOne(cascade = CascadeType.ALL)
     private EstadoRectificacion cargaAxial;
     @OneToOne(cascade = CascadeType.ALL)

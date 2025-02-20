@@ -21,7 +21,7 @@ public class EnsayoMiniGService {
     @Transactional
     public EnsayoMiniG crearEnsayo(EnsayoMiniG ensayo) {
         // Al guardar inspección, también se guardan las entidades relacionadas gracias a CascadeType.ALL
-        return ensayoMiniGRepository.save(ensayo);
+        return this.ensayoMiniGRepository.save(ensayo);
     }
 
     // Actualizar un ensayo existente
@@ -59,7 +59,7 @@ public class EnsayoMiniGService {
 
     // Obtener todas los ensayos
     public List<EnsayoMiniG> obtenerTodosEnsayos() {
-        return ensayoMiniGRepository.findAll();
+        return (List<EnsayoMiniG>) this.ensayoMiniGRepository.findAll();
     }
 }
 

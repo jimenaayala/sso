@@ -18,6 +18,7 @@ public class EnsayoMiniGController {
     // Endpoint para crear una nuevo Ensayo
     @PostMapping
     public ResponseEntity<EnsayoMiniG> crearEnsayo(@RequestBody EnsayoMiniG ensayo) {
+
         EnsayoMiniG nuevaEnsayo = ensayoMiniGService.crearEnsayo(ensayo);
         return ResponseEntity.ok(nuevaEnsayo);
     }

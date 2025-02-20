@@ -1,9 +1,6 @@
 package com.sso.app.entity.ensayo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -16,11 +13,11 @@ public class EstadoEnsayo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private double currentF;
-    private double uOut;
-    private double iOut;
-    private double iOutPos1;
-    private double iOutPos2;
+    private double currentF;        //
+    private double voltajeSalida;  //U out
+    private double corrienteSalida;  //I out en Amperios
+    private double posicionSalida1;    //posicion Voltaje Salida 1 para Cougar
+    private double posicionSalida2;    //posicion Voltaje Salida 2 para Cougar
     private double torqueFrenado;
     private double torqueFrenado1;
     private double torqueFrenado2;
