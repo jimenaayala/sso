@@ -40,7 +40,7 @@ public class EnsayoDv1Service {
             ensayoDv1.setNivelDeRuido(ensayo.getNivelDeRuido());
             ensayoDv1.setNivelDeVibracion(ensayo.getNivelDeVibracion());
 
-            return this.ensayoDv1Repository.save(ensayo);
+            return this.ensayoDv1Repository.save(ensayoDv1);
         }else {
             throw new RuntimeException("Ensayo no encontrado con ID: " + id);
         }
