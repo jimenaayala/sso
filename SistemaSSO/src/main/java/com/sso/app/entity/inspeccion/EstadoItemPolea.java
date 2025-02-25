@@ -15,9 +15,9 @@ public class EstadoItemPolea {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean ok;
-    private Boolean fisura;
+    private Boolean fisuras;
     private Boolean poros;
-    private Double disenoInadecuado;
-    private Double numeroTrazabilidad;
-    private String observacion;
+    private Boolean diametro;
+    private Boolean trazabilidad;
+    private String especificar;
 }

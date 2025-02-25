@@ -18,5 +18,6 @@ public class EstadoRodamiento {
     private Boolean picado;
     private Boolean laminado;
     private Boolean fallaEnJaula;
-    private String desgaste;
+    private Boolean desgaste;
+    private String especificar;
 }
