@@ -19,6 +19,6 @@ public class Equipo {
     private boolean eliminado=false;
     @ManyToOne
     @JoinColumn(name = "tipoequipo_id")
-    private TipoEquipo tipoEquipo;
+    private TipoEquipo tipoEquipo=new TipoEquipo();
 
 }

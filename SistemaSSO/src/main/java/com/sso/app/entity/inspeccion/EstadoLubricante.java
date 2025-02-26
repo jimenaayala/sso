@@ -18,4 +18,5 @@ public class EstadoLubricante {
     private Boolean particulasMetalicas;
     private Boolean agua;
     private Boolean sucio;
+    private String especificar;
 }
