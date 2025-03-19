@@ -18,5 +18,5 @@ public class EstadoTransmision {
     private Boolean picado;
     private Boolean desgastado;
     private Boolean roto;
-    private String especificargit ;
+    private String observacion;
 }

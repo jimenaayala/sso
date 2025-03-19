@@ -17,7 +17,6 @@ public class EstadoItem {
     private Boolean ok;
     private Boolean alojamientoRodamiento;
     private Boolean alojamientoReten;
-    private Boolean diametro;
+    private Double diametro;
     private Boolean deformado;
-    private String especificar;
 }
