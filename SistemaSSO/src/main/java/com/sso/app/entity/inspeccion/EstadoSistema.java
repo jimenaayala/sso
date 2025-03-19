@@ -15,9 +15,9 @@ public class EstadoSistema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean ok;
-    private Boolean fugas;
+    private Boolean fuga;
     private Boolean roto;
-    private Double eficiencia;
-    private String observacion;
+    private Boolean eficiencia;
+    private String especificar;
 
 }

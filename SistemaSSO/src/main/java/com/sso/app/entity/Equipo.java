@@ -20,6 +20,6 @@ public class Equipo {
     private String marca;
     @ManyToOne
     @JoinColumn(name = "tipoequipo_id")
-    private TipoEquipo tipoEquipo;
+    private TipoEquipo tipoEquipo=new TipoEquipo();
 
 }
