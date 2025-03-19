@@ -16,7 +16,7 @@ public class TipoEquipo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String tipo;
-
+    private String marca;
     private String modelo;
     private boolean eliminado=false;
 
