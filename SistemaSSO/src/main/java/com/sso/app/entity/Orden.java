@@ -1,6 +1,7 @@
 package com.sso.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,6 +40,10 @@ public class Orden {
     @ManyToOne
     @JoinColumn(name = "inspeccion_id")
     private Inspeccion inspeccion;
+
+    @ManyToOne
+    @JoinColumn(name = "InspeccionPcpVh60_id")
+    private InspeccionPcpVh60 inspeccionPcpVh60;
 
     @ManyToOne
     @JoinColumn(name = "recepcion_id")

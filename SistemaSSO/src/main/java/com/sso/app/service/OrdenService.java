@@ -86,12 +86,8 @@ public class OrdenService {
         correlativo.setUltimoNumero(siguienteNumero);
         correlativoOrdenRepository.save(correlativo);
 
-        return tipoFormateado + "-" + anio + "-" + String.format("%02d", mes) + String.format("%06d", siguienteNumero);
+        return tipoFormateado + "-" + anio + "-" + String.format("%02d", mes) +  "-" + String.format("%06d", siguienteNumero);
     }
-
-
-
-
 
     //sofDeleted para Orden
     public void deleteById(Long id){
