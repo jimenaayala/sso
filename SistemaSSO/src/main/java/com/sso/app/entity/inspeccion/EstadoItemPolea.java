@@ -17,7 +17,7 @@ public class EstadoItemPolea {
     private Boolean ok;
     private Boolean fisura;
     private Boolean poros;
-    private Double disenoInadecuado;
-    private Double numeroTrazabilidad;
-    private String observacion;
+    private Boolean disenoInadecuado;
+    private Boolean numeroTrazabilidad;   //  Double??
+    private String especificar;   //especificar
 }

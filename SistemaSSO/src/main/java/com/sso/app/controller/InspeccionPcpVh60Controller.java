@@ -2,6 +2,7 @@ package com.sso.app.controller;
 
 import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
 import com.sso.app.service.InspeccionPcpVh60Service;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inspeccionesvh60")
+@AllArgsConstructor
 public class InspeccionPcpVh60Controller {
 
-    @Autowired
-    private InspeccionPcpVh60Service inspeccionService;
+
+    private final InspeccionPcpVh60Service inspeccionService;
 
     // Endpoint para crear una nueva inspección
     @PostMapping

@@ -42,7 +42,7 @@ public class Orden {
     private Inspeccion inspeccion;
 
     @ManyToOne
-    @JoinColumn(name = "InspeccionPcpVh60_id")
+    @JoinColumn(name = "inspeccionPcpVh60_id")
     private InspeccionPcpVh60 inspeccionPcpVh60;
 
     @ManyToOne

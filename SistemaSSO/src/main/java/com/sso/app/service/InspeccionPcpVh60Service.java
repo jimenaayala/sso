@@ -2,6 +2,7 @@ package com.sso.app.service;
 
 import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
 import com.sso.app.repository.InspeccionPcpVh60Repository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class InspeccionPcpVh60Service {
 
-    @Autowired
-    private InspeccionPcpVh60Repository inspeccionRepository;
+
+    private final InspeccionPcpVh60Repository inspeccionRepository;
 
     // Crear una nueva inspección con entidades relacionadas
     @Transactional

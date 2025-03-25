@@ -17,7 +17,7 @@ public class EstadoSistema {
     private Boolean ok;
     private Boolean fugas;
     private Boolean roto;
-    private Double eficiencia;
-    private String observacion;
+    private Boolean eficiencia;      //Define el Tipo de Dato Trinoil
+    private String especificar;   //especificar
 
 }
