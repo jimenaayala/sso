@@ -46,14 +46,15 @@ public class OrdenService {
         // Asignar el equipo existente a la orden
         orden.setEquipo(equipo);
 
-        // Obtener tipo transformado
-        String tipoFormateado = mapearTipo(tipoEquipo.getTipo());
+        // Solo generar un nuevo número OT si la orden no tiene uno
+        if (orden.getNumeroOT() == null || orden.getNumeroOT().isEmpty()) {
+            // Obtener tipo transformado
+            String tipoFormateado = mapearTipo(tipoEquipo.getTipo());
 
-        // Generar número OT
-        String numeroOT = generarNumeroOT(tipoFormateado);
-        orden.setNumeroOT(numeroOT);
-
-        orden.setEquipo(equipo);
+            // Generar número OT
+            String numeroOT = generarNumeroOT(tipoFormateado);
+            orden.setNumeroOT(numeroOT);
+        }
 
         return this.ordenRepository.save(orden);
     }
