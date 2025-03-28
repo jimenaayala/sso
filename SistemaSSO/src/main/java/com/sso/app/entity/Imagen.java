@@ -18,8 +18,9 @@ public class Imagen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String url;
+    private boolean publicar;
+    private String descripcion;
 
     @ManyToOne
     @JoinColumn(name = "recepcion_id", nullable = true)

@@ -28,7 +28,7 @@ public class ImagenService {
         // Guardar la imagen en el servidor
         Files.write(filepath, file.getBytes());
 
-        // Retornar la URL de la imagen (ajustar si usas almacenamiento externo)
+        // Retornar la URL de la imagen (ajustar si usamos almacenamiento externo)
         return "/uploads/" + filename;
     }
 
