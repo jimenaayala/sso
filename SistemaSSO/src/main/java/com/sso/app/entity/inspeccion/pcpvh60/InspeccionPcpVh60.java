@@ -1,6 +1,6 @@
 package com.sso.app.entity.inspeccion.pcpvh60;
 
-import com.sso.app.entity.inspeccion.ItemPolea;
+import com.sso.app.entity.inspeccion.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,29 +17,71 @@ public class InspeccionPcpVh60 {
     private String comentario;
     private boolean eliminado=false;
 
+
+//Bloque Lubricante
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "lubricantes_id")
-    private LubricantePcpVh60 lubricantePcpVh60 = new LubricantePcpVh60();
+    private EstadoLubricante lubricanteBlockPortaRodamientos;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "items_id")
-    private ItemPcpVh60 itemPcpVh60 = new ItemPcpVh60();
+    private EstadoLubricante lubricanteSistemaFreno;
+
+//Bloque Item
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoItem ejeMotriz;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rodamientos_id")
-    private RodamientoPcpVh60 rodamientoPcpVh60 = new RodamientoPcpVh60();
+    private EstadoItem blockCabezal;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "transmision_freno_id")
-    private TransmisionFrenoPcpVh60 transmisionFrenoPcpVh60 = new TransmisionFrenoPcpVh60();
+    private EstadoItem placaInferior;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sistema_hidraulico_id")
-    private SistemaHidraulicoPcpVh60 sistemaHidraulicoPcpVh60 = new SistemaHidraulicoPcpVh60();
+    private EstadoItem placaSuperior;
+
+    //Bloque Rodamientos
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "polea_id")
-    private ItemPolea poleaPcpVh60 = new ItemPolea();
+    private EstadoRodamiento axial294158;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoRodamiento guiaSup6022;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoRodamiento guiaInf6017;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoRodamiento freno60051rsZ;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoRodamiento antirretornoCsk25PpC3;
+
+ //Bloque Transmisión de freno
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoTransmision corona;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoTransmision pinion;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoTransmision pastillasFreno;
+
+    //Bloque Sistema Hidraulico
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema bomba;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema manifold;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema caliper;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema conjuntoMangueras;
+
+    //Bloque Item Polea
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoItemPolea polea;
+
 }
 
 

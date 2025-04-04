@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class InspeccionPcpVh60Controller {
 
-
     private final InspeccionPcpVh60Service inspeccionService;
 
     // Endpoint para crear una nueva inspección
@@ -29,21 +28,23 @@ public class InspeccionPcpVh60Controller {
     @PutMapping("/{id}")
     public ResponseEntity<InspeccionPcpVh60> actualizarInspeccion(
             @PathVariable Long id,
-            @RequestBody InspeccionPcpVh60 inspeccion) {
-        InspeccionPcpVh60 inspeccionActualizada = inspeccionService.actualizarInspeccion(id, inspeccion);
+            @RequestBody InspeccionPcpVh60 inspeccionNueva) {
+        InspeccionPcpVh60 inspeccionActualizada = inspeccionService.actualizarInspeccion(id, inspeccionNueva);
         return ResponseEntity.ok(inspeccionActualizada);
     }
 
     // Endpoint para obtener una inspección por ID
     @GetMapping("/{id}")
     public ResponseEntity<InspeccionPcpVh60> obtenerInspeccionPorId(@PathVariable Long id) {
-        InspeccionPcpVh60 inspeccion = inspeccionService.obtenerInspeccionPorId(id);
+        InspeccionPcpVh60 inspeccion = inspeccionService.obtenerPorId(id);
         return ResponseEntity.ok(inspeccion);
     }
+
     // Endpoint para obtener todas las inspecciones
     @GetMapping
     public ResponseEntity<List<InspeccionPcpVh60>> obtenerTodasInspecciones() {
-        List<InspeccionPcpVh60> inspecciones = inspeccionService.obtenerTodasInspecciones();
+        List<InspeccionPcpVh60> inspecciones = inspeccionService.obtenerTodas();
         return ResponseEntity.ok(inspecciones);
     }
 }
+
