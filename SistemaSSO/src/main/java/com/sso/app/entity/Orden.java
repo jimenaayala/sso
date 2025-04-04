@@ -50,16 +50,17 @@ public class Orden {
     @JoinColumn(name = "inspeccionPcpVh60_id")
     private InspeccionPcpVh60 inspeccionPcpVh60;
 
-    //@ManyToOne
-    //@JoinColumn(name = "recepcion_id")
-    //private Recepcion recepcion;
+    @ManyToOne
+    @JoinColumn(name = "recepcion_id")
+    private Recepcion recepcion;
 
     @ManyToOne
     @JoinColumn(name = "ensayo_id")
     private Ensayo ensayo;
-    //@ManyToOne
-    //@JoinColumn(name = "salida_id")
-    //private Salida salidaEtapa;
+
+    @ManyToOne
+    @JoinColumn(name = "salida_id")
+    private Salida salidaEtapa;
 
 
 
