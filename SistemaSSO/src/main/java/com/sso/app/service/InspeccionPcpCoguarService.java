@@ -31,12 +31,37 @@ public class InspeccionPcpCoguarService {
 
             // Actualizamos cada entidad relacionada
             inspeccion.setComentario(inspeccionNueva.getComentario());
-            inspeccion.setLubricantePcpCoguar(inspeccionNueva.getLubricantePcpCoguar());
-            inspeccion.setItemPcpCoguar(inspeccionNueva.getItemPcpCoguar());
-            inspeccion.setRodamientoPcpCoguar(inspeccionNueva.getRodamientoPcpCoguar());
-            inspeccion.setTransmisionFrenoPcpCoguar(inspeccionNueva.getTransmisionFrenoPcpCoguar());
-            inspeccion.setSistemaHidraulicoPcpCoguar(inspeccionNueva.getSistemaHidraulicoPcpCoguar());
-            inspeccion.setPoleaPcpCoguar(inspeccionNueva.getPoleaPcpCoguar());
+
+            // EstadoLubricante
+            inspeccion.setLubricanteBlockRodamientos(inspeccionNueva.getLubricanteBlockRodamientos());
+            inspeccion.setLubricanteSistemaFreno(inspeccionNueva.getLubricanteSistemaFreno());
+
+            // EstadoItem
+            inspeccion.setEjeMotriz(inspeccionNueva.getEjeMotriz());
+            inspeccion.setEjeSecundario(inspeccionNueva.getEjeSecundario());
+            inspeccion.setBlockCabezal(inspeccionNueva.getBlockCabezal());
+            inspeccion.setPlacaInterior(inspeccionNueva.getPlacaInterior());
+
+            // EstadoRodamiento
+            inspeccion.setCargaAxial(inspeccionNueva.getCargaAxial());
+            inspeccion.setGuiaSup(inspeccionNueva.getGuiaSup());
+            inspeccion.setGuiaInf(inspeccionNueva.getGuiaInf());
+            inspeccion.setEjeSecSup(inspeccionNueva.getEjeSecSup());
+            inspeccion.setEjeSecInf(inspeccionNueva.getEjeSecInf());
+            inspeccion.setAcoBomHidra(inspeccionNueva.getAcoBomHidra());
+            inspeccion.setTorrBomHid(inspeccionNueva.getTorrBomHid());
+
+            // EstadoTransmision
+            inspeccion.setCorona(inspeccionNueva.getCorona());
+            inspeccion.setPinion(inspeccionNueva.getPinion());
+            inspeccion.setRodJauAnti(inspeccionNueva.getRodJauAnti());
+
+            // EstadoSistema
+            inspeccion.setBomba(inspeccionNueva.getBomba());
+            inspeccion.setValvFren(inspeccionNueva.getValvFren());
+
+            // EstadoItemPolea
+            inspeccion.setPolea(inspeccionNueva.getPolea());
 
             return inspeccionRepository.save(inspeccion);
         } else {
