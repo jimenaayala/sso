@@ -1,5 +1,5 @@
 package com.sso.app.entity.inspeccion.pcpdv1;
-import com.sso.app.entity.inspeccion.ItemPolea;
+import com.sso.app.entity.inspeccion.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,28 +16,55 @@ public class InspeccionPcpDV1 {
     private String comentario;
     private boolean eliminado=false;
 
+    //Lubricante
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "lubricantes_id")
-    private LubricantePcpDV1 lubricantePcpDV1 = new LubricantePcpDV1();
+    private EstadoLubricante lubricanteBlockPortaRodamientos;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoLubricante lubricanteEngranajes;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoLubricante lubricanteSistemaFreno;
+    //Item
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoItem ejeMotriz;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_id")
-    private ItemPcpDV1 itemPcpDV1 = new ItemPcpDV1();
+    private EstadoItem blockCabezal;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rodamientos_id")
-    private RodamientoPcpDV1 rodamientoPcpDV1 = new RodamientoPcpDV1();
+    private EstadoItem placaInferior;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "transmision_freno_id")
-    private TransmisionFrenoPcpDV1 transmisionFrenoPcpDv1 = new TransmisionFrenoPcpDV1();
-
+    private EstadoItem protectorEngranaje;
+    //Rodamiento
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sistema_hidraulico_id")
-    private SistemaHidraulicoPcpDv1 sistemaHidraulicoPcpDV1 =new SistemaHidraulicoPcpDv1();
-
+    private EstadoRodamiento axial29415;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "polea_id")
-    private ItemPolea poleaPcpDV1 = new ItemPolea();
+    private EstadoRodamiento guiaSup6212;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoRodamiento guiaInf6212;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoRodamiento corona6212Z;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoRodamiento mHidr6210Z;
+    //TransmisionFreno
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoTransmision corona;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoTransmision pinon;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoTransmision catraca;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoTransmision bolas;
+    //SistemaHidraulico
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema bomba;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema manifold;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema conjuntoMangueras;
+    //ItemPolea
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoItemPolea polea;
+
 
 }

@@ -31,12 +31,25 @@ public class InspeccionPcpDv1Service {
 
             // Actualizamos cada entidad relacionada
             inspeccion.setComentario(inspeccionNueva.getComentario());
-            inspeccion.setLubricantePcpDV1(inspeccionNueva.getLubricantePcpDV1());
-            inspeccion.setItemPcpDV1(inspeccionNueva.getItemPcpDV1());
-            inspeccion.setRodamientoPcpDV1(inspeccionNueva.getRodamientoPcpDV1());
-            inspeccion.setTransmisionFrenoPcpDv1(inspeccionNueva.getTransmisionFrenoPcpDv1());
-            inspeccion.setSistemaHidraulicoPcpDV1(inspeccionNueva.getSistemaHidraulicoPcpDV1());
-            inspeccion.setPoleaPcpDV1(inspeccionNueva.getPoleaPcpDV1());
+            inspeccion.setLubricanteBlockPortaRodamientos(inspeccionNueva.getLubricanteBlockPortaRodamientos());
+            inspeccion.setLubricanteEngranajes(inspeccionNueva.getLubricanteEngranajes());
+            inspeccion.setLubricanteSistemaFreno(inspeccionNueva.getLubricanteSistemaFreno());
+            inspeccion.setEjeMotriz(inspeccionNueva.getEjeMotriz());
+            inspeccion.setBlockCabezal(inspeccionNueva.getBlockCabezal());
+            inspeccion.setPlacaInferior(inspeccionNueva.getPlacaInferior());
+            inspeccion.setProtectorEngranaje(inspeccionNueva.getProtectorEngranaje());
+            inspeccion.setAxial29415(inspeccionNueva.getAxial29415());
+            inspeccion.setGuiaSup6212(inspeccionNueva.getGuiaSup6212());
+            inspeccion.setGuiaInf6212(inspeccionNueva.getGuiaInf6212());
+            inspeccion.setCorona6212Z(inspeccionNueva.getCorona6212Z());
+            inspeccion.setMHidr6210Z(inspeccionNueva.getMHidr6210Z());
+            inspeccion.setCorona(inspeccionNueva.getCorona());
+            inspeccion.setPinon(inspeccionNueva.getPinon());
+            inspeccion.setCatraca(inspeccionNueva.getCatraca());
+            inspeccion.setBolas(inspeccionNueva.getBolas());
+            inspeccion.setManifold(inspeccionNueva.getManifold());
+            inspeccion.setConjuntoMangueras(inspeccionNueva.getConjuntoMangueras());
+            inspeccion.setPolea(inspeccionNueva.getPolea());
 
             return inspeccionRepository.save(inspeccion);
         } else {
