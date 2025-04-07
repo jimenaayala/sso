@@ -1,5 +1,5 @@
 package com.sso.app.entity.inspeccion.pcpminig;
-import com.sso.app.entity.inspeccion.ItemPolea;
+import com.sso.app.entity.inspeccion.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,28 +16,50 @@ public class InspeccionPcpMiniG {
     private String comentario;
     private boolean eliminado=false;
 
+    //Estado Lubricante
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "lubricantes_id")
-    private LubricantePcpMiniG lubricantePcpMiniG = new LubricantePcpMiniG();
+    private EstadoLubricante lubricanteBlockPortaRodamientos;
+    //Item
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoItem ejeMotriz;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_id")
-    private ItemPcpMiniG itemPcpMiniG = new ItemPcpMiniG();
+    private EstadoItem blockCabezal;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rodamientos_id")
-    private RodamientoPcpMiniG rodamientoPcpMiniG =new RodamientoPcpMiniG();
+    private EstadoItem placaInferior;
+    //Rodamiento
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoRodamiento axial29416;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_cubo_id")
-    private ItemCuboPcpMiniG itemCuboPcpMiniG = new ItemCuboPcpMiniG();
+    private EstadoRodamiento guiaSuperiorNJ217;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sistema_hidraulico_id")
-    private SistemaPcpMiniG sistemaHidraulicoPcpMiniG = new SistemaPcpMiniG();
+    private EstadoRodamiento guiaInferiorNJ214;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "polea_id")
-    private ItemPolea poleaPcpMiniG = new ItemPolea();
+    private EstadoRodamiento zapata61822;
+    //ItemCubo
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoItemCubo cuboPortaRodamiento;
+    //Sistema
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema zapataDeFreno;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema ferodo;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema levaS;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema vastagoDeResortes;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoSistema resortes;
+    //ItemPolea
+    @OneToOne(cascade = CascadeType.ALL)
+    private EstadoItemPolea polea;
 
 }

@@ -32,12 +32,20 @@ public class InspeccionPcpMiniGService {
 
             // Actualizamos cada entidad relacionada
             inspeccion.setComentario(inspeccionNueva.getComentario());
-            inspeccion.setLubricantePcpMiniG(inspeccionNueva.getLubricantePcpMiniG());
-            inspeccion.setItemPcpMiniG(inspeccionNueva.getItemPcpMiniG());
-            inspeccion.setRodamientoPcpMiniG(inspeccionNueva.getRodamientoPcpMiniG());
-            inspeccion.setItemCuboPcpMiniG(inspeccionNueva.getItemCuboPcpMiniG());
-            inspeccion.setSistemaHidraulicoPcpMiniG(inspeccionNueva.getSistemaHidraulicoPcpMiniG());
-            inspeccion.setPoleaPcpMiniG(inspeccionNueva.getPoleaPcpMiniG());
+            inspeccion.setLubricanteBlockPortaRodamientos(inspeccionNueva.getLubricanteBlockPortaRodamientos());
+            inspeccion.setEjeMotriz(inspeccionNueva.getEjeMotriz());
+            inspeccion.setBlockCabezal(inspeccionNueva.getBlockCabezal());
+            inspeccion.setPlacaInferior(inspeccionNueva.getPlacaInferior());
+            inspeccion.setAxial29416(inspeccion.getAxial29416());
+            inspeccion.setGuiaSuperiorNJ217(inspeccionNueva.getGuiaSuperiorNJ217());
+            inspeccion.setGuiaInferiorNJ214(inspeccionNueva.getGuiaInferiorNJ214());
+            inspeccion.setZapata61822(inspeccionNueva.getZapata61822());
+            inspeccion.setFerodo(inspeccionNueva.getFerodo());
+            inspeccion.setLevaS(inspeccionNueva.getLevaS());
+            inspeccion.setVastagoDeResortes(inspeccionNueva.getVastagoDeResortes());
+            inspeccion.setResortes(inspeccionNueva.getResortes());
+            inspeccion.setPolea(inspeccionNueva.getPolea());
+
 
             return inspeccionRepository.save(inspeccion);
         } else {
