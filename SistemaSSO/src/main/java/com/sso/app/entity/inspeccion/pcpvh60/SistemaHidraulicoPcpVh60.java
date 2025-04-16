@@ -17,16 +17,31 @@ public class SistemaHidraulicoPcpVh60 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema bomba;
+    // Bomba
+    private Boolean bomOk;
+    private Boolean bomFug;
+    private Boolean bomRot;
+    private Boolean bomEf;
+    private String bomEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema manifold;
+    // Manifold
+    private Boolean manOk;
+    private Boolean manFug;
+    private Boolean manRot;
+    private Boolean manEf;
+    private String manEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema caliper;
+    // Caliper
+    private Boolean calOk;
+    private Boolean calFug;
+    private Boolean calRot;
+    private Boolean calEf;
+    private String calEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema conjuntoMangueras;
-
+    // Conjunto Mangueras
+    private Boolean cmOk;
+    private Boolean cmFug;
+    private Boolean cmRot;
+    private Boolean cmEf;
+    private String cmEsp;
 }

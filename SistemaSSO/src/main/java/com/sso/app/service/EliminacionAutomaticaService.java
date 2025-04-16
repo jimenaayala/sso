@@ -36,7 +36,9 @@ public class EliminacionAutomaticaService {
         List<Orden> ordenes = ordenRepository.findBySalidaTrueAndFechaSalidaBefore(fechaLimite);
 
         for (Orden orden : ordenes) {
-            Recepcion recepcion = orden.getRecepcion();
+            //Recepcion recepcion = orden.getRecepcion();
+            //solo puesto para probrar prolema de estructura, luego borrar proxima linea y dejar la de arriba
+            Recepcion recepcion = new Recepcion();
             eliminarImagenes(recepcion.getImagenes());
 
 //            for (Inspeccion inspeccion : orden.getInspeccion()) {

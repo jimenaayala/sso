@@ -15,9 +15,17 @@ public class LubricantePcpCougar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoLubricante lubricanteBlockRodamientos;
+    // lubricanteBlockRodamientos
+    private Boolean lbrOk;
+    private Boolean lbrPM;
+    private Boolean lbrAgua;
+    private Boolean lbrSucio;
+    private String lbrEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoLubricante lubricanteSistemaFreno;
+    // lubricanteSistemaFreno
+    private Boolean lsfOk;
+    private Boolean lsfPM;
+    private Boolean lsfAgua;
+    private Boolean lsfSucio;
+    private String lsfEsp;
 }

@@ -16,18 +16,38 @@ public class SistemaPcpMiniG {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema zapataDeFreno;
+    // Zapata de Freno
+    private Boolean zfOk;
+    private Boolean zfFug;
+    private Boolean zfRot;
+    private Boolean zfEf;
+    private String zfEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema ferodo;
+    // Ferodo
+    private Boolean ferOk;
+    private Boolean ferFug;
+    private Boolean ferRot;
+    private Boolean ferEf;
+    private String ferEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema levaS;
+    // Leva S
+    private Boolean levOk;
+    private Boolean levFug;
+    private Boolean levRot;
+    private Boolean levEf;
+    private String levEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema vastagoDeResortes;
+    // Vástago de Resortes
+    private Boolean vrOk;
+    private Boolean vrFug;
+    private Boolean vrRot;
+    private Boolean vrEf;
+    private String vrEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema resortes;
+    // Resortes
+    private Boolean resOk;
+    private Boolean resFug;
+    private Boolean resRot;
+    private Boolean resEf;
+    private String resEsp;
 }

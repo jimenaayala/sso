@@ -17,15 +17,35 @@ public class ItemPcpDV1 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoItem ejeMotriz;
+    // Estado del eje motriz
+    private Boolean emOk;
+    private Boolean emAlRod;   // Alojamiento rodamiento
+    private Boolean emAlRet;   // Alojamiento reten
+    private Boolean emDiam;    // Diámetro
+    private Boolean emDef;     // Deformado
+    private String emEsp;      // Especificar
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoItem blockCabezal;
+    // Estado del block cabezal
+    private Boolean bcOk;
+    private Boolean bcAlRod;
+    private Boolean bcAlRet;
+    private Boolean bcDiam;
+    private Boolean bcDef;
+    private String bcEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoItem placaInferior;
+    // Estado de la placa inferior
+    private Boolean piOk;
+    private Boolean piAlRod;
+    private Boolean piAlRet;
+    private Boolean piDiam;
+    private Boolean piDef;
+    private String piEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoItem protectorEngranaje;
+    // Estado del protector de engranaje
+    private Boolean peOk;
+    private Boolean peAlRod;
+    private Boolean peAlRet;
+    private Boolean peDiam;
+    private Boolean peDef;
+    private String peEsp;
 }

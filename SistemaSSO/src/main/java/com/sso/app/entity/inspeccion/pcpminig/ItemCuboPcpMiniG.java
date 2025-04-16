@@ -15,6 +15,10 @@ public class ItemCuboPcpMiniG {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoItemCubo cuboPortaRodamiento;
+    // Cubo Porta Rodamiento
+    private Boolean cprOk;
+    private Boolean cprPic;
+    private Boolean cprDesg;
+    private Boolean cprChav;
+    private String cprObs;
 }

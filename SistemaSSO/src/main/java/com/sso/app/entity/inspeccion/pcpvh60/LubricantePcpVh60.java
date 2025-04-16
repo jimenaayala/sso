@@ -18,10 +18,18 @@ public class LubricantePcpVh60 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    // Lubricante Block Porta Rodamientos
+    private Boolean lbprOk;
+    private Boolean lbprPM;
+    private Boolean lbprAgua;
+    private Boolean lbprSucio;
+    private String lbprEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoLubricante lubricanteBlockPortaRodamientos;
+    // Lubricante Sistema Freno
+    private Boolean lsfOk;
+    private Boolean lsfPM;
+    private Boolean lsfAgua;
+    private Boolean lsfSucio;
+    private String lsfEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoLubricante lubricanteSistemaFreno;
 }

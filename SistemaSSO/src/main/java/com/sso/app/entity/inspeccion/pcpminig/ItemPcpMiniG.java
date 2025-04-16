@@ -18,12 +18,27 @@ public class ItemPcpMiniG {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoItem ejeMotriz;
+    // Eje Motriz
+    private Boolean emOk;
+    private Boolean emAlRod;
+    private Boolean emAlRet;
+    private Boolean emDiam;
+    private Boolean emDef;
+    private String emEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoItem blockCabezal;
+    // Block Cabezal
+    private Boolean bcOk;
+    private Boolean bcAlRod;
+    private Boolean bcAlRet;
+    private Boolean bcDiam;
+    private Boolean bcDef;
+    private String bcEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoItem placaInferior;
+    // Placa Inferior
+    private Boolean piOk;
+    private Boolean piAlRod;
+    private Boolean piAlRet;
+    private Boolean piDiam;
+    private Boolean piDef;
+    private String piEsp;
 }

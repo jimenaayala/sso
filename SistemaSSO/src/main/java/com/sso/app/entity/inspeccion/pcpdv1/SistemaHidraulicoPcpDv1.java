@@ -15,10 +15,24 @@ public class SistemaHidraulicoPcpDv1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema bomba;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema manifold;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema conjuntoMangueras;
+    // Bomba
+    private Boolean bmOk;
+    private Boolean bmFug;    // Fugas
+    private Boolean bmRot;
+    private Boolean bmEf;     // Eficiencia
+    private String bmEsp;
+
+    // Manifold
+    private Boolean mfOk;
+    private Boolean mfFug;
+    private Boolean mfRot;
+    private Boolean mfEf;
+    private String mfEsp;
+
+    // Conjunto de mangueras
+    private Boolean cmOk;
+    private Boolean cmFug;
+    private Boolean cmRot;
+    private Boolean cmEf;
+    private String cmEsp;
 }

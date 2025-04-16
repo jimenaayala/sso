@@ -17,12 +17,24 @@ public class TransmisionFrenoPcpVh60 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoTransmision corona;
+    // Corona
+    private Boolean corOk;
+    private Boolean corPic;
+    private Boolean corDesg;
+    private Boolean corRot;
+    private String corEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoTransmision pinion;
+    // Piñón
+    private Boolean pinOk;
+    private Boolean pinPic;
+    private Boolean pinDesg;
+    private Boolean pinRot;
+    private String pinEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoTransmision pastillasFreno;
+    // Pastillas de Freno
+    private Boolean pfOk;
+    private Boolean pfPic;
+    private Boolean pfDesg;
+    private Boolean pfRot;
+    private String pfEsp;
 }

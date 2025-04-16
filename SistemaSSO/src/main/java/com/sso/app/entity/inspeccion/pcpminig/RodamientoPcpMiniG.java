@@ -16,15 +16,35 @@ public class RodamientoPcpMiniG {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRodamiento axial29416;
+    // Axial 29416
+    private Boolean axOk;
+    private Boolean axPic;
+    private Boolean axLam;
+    private Boolean axFj;
+    private Boolean axDesg;
+    private String axEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRodamiento guiaSuperiorNJ217;
+    // Guía Superior NJ217
+    private Boolean gsOk;
+    private Boolean gsPic;
+    private Boolean gsLam;
+    private Boolean gsFj;
+    private Boolean gsDesg;
+    private String gsEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRodamiento guiaInferiorNJ214;
+    // Guía Inferior NJ214
+    private Boolean giOk;
+    private Boolean giPic;
+    private Boolean giLam;
+    private Boolean giFj;
+    private Boolean giDesg;
+    private String giEsp;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRodamiento zapata61822;
+    // Zapata 61822
+    private Boolean zpOk;
+    private Boolean zpPic;
+    private Boolean zpLam;
+    private Boolean zpFj;
+    private Boolean zpDesg;
+    private String zpEsp;
 }

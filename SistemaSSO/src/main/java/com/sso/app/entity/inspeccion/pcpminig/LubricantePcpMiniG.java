@@ -17,6 +17,10 @@ public class LubricantePcpMiniG {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoLubricante lubricanteBlockPortaRodamientos;
+    // Lubricante Block Porta Rodamientos
+    private Boolean lbprOk;
+    private Boolean lbprPM;
+    private Boolean lbprAgua;
+    private Boolean lbprSucio;
+    private String lbprEsp;
 }

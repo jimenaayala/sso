@@ -16,10 +16,17 @@ public class SistemaPcpCougar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema bomba;
+    // bomba
+    private Boolean bombaOk;
+    private Boolean bombaFugas;
+    private Boolean bombaRoto;
+    private Boolean bombaEficiencia;
+    private String bombaEspecificar;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoSistema valvFren;
-
+    // valvFren
+    private Boolean valvOk;
+    private Boolean valvFugas;
+    private Boolean valvRoto;
+    private Boolean valvEficiencia;
+    private String valvEspecificar;
 }

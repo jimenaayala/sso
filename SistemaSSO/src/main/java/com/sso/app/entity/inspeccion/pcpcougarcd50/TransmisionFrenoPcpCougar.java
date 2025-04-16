@@ -16,14 +16,26 @@ public class TransmisionFrenoPcpCougar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoTransmision corona;
+    // corona
+    private Boolean crnOk;
+    private Boolean crnPicado;
+    private Boolean crnDesgastado;
+    private Boolean crnRoto;
+    private String crnEspecificar;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoTransmision pinion;
+    // pinion
+    private Boolean pnOk;
+    private Boolean pnPicado;
+    private Boolean pnDesgastado;
+    private Boolean pnRoto;
+    private String pnEspecificar;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoTransmision RodJauAnti;
+    // RodJauAnti
+    private Boolean rjaOk;
+    private Boolean rjaPicado;
+    private Boolean rjaDesgastado;
+    private Boolean rjaRoto;
+    private String rjaEspecificar;
 
 }
 
