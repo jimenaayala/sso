@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.BeanUtils;
 
 @Service
 public class EnsayoMiniGService {
@@ -31,20 +32,10 @@ public class EnsayoMiniGService {
         if (EnsayoExistente.isPresent()) {
             EnsayoMiniG ensayo = EnsayoExistente.get();
 
-            // Actualizamos cada entidad relacionada
-            ensayo.setRpm200(ensayoNuevo.getRpm200());
-            ensayo.setRpm300(ensayoNuevo.getRpm300());
-            ensayo.setRpm400(ensayoNuevo.getRpm400());
-            ensayo.setRpm500(ensayoNuevo.getRpm500());
-            ensayo.setNivelDeAceite(ensayoNuevo.getNivelDeAceite());
-            ensayo.setNivelDeRuido(ensayoNuevo.getNivelDeRuido());
-            ensayo.setTemperatura(ensayoNuevo.getTemperatura());
-            ensayo.setCargaAxial(ensayoNuevo.getCargaAxial());
-            ensayo.setPintura(ensayoNuevo.getPintura());
-            ensayo.setFugaDeAceite(ensayoNuevo.getFugaDeAceite());
-            ensayo.setNivelDeVibracion(ensayoNuevo.getNivelDeVibracion());
+            // Copia todas las propiedades excepto el ID
+            BeanUtils.copyProperties(ensayoNuevo, ensayo, "id");
 
-            return  ensayoMiniGRepository.save(ensayo);
+            return ensayoMiniGRepository.save(ensayo);
         } else {
             throw new RuntimeException("Ensayo no encontrado con ID: " + id);
         }
