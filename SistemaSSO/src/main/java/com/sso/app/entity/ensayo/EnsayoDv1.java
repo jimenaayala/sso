@@ -15,26 +15,82 @@ public class EnsayoDv1 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoEnsayo presion10=new EstadoEnsayo();
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoEnsayo presion20=new EstadoEnsayo();
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoEnsayo presion70=new EstadoEnsayo();
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoEnsayo presion100=new EstadoEnsayo();
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRectificacion cargaAxial;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRectificacion temperatura;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRectificacion nivelDeRuido;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRectificacion nivelDeVibracion;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRectificacion fugaDeAceite;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRectificacion nivelDeAceite;
-    @OneToOne(cascade = CascadeType.ALL)
-    private EstadoRectificacion pintura;
+    // === EstadoEnsayo fields for each pressure ===
+    // Presion 10
+    private double presion10CurrentF;        // Frecuencia actual a presion 10
+    private double presion10VoltajeSalida;   // U out a presion 10
+    private double presion10CorrienteSalida; // I out en Amperios a presion 10
+    private double presion10PosicionSalida1; // Posición Voltaje Salida 1 a presion 10
+    private double presion10PosicionSalida2; // Posición Voltaje Salida 2 a presion 10
+    private double presion10TorqueFrenado;
+    private double presion10TorqueFrenado1;
+    private double presion10TorqueFrenado2;
+    private double presion10TorqueFabricaReferencia;
+    private double presion10TorqueReferencia1;
+    private double presion10TorqueReferencia2;
+    private double presion10TemperaturaCarcazaC;
+
+    // Presion 20
+    private double presion20CurrentF;
+    private double presion20VoltajeSalida;
+    private double presion20CorrienteSalida;
+    private double presion20PosicionSalida1;
+    private double presion20PosicionSalida2;
+    private double presion20TorqueFrenado;
+    private double presion20TorqueFrenado1;
+    private double presion20TorqueFrenado2;
+    private double presion20TorqueFabricaReferencia;
+    private double presion20TorqueReferencia1;
+    private double presion20TorqueReferencia2;
+    private double presion20TemperaturaCarcazaC;
+
+    // Presion 70
+    private double presion70CurrentF;
+    private double presion70VoltajeSalida;
+    private double presion70CorrienteSalida;
+    private double presion70PosicionSalida1;
+    private double presion70PosicionSalida2;
+    private double presion70TorqueFrenado;
+    private double presion70TorqueFrenado1;
+    private double presion70TorqueFrenado2;
+    private double presion70TorqueFabricaReferencia;
+    private double presion70TorqueReferencia1;
+    private double presion70TorqueReferencia2;
+    private double presion70TemperaturaCarcazaC;
+
+    // Presion 100
+    private double presion100CurrentF;
+    private double presion100VoltajeSalida;
+    private double presion100CorrienteSalida;
+    private double presion100PosicionSalida1;
+    private double presion100PosicionSalida2;
+    private double presion100TorqueFrenado;
+    private double presion100TorqueFrenado1;
+    private double presion100TorqueFrenado2;
+    private double presion100TorqueFabricaReferencia;
+    private double presion100TorqueReferencia1;
+    private double presion100TorqueReferencia2;
+    private double presion100TemperaturaCarcazaC;
+
+    // === EstadoRectificacion fields ===
+    private boolean cargaAxialOK;
+    private String cargaAxialObservacion;
+
+    private boolean temperaturaOK;
+    private String temperaturaObservacion;
+
+    private boolean nivelDeRuidoOK;
+    private String nivelDeRuidoObservacion;
+
+    private boolean nivelDeVibracionOK;
+    private String nivelDeVibracionObservacion;
+
+    private boolean fugaDeAceiteOK;
+    private String fugaDeAceiteObservacion;
+
+    private boolean nivelDeAceiteOK;
+    private String nivelDeAceiteObservacion;
+
+    private boolean pinturaOK;
+    private String pinturaObservacion;
 }

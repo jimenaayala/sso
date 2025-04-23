@@ -7,6 +7,7 @@ import com.sso.app.repository.EnsayoDv1Repository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +28,8 @@ public class EnsayoDv1Service {
         if(ensayoexistente.isPresent()){
             EnsayoDv1 ensayoDv1 = ensayoexistente.get();
 
-            ensayoDv1.setPresion10(ensayo.getPresion10());
-            ensayoDv1.setPresion20(ensayo.getPresion20());
-            ensayoDv1.setPresion70(ensayo.getPresion70());
-            ensayoDv1.setPresion100(ensayo.getPresion100());
-
-            ensayoDv1.setTemperatura(ensayo.getTemperatura());
-            ensayoDv1.setCargaAxial(ensayo.getCargaAxial());
-            ensayoDv1.setFugaDeAceite(ensayo.getFugaDeAceite());
-            ensayoDv1.setPintura(ensayo.getPintura());
-            ensayoDv1.setNivelDeAceite(ensayo.getNivelDeAceite());
-            ensayoDv1.setNivelDeRuido(ensayo.getNivelDeRuido());
-            ensayoDv1.setNivelDeVibracion(ensayo.getNivelDeVibracion());
+            // Copia todas las propiedades excepto el ID
+            BeanUtils.copyProperties(ensayo, ensayoDv1, "id");
 
             return this.ensayoDv1Repository.save(ensayoDv1);
         }else {
