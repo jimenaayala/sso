@@ -6,6 +6,7 @@ import com.sso.app.repository.EnsayoCougarRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,15 +28,8 @@ public class EnsayoCougarService {
         if (ensayoExistente.isPresent()){
             EnsayoCougar ensayoCougar = ensayoExistente.get();
 
-            ensayoCougar.setCargaAxial(ensayo.getCargaAxial());
-            ensayoCougar.setPintura(ensayo.getPintura());
-            ensayoCougar.setFugaDeAceite(ensayo.getFugaDeAceite());
-            ensayoCougar.setTemperatura(ensayo.getTemperatura());
-            ensayoCougar.setNivelDeRuido(ensayo.getNivelDeRuido());
-            ensayoCougar.setNivelDeVibracion(ensayo.getNivelDeVibracion());
-
-            ensayoCougar.setRpm100(ensayo.getRpm100());
-            ensayoCougar.setRpm200(ensayo.getRpm200());
+            // Copia todas las propiedades excepto el ID
+            BeanUtils.copyProperties(ensayo, ensayoCougar, "id");
 
             return this.ensayoCougarRepository.save(ensayoCougar);
         }else {
