@@ -1,6 +1,5 @@
 package com.sso.app.controller;
 
-import com.sso.app.entity.ensayo.EnsayoMiniG;
 import com.sso.app.entity.ensayo.EnsayoVh60;
 import com.sso.app.service.EnsayoVh60Service;
 import lombok.AllArgsConstructor;

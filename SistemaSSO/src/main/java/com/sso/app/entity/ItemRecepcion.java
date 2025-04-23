@@ -13,33 +13,53 @@ public class ItemRecepcion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion cubreGrampa;
+    //cubreGrampa;
+    private boolean cgestado;
+    private String cgrequerimiento;
+    private String cgobservacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion cubrePolea;
+    //cubrePolea;
+    private boolean estado;
+    private String requerimiento;
+    private String observacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion cubreVastago;
+    //cubreVastago;
+    private boolean cvestado;
+    private String cvrequerimiento;
+    private String cvobservacion;
+    // grampaAntiEyeccion
+    private boolean gaestado;
+    private String garequerimiento;
+    private String gaobservacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion grampaAntiEyeccion;
+    // estructuraChasis
+    private boolean ecestado;
+    private String ecrequerimiento;
+    private String ecobservacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion estructuraChasis;
+    // linternaSeparador
+    private boolean lsestado;
+    private String lsrequerimiento;
+    private String lsobservacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion linternaSeparador;
+    // mesaDeMotor
+    private boolean mmestado;
+    private String mmrequerimiento;
+    private String mmobservacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion mesaDeMotor;
+    // rielesDeMotor
+    private boolean rmestado;
+    private String rmrequerimiento;
+    private String rmobservacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion rielesDeMotor;
+    // soporteDeTransporte
+    private boolean stestado;
+    private String strequerimiento;
+    private String stobservacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion soporteDeTransporte;
+    // poleaConducida
+    private boolean pcestado;
+    private String pcrequerimiento;
+    private String pcobservacion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ItemDetailRecepcion poleaConducida;
 }
