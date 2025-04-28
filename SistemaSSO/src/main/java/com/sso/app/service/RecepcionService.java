@@ -1,13 +1,11 @@
 package com.sso.app.service;
 
-import com.sso.app.entity.ItemDetailRecepcion;
 import com.sso.app.entity.ItemRecepcion;
 import com.sso.app.entity.Recepcion;
 
 import com.sso.app.repository.RecepcionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
