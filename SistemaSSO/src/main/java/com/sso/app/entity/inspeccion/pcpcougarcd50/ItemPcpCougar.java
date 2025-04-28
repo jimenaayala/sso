@@ -15,4 +15,6 @@ public class ItemPcpCougar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    //agregar ejeMotriz, ejeSecundario, BlockCabezal, PlacaInferior
 }

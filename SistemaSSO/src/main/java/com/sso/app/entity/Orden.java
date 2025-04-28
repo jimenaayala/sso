@@ -67,33 +67,33 @@ public class Orden {
     @JoinColumn(name = "inspeccionPcpCougar_id")
     private InspeccionPcpCougar inspeccionPcpCougar;
 
-//    @ManyToOne
-//    @JoinColumn(name = "recepcion_id")
-//    private Recepcion recepcion;
+    @ManyToOne
+    @JoinColumn(name = "recepcion_id")
+    private Recepcion recepcion;
 
     //@ManyToOne
     //@JoinColumn(name = "ensayo_id")
     //private Ensayo ensayo;
 
-//    @ManyToOne
-//    @JoinColumn(name = "ensayoVH60_id")
-//    private EnsayoVh60 ensayoVh60;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "ensayoMiniG_id")
-//    private EnsayoMiniG ensayoMiniG;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "ensayoDv1_id")
-//    private EnsayoDv1 ensayoDv1;
+    @ManyToOne
+    @JoinColumn(name = "ensayoVH60_id")
+    private EnsayoVh60 ensayoVh60;
 
-//    @ManyToOne
-//    @JoinColumn(name = "ensayoCougar_id")
-//    private EnsayoCougar ensayoCougar;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "salida_id")
-//    private Salida salidaEtapa;
+    @ManyToOne
+    @JoinColumn(name = "ensayoMiniG_id")
+    private EnsayoMiniG ensayoMiniG;
+
+    @ManyToOne
+    @JoinColumn(name = "ensayoDv1_id")
+    private EnsayoDv1 ensayoDv1;
+
+    @ManyToOne
+    @JoinColumn(name = "ensayoCougar_id")
+    private EnsayoCougar ensayoCougar;
+
+    //@ManyToOne
+    //@JoinColumn(name = "salida_id")
+    // private Salida salidaEtapa;
 
 
 
