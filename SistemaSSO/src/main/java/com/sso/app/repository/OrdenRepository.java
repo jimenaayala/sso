@@ -24,5 +24,16 @@ public interface OrdenRepository extends CrudRepository<Orden,Long> {
 
     List<Orden> findBySalidaTrueAndFechaSalidaBefore(@Param("fecha") LocalDate fecha);
 
-
+    /**
+     * Encuentra una Orden por su ID y carga de forma explícita la Recepción, ItemRecepcion, Cliente y Equipo
+     * @param id ID de la orden
+     * @return Orden con sus relaciones cargadas
+     */
+    @Query("SELECT DISTINCT o FROM Orden o "
+           + "LEFT JOIN FETCH o.recepcion r "
+           + "LEFT JOIN FETCH r.itemRecepcion "
+           + "LEFT JOIN FETCH o.cliente "
+           + "LEFT JOIN FETCH o.equipo "
+           + "WHERE o.id = :id")
+    Optional<Orden> findByIdWithRecepcion(@Param("id") Long id);
 }

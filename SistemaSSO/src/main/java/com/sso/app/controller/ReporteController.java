@@ -30,8 +30,8 @@ public class ReporteController {
     @GetMapping("/orden-recepcion/{ordenId}")
     public ResponseEntity<byte[]> generarReporteOrdenRecepcion(@PathVariable Long ordenId) {
         try {
-            // Buscar la orden por su ID
-            Orden orden = ordenRepository.findById(ordenId)
+            // Buscar la orden por su ID con carga explícita de la recepción y sus items
+            Orden orden = ordenRepository.findByIdWithRecepcion(ordenId)
                     .orElseThrow(() -> new RuntimeException("Orden no encontrada con ID: " + ordenId));
             
             // Generar el PDF

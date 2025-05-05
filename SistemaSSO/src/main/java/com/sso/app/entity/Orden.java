@@ -90,8 +90,7 @@ public class Orden {
     @ManyToOne
     @JoinColumn(name = "ensayoCougar_id")
     private EnsayoCougar ensayoCougar;
-
-  add  //@ManyToOne
+    //@ManyToOne
     //@JoinColumn(name = "salida_id")
     // private Salida salidaEtapa;
 

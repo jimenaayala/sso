@@ -7,6 +7,7 @@ import com.sso.app.entity.Recepcion;
 import com.sso.app.entity.ItemRecepcion;
 import com.sso.app.entity.Cliente;
 import com.sso.app.entity.Equipo;
+import com.sso.app.entity.TipoEquipo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -88,18 +89,36 @@ public class PDFGeneratorService {
         addTableRow(table, "Fecha:", orden.getFecha() != null ? 
                 orden.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) : "N/A", BOLD_FONT, NORMAL_FONT);
         
-        // Cliente
+        // Mostrar información del cliente
         Cliente cliente = orden.getCliente();
         if (cliente != null) {
-            addTableRow(table, "Cliente:", cliente.toString(), BOLD_FONT, NORMAL_FONT);
+            document.add(table);
+            document.add(Chunk.NEWLINE);
+            
+            // Sección específica para el cliente
+            addClienteInformation(document, cliente);
+            
+            // Crear una nueva tabla para el resto de la información de la orden
+            table = new PdfPTable(2);
+            table.setWidthPercentage(100);
+            table.setWidths(columnWidths);
         } else {
             addTableRow(table, "Cliente:", "No especificado", BOLD_FONT, NORMAL_FONT);
         }
         
-        // Equipo
+        // Mostrar información del equipo
         Equipo equipo = orden.getEquipo();
         if (equipo != null) {
-            addTableRow(table, "Equipo:", equipo.toString(), BOLD_FONT, NORMAL_FONT);
+            document.add(table);
+            document.add(Chunk.NEWLINE);
+            
+            // Sección específica para el equipo
+            addEquipoInformation(document, equipo);
+            
+            // Crear una nueva tabla para el resto de la información de la orden
+            table = new PdfPTable(2);
+            table.setWidthPercentage(100);
+            table.setWidths(columnWidths);
         } else {
             addTableRow(table, "Equipo:", "No especificado", BOLD_FONT, NORMAL_FONT);
         }
@@ -214,6 +233,71 @@ public class PDFGeneratorService {
         }
         
         table.addCell(new Phrase(obsText, NORMAL_FONT));
+    }
+    
+    /**
+     * Agrega una sección con la información detallada del cliente
+     */
+    private void addClienteInformation(Document document, Cliente cliente) throws DocumentException {
+        Paragraph clienteTitle = new Paragraph("Información del Cliente", SUBTITLE_FONT);
+        clienteTitle.setAlignment(Element.ALIGN_LEFT);
+        document.add(clienteTitle);
+        document.add(Chunk.NEWLINE);
+        
+        PdfPTable clienteTable = new PdfPTable(2);
+        clienteTable.setWidthPercentage(100);
+        
+        // Configurar anchos de columna
+        float[] columnWidths = {1f, 3f};
+        clienteTable.setWidths(columnWidths);
+        
+        // Agregar datos del cliente
+        addTableRow(clienteTable, "ID:", cliente.getId() != null ? cliente.getId().toString() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(clienteTable, "CUIT:", cliente.getCuit() != null ? cliente.getCuit() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(clienteTable, "Razón Social:", cliente.getRazonSocial() != null ? cliente.getRazonSocial() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(clienteTable, "Nombre Fantasía:", cliente.getNombreFantasia() != null ? cliente.getNombreFantasia() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(clienteTable, "Área:", cliente.getArea() != null ? cliente.getArea() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(clienteTable, "Contacto:", cliente.getNombreContacto() != null ? cliente.getNombreContacto() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(clienteTable, "Teléfono:", cliente.getTelefono() != null ? cliente.getTelefono() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(clienteTable, "Email:", cliente.getMail() != null ? cliente.getMail() : "N/A", BOLD_FONT, NORMAL_FONT);
+        
+        document.add(clienteTable);
+        document.add(Chunk.NEWLINE);
+    }
+    
+    /**
+     * Agrega una sección con la información detallada del equipo
+     */
+    private void addEquipoInformation(Document document, Equipo equipo) throws DocumentException {
+        Paragraph equipoTitle = new Paragraph("Información del Equipo", SUBTITLE_FONT);
+        equipoTitle.setAlignment(Element.ALIGN_LEFT);
+        document.add(equipoTitle);
+        document.add(Chunk.NEWLINE);
+        
+        PdfPTable equipoTable = new PdfPTable(2);
+        equipoTable.setWidthPercentage(100);
+        
+        // Configurar anchos de columna
+        float[] columnWidths = {1f, 3f};
+        equipoTable.setWidths(columnWidths);
+        
+        // Agregar datos del equipo
+        addTableRow(equipoTable, "ID:", equipo.getId() != null ? equipo.getId().toString() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(equipoTable, "Número de Serie:", equipo.getNumSerieEquipo() != null ? equipo.getNumSerieEquipo() : "N/A", BOLD_FONT, NORMAL_FONT);
+        addTableRow(equipoTable, "Marca:", equipo.getMarca() != null ? equipo.getMarca() : "N/A", BOLD_FONT, NORMAL_FONT);
+        
+        // Tipo de equipo
+        TipoEquipo tipoEquipo = equipo.getTipoEquipo();
+        if (tipoEquipo != null) {
+            addTableRow(equipoTable, "Tipo:", tipoEquipo.getTipo() != null ? tipoEquipo.getTipo() : "N/A", BOLD_FONT, NORMAL_FONT);
+            addTableRow(equipoTable, "Marca (Tipo):", tipoEquipo.getMarca() != null ? tipoEquipo.getMarca() : "N/A", BOLD_FONT, NORMAL_FONT);
+            addTableRow(equipoTable, "Modelo:", tipoEquipo.getModelo() != null ? tipoEquipo.getModelo() : "N/A", BOLD_FONT, NORMAL_FONT);
+        } else {
+            addTableRow(equipoTable, "Tipo:", "No especificado", BOLD_FONT, NORMAL_FONT);
+        }
+        
+        document.add(equipoTable);
+        document.add(Chunk.NEWLINE);
     }
     
     private void addTableRow(PdfPTable table, String label, String value, Font labelFont, Font valueFont) {
