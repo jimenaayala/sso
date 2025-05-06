@@ -12,16 +12,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import org.springframework.core.io.ClassPathResource;
 
 @Service
 @RequiredArgsConstructor
 public class PDFGeneratorService {
 
-    private static final Font TITLE_FONT = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
-    private static final Font SUBTITLE_FONT = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-    private static final Font NORMAL_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
-    private static final Font BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+    // Colores
+    private static final BaseColor COLOR_PRINCIPAL = new BaseColor(49, 89, 150); // Azul corporativo
+    private static final BaseColor COLOR_SECUNDARIO = new BaseColor(240, 240, 240); // Gris claro
+    private static final BaseColor COLOR_TERCIARIO = new BaseColor(220, 231, 242); // Azul muy claro
+    private static final BaseColor COLOR_OK = new BaseColor(0, 150, 0); // Verde
+    private static final BaseColor COLOR_NO_OK = new BaseColor(200, 0, 0); // Rojo
+    
+    // Fuentes
+    private static final Font TITLE_FONT = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, COLOR_PRINCIPAL);
+    private static final Font SUBTITLE_FONT = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, COLOR_PRINCIPAL);
+    private static final Font NORMAL_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
+    private static final Font BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
+    private static final Font HEADER_FONT = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD, BaseColor.WHITE);
+    private static final Font FOOTER_FONT = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL);
+    private static final Font STATUS_OK_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, COLOR_OK);
+    private static final Font STATUS_NO_OK_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, COLOR_NO_OK);
     
     /**
      * Genera un reporte en PDF con la información de una Orden y su Recepción asociada
@@ -31,10 +46,20 @@ public class PDFGeneratorService {
     public byte[] generarReporteOrdenRecepcion(Orden orden) throws DocumentException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         
-        Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, outputStream);
+        Document document = new Document(PageSize.A4, 36, 36, 72, 36); // Márgenes
+        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+        
+        // Agregar clase personalizada para encabezado y pie de página
+        HeaderFooterPageEvent event = new HeaderFooterPageEvent(orden);
+        writer.setPageEvent(event);
         
         document.open();
+        
+        // Metadata del documento
+        document.addTitle("Reporte de Orden " + orden.getNumeroOT());
+        document.addSubject("Información de la orden y recepción");
+        document.addKeywords("SSO, Orden, Recepción, Reporte");
+        document.addCreator("Sistema SSO");
         
         // Agregar título del documento
         addTitlePage(document, orden);
@@ -52,28 +77,140 @@ public class PDFGeneratorService {
         return outputStream.toByteArray();
     }
     
+    /**
+     * Clase interna que maneja los encabezados y pies de página del documento PDF
+     */
+    private class HeaderFooterPageEvent extends PdfPageEventHelper {
+        private Orden orden;
+        private PdfTemplate totalTemplate;
+        
+        public HeaderFooterPageEvent(Orden orden) {
+            this.orden = orden;
+        }
+        
+        @Override
+        public void onOpenDocument(PdfWriter writer, Document document) {
+            totalTemplate = writer.getDirectContent().createTemplate(30, 16);
+        }
+        
+        @Override
+        public void onStartPage(PdfWriter writer, Document document) {
+            PdfContentByte cb = writer.getDirectContent();
+            
+            // Rectángulo de color para el encabezado
+            Rectangle rect = new Rectangle(document.left(), document.top() + 30, document.right(), document.top() + 70);
+            rect.setBackgroundColor(COLOR_PRINCIPAL);
+            cb.rectangle(rect);
+            
+            try {
+                // Agregar el logo
+                Image logo = Image.getInstance(new ClassPathResource("static/images/logo.png").getURL());
+                float logoWidth = 60; // Ancho deseado del logo
+                float aspectRatio = logo.getWidth() / logo.getHeight();
+                float logoHeight = logoWidth / aspectRatio;
+                logo.scaleToFit(logoWidth, logoHeight);
+                
+                // Posicionar el logo en el encabezado (esquina izquierda)
+                logo.setAbsolutePosition(document.left() + 10, document.top() + 35);
+                writer.getDirectContent().addImage(logo);
+                
+                // Título del documento en el encabezado (desplazado por el logo)
+                ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                        new Phrase("REPORTE DE ORDEN", new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD, BaseColor.WHITE)),
+                        document.left() + 80, document.top() + 45, 0);
+            } catch (IOException | DocumentException e) {
+                // Si ocurre algún error al cargar el logo, mostrar solo el título
+                ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                        new Phrase("SISTEMA SSO - REPORTE DE ORDEN", new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD, BaseColor.WHITE)),
+                        document.left() + 20, document.top() + 45, 0);
+            }
+            
+            // Número de OT en el encabezado
+            String numeroOT = orden.getNumeroOT() != null ? orden.getNumeroOT() : "N/A";
+            ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
+                    new Phrase("OT: " + numeroOT, new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.WHITE)),
+                    document.right() - 20, document.top() + 45, 0);
+        }
+        
+        @Override
+        public void onEndPage(PdfWriter writer, Document document) {
+            PdfContentByte cb = writer.getDirectContent();
+            String text = "Página " + writer.getPageNumber() + " de ";
+            
+            // Rectángulo de color para el pie de página
+            Rectangle rect = new Rectangle(document.left(), document.bottom() - 20, document.right(), document.bottom());
+            rect.setBackgroundColor(COLOR_PRINCIPAL);
+            cb.rectangle(rect);
+            
+            // Fecha en el pie de página
+            ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                    new Phrase(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), FOOTER_FONT),
+                    document.left() + 20, document.bottom() - 10, 0);
+            
+            // Número de página
+            ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
+                    new Phrase(text, FOOTER_FONT),
+                    document.right() - 30, document.bottom() - 10, 0);
+            // Usar el template para mostrar el número total de páginas
+            ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
+                    new Phrase(String.valueOf(writer.getPageNumber()), FOOTER_FONT),
+                    document.right() - 10, document.bottom() - 10, 0);
+        }
+        
+        @Override
+        public void onCloseDocument(PdfWriter writer, Document document) {
+            // Añadir el número total de páginas (se podría implementar si fuera necesario)
+            // ColumnText.showTextAligned(totalTemplate, Element.ALIGN_LEFT, new Phrase(String.valueOf(writer.getPageNumber() - 1)), 2, 2, 0);
+        }
+    }
+    
     private void addTitlePage(Document document, Orden orden) throws DocumentException {
-        Paragraph title = new Paragraph("Reporte de Orden y Recepción", TITLE_FONT);
+        // Espacio para dejar margen desde el encabezado
+        document.add(Chunk.NEWLINE);
+        
+        // Título centrado con colores corporativos
+        Paragraph title = new Paragraph("Reporte Detallado de Orden", TITLE_FONT);
         title.setAlignment(Element.ALIGN_CENTER);
-        
         document.add(title);
-        document.add(Chunk.NEWLINE);
         
-        // Fecha de generación del reporte
-        Paragraph date = new Paragraph("Fecha de generación: " + 
-                java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), NORMAL_FONT);
-        date.setAlignment(Element.ALIGN_RIGHT);
+        // Subtítulo con número de orden
+        Paragraph subtitle = new Paragraph("Orden de Trabajo: " + 
+                (orden.getNumeroOT() != null ? orden.getNumeroOT() : "N/A"), SUBTITLE_FONT);
+        subtitle.setAlignment(Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(10);
+        document.add(subtitle);
         
-        document.add(date);
-        document.add(Chunk.NEWLINE);
+        // Línea decorativa
+        PdfPTable lineTable = new PdfPTable(1);
+        lineTable.setWidthPercentage(50);
+        lineTable.setSpacingBefore(15);
+        lineTable.setSpacingAfter(15);
+        
+        PdfPCell lineCell = new PdfPCell();
+        lineCell.setFixedHeight(3f);
+        lineCell.setBackgroundColor(COLOR_PRINCIPAL);
+        lineCell.setBorder(Rectangle.NO_BORDER);
+        lineTable.addCell(lineCell);
+        
+        document.add(lineTable);
     }
     
     private void addOrdenInformation(Document document, Orden orden) throws DocumentException {
-        // Sección de información de la orden
+        // Sección de información de la orden con estilo
         Paragraph ordenTitle = new Paragraph("Información de la Orden", SUBTITLE_FONT);
         ordenTitle.setAlignment(Element.ALIGN_LEFT);
+        ordenTitle.setSpacingBefore(10);
         document.add(ordenTitle);
-        document.add(Chunk.NEWLINE);
+        
+        // Crear un fondo para la tabla con bordes redondeados
+        PdfPTable backgroundTable = new PdfPTable(1);
+        backgroundTable.setWidthPercentage(100);
+        
+        PdfPCell backgroundCell = new PdfPCell();
+        backgroundCell.setPadding(10);
+        backgroundCell.setBorderColor(COLOR_PRINCIPAL);
+        backgroundCell.setBorderWidth(1f);
+        backgroundCell.setBackgroundColor(COLOR_SECUNDARIO);
         
         // Tabla con los detalles de la orden
         PdfPTable table = new PdfPTable(2);
@@ -83,65 +220,101 @@ public class PDFGeneratorService {
         float[] columnWidths = {1f, 3f};
         table.setWidths(columnWidths);
         
-        // Agregar encabezados y datos
-        addTableRow(table, "ID:", orden.getId() != null ? orden.getId().toString() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(table, "Número OT:", orden.getNumeroOT() != null ? orden.getNumeroOT() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(table, "Fecha:", orden.getFecha() != null ? 
-                orden.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) : "N/A", BOLD_FONT, NORMAL_FONT);
+        // Agregar encabezados y datos con estilo
+        addStyledTableRow(table, "ID:", orden.getId() != null ? orden.getId().toString() : "N/A");
+        addStyledTableRow(table, "Número OT:", orden.getNumeroOT() != null ? orden.getNumeroOT() : "N/A");
+        addStyledTableRow(table, "Fecha:", orden.getFecha() != null ? 
+                orden.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) : "N/A");
+        
+        // Añadir la tabla de datos al fondo
+        backgroundCell.addElement(table);
+        backgroundTable.addCell(backgroundCell);
+        document.add(backgroundTable);
+        document.add(Chunk.NEWLINE);
         
         // Mostrar información del cliente
         Cliente cliente = orden.getCliente();
         if (cliente != null) {
-            document.add(table);
-            document.add(Chunk.NEWLINE);
-            
             // Sección específica para el cliente
             addClienteInformation(document, cliente);
-            
-            // Crear una nueva tabla para el resto de la información de la orden
-            table = new PdfPTable(2);
-            table.setWidthPercentage(100);
-            table.setWidths(columnWidths);
         } else {
-            addTableRow(table, "Cliente:", "No especificado", BOLD_FONT, NORMAL_FONT);
+            // Mensaje de cliente no especificado
+            Paragraph noCliente = new Paragraph("No hay información de cliente asociada", NORMAL_FONT);
+            noCliente.setAlignment(Element.ALIGN_CENTER);
+            noCliente.setSpacingBefore(5);
+            noCliente.setSpacingAfter(5);
+            document.add(noCliente);
         }
         
         // Mostrar información del equipo
         Equipo equipo = orden.getEquipo();
         if (equipo != null) {
-            document.add(table);
-            document.add(Chunk.NEWLINE);
-            
             // Sección específica para el equipo
             addEquipoInformation(document, equipo);
-            
-            // Crear una nueva tabla para el resto de la información de la orden
-            table = new PdfPTable(2);
-            table.setWidthPercentage(100);
-            table.setWidths(columnWidths);
         } else {
-            addTableRow(table, "Equipo:", "No especificado", BOLD_FONT, NORMAL_FONT);
+            // Mensaje de equipo no especificado
+            Paragraph noEquipo = new Paragraph("No hay información de equipo asociada", NORMAL_FONT);
+            noEquipo.setAlignment(Element.ALIGN_CENTER);
+            noEquipo.setSpacingBefore(5);
+            noEquipo.setSpacingAfter(5);
+            document.add(noEquipo);
         }
         
-        addTableRow(table, "Etapa Actual:", orden.getEtapaActual() != null ? orden.getEtapaActual() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(table, "Comentario:", orden.getComentario() != null ? orden.getComentario() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(table, "Remito Transporte:", orden.getRemitoTransporte() != null ? orden.getRemitoTransporte() : "N/A", BOLD_FONT, NORMAL_FONT);
+        // Información adicional de la orden
+        Paragraph adicionalTitle = new Paragraph("Información Adicional", SUBTITLE_FONT);
+        adicionalTitle.setAlignment(Element.ALIGN_LEFT);
+        adicionalTitle.setSpacingBefore(10);
+        document.add(adicionalTitle);
         
-        document.add(table);
+        // Tabla para información adicional
+        PdfPTable backgroundTableAdicional = new PdfPTable(1);
+        backgroundTableAdicional.setWidthPercentage(100);
+        
+        PdfPCell backgroundCellAdicional = new PdfPCell();
+        backgroundCellAdicional.setPadding(10);
+        backgroundCellAdicional.setBorderColor(COLOR_PRINCIPAL);
+        backgroundCellAdicional.setBorderWidth(1f);
+        backgroundCellAdicional.setBackgroundColor(COLOR_SECUNDARIO);
+        
+        PdfPTable tableAdicional = new PdfPTable(2);
+        tableAdicional.setWidthPercentage(100);
+        tableAdicional.setWidths(columnWidths);
+        
+        addStyledTableRow(tableAdicional, "Etapa Actual:", orden.getEtapaActual() != null ? orden.getEtapaActual() : "N/A");
+        addStyledTableRow(tableAdicional, "Comentario:", orden.getComentario() != null ? orden.getComentario() : "N/A");
+        addStyledTableRow(tableAdicional, "Remito Transporte:", orden.getRemitoTransporte() != null ? orden.getRemitoTransporte() : "N/A");
+        
+        backgroundCellAdicional.addElement(tableAdicional);
+        backgroundTableAdicional.addCell(backgroundCellAdicional);
+        document.add(backgroundTableAdicional);
         document.add(Chunk.NEWLINE);
     }
     
     private void addRecepcionInformation(Document document, Recepcion recepcion) throws DocumentException {
-        // Sección de información de la recepción
+        // Título de la sección con estilo
         Paragraph recepcionTitle = new Paragraph("Información de la Recepción", SUBTITLE_FONT);
         recepcionTitle.setAlignment(Element.ALIGN_LEFT);
+        recepcionTitle.setSpacingBefore(10);
         document.add(recepcionTitle);
-        document.add(Chunk.NEWLINE);
+        
+        // Crear un fondo para la tabla de comentarios con bordes de color
+        PdfPTable comentarioTable = new PdfPTable(1);
+        comentarioTable.setWidthPercentage(100);
+        
+        PdfPCell comentarioCell = new PdfPCell();
+        comentarioCell.setPadding(10);
+        comentarioCell.setBorderColor(COLOR_PRINCIPAL);
+        comentarioCell.setBorderWidth(1f);
+        comentarioCell.setBackgroundColor(COLOR_SECUNDARIO);
         
         // Comentario general de recepción
-        Paragraph comentario = new Paragraph("Comentario: " + 
-                (recepcion.getComentario() != null ? recepcion.getComentario() : "N/A"), NORMAL_FONT);
-        document.add(comentario);
+        Paragraph comentario = new Paragraph();
+        comentario.add(new Chunk("COMENTARIO: ", BOLD_FONT));
+        comentario.add(new Chunk(recepcion.getComentario() != null ? recepcion.getComentario() : "N/A", NORMAL_FONT));
+        
+        comentarioCell.addElement(comentario);
+        comentarioTable.addCell(comentarioCell);
+        document.add(comentarioTable);
         document.add(Chunk.NEWLINE);
         
         // Detalles de los items de recepción si existe
@@ -151,29 +324,64 @@ public class PDFGeneratorService {
         
         // Información sobre las imágenes
         if (recepcion.getImagenes() != null && !recepcion.getImagenes().isEmpty()) {
-            Paragraph imagenesInfo = new Paragraph("Cantidad de imágenes adjuntas: " + 
-                    recepcion.getImagenes().size(), NORMAL_FONT);
-            document.add(imagenesInfo);
+            Paragraph imagenesTitle = new Paragraph("Imágenes Adjuntas", SUBTITLE_FONT);
+            imagenesTitle.setAlignment(Element.ALIGN_LEFT);
+            imagenesTitle.setSpacingBefore(10);
+            document.add(imagenesTitle);
+            
+            PdfPTable imagenesTable = new PdfPTable(1);
+            imagenesTable.setWidthPercentage(100);
+            
+            PdfPCell imagenesCell = new PdfPCell();
+            imagenesCell.setPadding(10);
+            imagenesCell.setBorderColor(COLOR_PRINCIPAL);
+            imagenesCell.setBorderWidth(1f);
+            imagenesCell.setBackgroundColor(COLOR_SECUNDARIO);
+            
+            Paragraph imagenesInfo = new Paragraph("Cantidad de imágenes: " + recepcion.getImagenes().size(), BOLD_FONT);
+            imagenesCell.addElement(imagenesInfo);
+            imagenesTable.addCell(imagenesCell);
+            
+            document.add(imagenesTable);
         }
     }
     
     private void addItemRecepcionDetails(Document document, ItemRecepcion item) throws DocumentException {
-        // Tabla para los items de recepción
+        // Título para los componentes
+        Paragraph componentesTitle = new Paragraph("Componentes Inspeccionados", SUBTITLE_FONT);
+        componentesTitle.setAlignment(Element.ALIGN_LEFT);
+        componentesTitle.setSpacingBefore(10);
+        componentesTitle.setSpacingAfter(5);
+        document.add(componentesTitle);
+        
+        // Tabla para los items de recepción con mejor formato
         PdfPTable table = new PdfPTable(3);
         table.setWidthPercentage(100);
+        table.setSpacingBefore(5);
         
         // Configurar anchos de columna
         float[] columnWidths = {2f, 1f, 3f};
         table.setWidths(columnWidths);
         
-        // Encabezados de la tabla
-        PdfPCell cell1 = new PdfPCell(new Phrase("Componente", BOLD_FONT));
-        PdfPCell cell2 = new PdfPCell(new Phrase("Estado", BOLD_FONT));
-        PdfPCell cell3 = new PdfPCell(new Phrase("Observaciones", BOLD_FONT));
+        // Encabezados de la tabla con estilo
+        PdfPCell headerCell1 = new PdfPCell(new Phrase("COMPONENTE", HEADER_FONT));
+        headerCell1.setBackgroundColor(COLOR_PRINCIPAL);
+        headerCell1.setPadding(5);
+        headerCell1.setHorizontalAlignment(Element.ALIGN_CENTER);
         
-        table.addCell(cell1);
-        table.addCell(cell2);
-        table.addCell(cell3);
+        PdfPCell headerCell2 = new PdfPCell(new Phrase("ESTADO", HEADER_FONT));
+        headerCell2.setBackgroundColor(COLOR_PRINCIPAL);
+        headerCell2.setPadding(5);
+        headerCell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        
+        PdfPCell headerCell3 = new PdfPCell(new Phrase("OBSERVACIONES", HEADER_FONT));
+        headerCell3.setBackgroundColor(COLOR_PRINCIPAL);
+        headerCell3.setPadding(5);
+        headerCell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+        
+        table.addCell(headerCell1);
+        table.addCell(headerCell2);
+        table.addCell(headerCell3);
         
         // Agregar las filas con los datos de cada componente
         addComponentRow(table, "Cubre Grampa", item.isCgestado(), 
@@ -212,38 +420,62 @@ public class PDFGeneratorService {
     private void addComponentRow(PdfPTable table, String componentName, boolean estado, 
             String requerimiento, String observacion) {
         
-        // Nombre del componente
-        table.addCell(new Phrase(componentName, NORMAL_FONT));
+        // Crear celda para el nombre del componente con bordes y padding
+        PdfPCell componentCell = new PdfPCell(new Phrase(componentName, BOLD_FONT));
+        componentCell.setPadding(5);
+        componentCell.setBorderColor(COLOR_PRINCIPAL);
+        table.addCell(componentCell);
         
-        // Estado (OK/No OK)
+        // Estado (OK/No OK) con color según corresponda
         String estadoText = estado ? "OK" : "No OK";
-        table.addCell(new Phrase(estadoText, NORMAL_FONT));
+        Font estadoFont = estado ? STATUS_OK_FONT : STATUS_NO_OK_FONT;
         
-        // Observaciones y requerimientos
+        PdfPCell statusCell = new PdfPCell(new Phrase(estadoText, estadoFont));
+        statusCell.setPadding(5);
+        statusCell.setBorderColor(COLOR_PRINCIPAL);
+        statusCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(statusCell);
+        
+        // Observaciones y requerimientos con formato
         String obsText = "";
         if (requerimiento != null && !requerimiento.isEmpty()) {
-            obsText += "Req: " + requerimiento + "\n";
+            obsText += "Requerimiento: " + requerimiento + "\n";
         }
         if (observacion != null && !observacion.isEmpty()) {
-            obsText += "Obs: " + observacion;
+            obsText += "Observación: " + observacion;
         }
         
         if (obsText.isEmpty()) {
             obsText = "N/A";
         }
         
-        table.addCell(new Phrase(obsText, NORMAL_FONT));
+        PdfPCell obsCell = new PdfPCell(new Phrase(obsText, NORMAL_FONT));
+        obsCell.setPadding(5);
+        obsCell.setBorderColor(COLOR_PRINCIPAL);
+        table.addCell(obsCell);
     }
     
     /**
      * Agrega una sección con la información detallada del cliente
      */
     private void addClienteInformation(Document document, Cliente cliente) throws DocumentException {
+        // Título de la sección con estilo
         Paragraph clienteTitle = new Paragraph("Información del Cliente", SUBTITLE_FONT);
         clienteTitle.setAlignment(Element.ALIGN_LEFT);
+        clienteTitle.setSpacingBefore(10);
         document.add(clienteTitle);
-        document.add(Chunk.NEWLINE);
         
+        // Crear un fondo para la tabla con bordes de color
+        PdfPTable backgroundTable = new PdfPTable(1);
+        backgroundTable.setWidthPercentage(100);
+        
+        PdfPCell backgroundCell = new PdfPCell();
+        backgroundCell.setPadding(10);
+        backgroundCell.setBorderColor(COLOR_PRINCIPAL);
+        backgroundCell.setBorderWidth(1f);
+        backgroundCell.setBackgroundColor(COLOR_SECUNDARIO);
+        
+        // Tabla con los detalles del cliente
         PdfPTable clienteTable = new PdfPTable(2);
         clienteTable.setWidthPercentage(100);
         
@@ -251,17 +483,20 @@ public class PDFGeneratorService {
         float[] columnWidths = {1f, 3f};
         clienteTable.setWidths(columnWidths);
         
-        // Agregar datos del cliente
-        addTableRow(clienteTable, "ID:", cliente.getId() != null ? cliente.getId().toString() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(clienteTable, "CUIT:", cliente.getCuit() != null ? cliente.getCuit() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(clienteTable, "Razón Social:", cliente.getRazonSocial() != null ? cliente.getRazonSocial() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(clienteTable, "Nombre Fantasía:", cliente.getNombreFantasia() != null ? cliente.getNombreFantasia() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(clienteTable, "Área:", cliente.getArea() != null ? cliente.getArea() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(clienteTable, "Contacto:", cliente.getNombreContacto() != null ? cliente.getNombreContacto() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(clienteTable, "Teléfono:", cliente.getTelefono() != null ? cliente.getTelefono() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(clienteTable, "Email:", cliente.getMail() != null ? cliente.getMail() : "N/A", BOLD_FONT, NORMAL_FONT);
+        // Agregar datos del cliente con estilo
+        addStyledTableRow(clienteTable, "ID:", cliente.getId() != null ? cliente.getId().toString() : "N/A");
+        addStyledTableRow(clienteTable, "CUIT:", cliente.getCuit() != null ? cliente.getCuit() : "N/A");
+        addStyledTableRow(clienteTable, "Razón Social:", cliente.getRazonSocial() != null ? cliente.getRazonSocial() : "N/A");
+        addStyledTableRow(clienteTable, "Nombre Fantasía:", cliente.getNombreFantasia() != null ? cliente.getNombreFantasia() : "N/A");
+        addStyledTableRow(clienteTable, "Área:", cliente.getArea() != null ? cliente.getArea() : "N/A");
+        addStyledTableRow(clienteTable, "Contacto:", cliente.getNombreContacto() != null ? cliente.getNombreContacto() : "N/A");
+        addStyledTableRow(clienteTable, "Teléfono:", cliente.getTelefono() != null ? cliente.getTelefono() : "N/A");
+        addStyledTableRow(clienteTable, "Email:", cliente.getMail() != null ? cliente.getMail() : "N/A");
         
-        document.add(clienteTable);
+        // Añadir la tabla al fondo estilizado
+        backgroundCell.addElement(clienteTable);
+        backgroundTable.addCell(backgroundCell);
+        document.add(backgroundTable);
         document.add(Chunk.NEWLINE);
     }
     
@@ -269,11 +504,23 @@ public class PDFGeneratorService {
      * Agrega una sección con la información detallada del equipo
      */
     private void addEquipoInformation(Document document, Equipo equipo) throws DocumentException {
+        // Título de la sección con estilo
         Paragraph equipoTitle = new Paragraph("Información del Equipo", SUBTITLE_FONT);
         equipoTitle.setAlignment(Element.ALIGN_LEFT);
+        equipoTitle.setSpacingBefore(10);
         document.add(equipoTitle);
-        document.add(Chunk.NEWLINE);
         
+        // Crear un fondo para la tabla con bordes de color
+        PdfPTable backgroundTable = new PdfPTable(1);
+        backgroundTable.setWidthPercentage(100);
+        
+        PdfPCell backgroundCell = new PdfPCell();
+        backgroundCell.setPadding(10);
+        backgroundCell.setBorderColor(COLOR_PRINCIPAL);
+        backgroundCell.setBorderWidth(1f);
+        backgroundCell.setBackgroundColor(COLOR_SECUNDARIO);
+        
+        // Tabla con los detalles del equipo
         PdfPTable equipoTable = new PdfPTable(2);
         equipoTable.setWidthPercentage(100);
         
@@ -281,27 +528,74 @@ public class PDFGeneratorService {
         float[] columnWidths = {1f, 3f};
         equipoTable.setWidths(columnWidths);
         
-        // Agregar datos del equipo
-        addTableRow(equipoTable, "ID:", equipo.getId() != null ? equipo.getId().toString() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(equipoTable, "Número de Serie:", equipo.getNumSerieEquipo() != null ? equipo.getNumSerieEquipo() : "N/A", BOLD_FONT, NORMAL_FONT);
-        addTableRow(equipoTable, "Marca:", equipo.getMarca() != null ? equipo.getMarca() : "N/A", BOLD_FONT, NORMAL_FONT);
+        // Agregar datos del equipo con estilo
+        addStyledTableRow(equipoTable, "ID:", equipo.getId() != null ? equipo.getId().toString() : "N/A");
+        addStyledTableRow(equipoTable, "Número de Serie:", equipo.getNumSerieEquipo() != null ? equipo.getNumSerieEquipo() : "N/A");
+        addStyledTableRow(equipoTable, "Marca:", equipo.getMarca() != null ? equipo.getMarca() : "N/A");
         
         // Tipo de equipo
         TipoEquipo tipoEquipo = equipo.getTipoEquipo();
         if (tipoEquipo != null) {
-            addTableRow(equipoTable, "Tipo:", tipoEquipo.getTipo() != null ? tipoEquipo.getTipo() : "N/A", BOLD_FONT, NORMAL_FONT);
-            addTableRow(equipoTable, "Marca (Tipo):", tipoEquipo.getMarca() != null ? tipoEquipo.getMarca() : "N/A", BOLD_FONT, NORMAL_FONT);
-            addTableRow(equipoTable, "Modelo:", tipoEquipo.getModelo() != null ? tipoEquipo.getModelo() : "N/A", BOLD_FONT, NORMAL_FONT);
+            // Título para la subcategoria
+            PdfPCell tipoCell = new PdfPCell(new Phrase("TIPO DE EQUIPO", HEADER_FONT));
+            tipoCell.setBackgroundColor(COLOR_PRINCIPAL);
+            tipoCell.setColspan(2);
+            tipoCell.setPadding(5);
+            tipoCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            equipoTable.addCell(tipoCell);
+            
+            addStyledTableRow(equipoTable, "Tipo:", tipoEquipo.getTipo() != null ? tipoEquipo.getTipo() : "N/A");
+            addStyledTableRow(equipoTable, "Marca (Tipo):", tipoEquipo.getMarca() != null ? tipoEquipo.getMarca() : "N/A");
+            addStyledTableRow(equipoTable, "Modelo:", tipoEquipo.getModelo() != null ? tipoEquipo.getModelo() : "N/A");
         } else {
-            addTableRow(equipoTable, "Tipo:", "No especificado", BOLD_FONT, NORMAL_FONT);
+            addStyledTableRow(equipoTable, "Tipo:", "No especificado");
         }
         
-        document.add(equipoTable);
+        // Añadir la tabla al fondo estilizado
+        backgroundCell.addElement(equipoTable);
+        backgroundTable.addCell(backgroundCell);
+        document.add(backgroundTable);
         document.add(Chunk.NEWLINE);
     }
     
+    /**
+     * Añade una fila estilizada a la tabla con colores alternados
+     */
+    private void addStyledTableRow(PdfPTable table, String label, String value) {
+        // Verificar si es fila par o impar para alternar colores
+        boolean isEvenRow = (table.getRows().size() % 2 == 0);
+        BaseColor backgroundColor = isEvenRow ? COLOR_TERCIARIO : BaseColor.WHITE;
+        
+        // Celda para la etiqueta
+        PdfPCell labelCell = new PdfPCell(new Phrase(label, BOLD_FONT));
+        labelCell.setBackgroundColor(backgroundColor);
+        labelCell.setPadding(5);
+        labelCell.setBorderColor(BaseColor.WHITE);
+        labelCell.setBorderWidth(1f);
+        
+        // Celda para el valor
+        PdfPCell valueCell = new PdfPCell(new Phrase(value, NORMAL_FONT));
+        valueCell.setBackgroundColor(backgroundColor);
+        valueCell.setPadding(5);
+        valueCell.setBorderColor(BaseColor.WHITE);
+        valueCell.setBorderWidth(1f);
+        
+        table.addCell(labelCell);
+        table.addCell(valueCell);
+    }
+    
+    /**
+     * Método original para compatibilidad con código existente
+     */
+    // Este método se mantiene para compatibilidad con posible código futuro
     private void addTableRow(PdfPTable table, String label, String value, Font labelFont, Font valueFont) {
-        table.addCell(new Phrase(label, labelFont));
-        table.addCell(new Phrase(value, valueFont));
+        PdfPCell labelCell = new PdfPCell(new Phrase(label, labelFont));
+        labelCell.setPadding(5);
+        
+        PdfPCell valueCell = new PdfPCell(new Phrase(value, valueFont));
+        valueCell.setPadding(5);
+        
+        table.addCell(labelCell);
+        table.addCell(valueCell);
     }
 }
