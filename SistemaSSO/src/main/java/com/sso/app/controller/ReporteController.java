@@ -27,7 +27,7 @@ public class ReporteController {
      * @param ordenId ID de la orden para la que se generará el reporte
      * @return Archivo PDF con el reporte generado
      */
-    @GetMapping("git add ")
+    @GetMapping("/orden-recepcion/{ordenId}")
     public ResponseEntity<byte[]> generarReporteOrdenRecepcion(@PathVariable Long ordenId) {
         try {
             // Buscar la orden por su ID con carga explícita de la recepción y sus items

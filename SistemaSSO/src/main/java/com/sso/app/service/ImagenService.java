@@ -1,43 +1,93 @@
 package com.sso.app.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class ImagenService {
 
-    private final String UPLOAD_DIR = "uploads/"; // Ruta donde se guardarán las imágenes en el servidor
+    @Value("${file.upload-dir:uploads}")
+    private String uploadDir;
+    
+    private Path fileStoragePath;
+    
+    @PostConstruct
+    public void init() {
+        try {
+            fileStoragePath = Paths.get(uploadDir).toAbsolutePath().normalize();
+            Files.createDirectories(fileStoragePath);
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo crear el directorio donde se guardarán los archivos subidos", e);
+        }
+    }
 
     public String subirImagen(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new IOException("El archivo está vacío");
         }
 
-        String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        Path filepath = Paths.get(UPLOAD_DIR, filename);
-
-        // Crear el directorio si no existe
-        Files.createDirectories(filepath.getParent());
-
-        // Guardar la imagen en el servidor
-        Files.write(filepath, file.getBytes());
-
-        // Retornar la URL de la imagen (ajustar si usamos almacenamiento externo)
-        return "/uploads/" + filename;
+        // Normalizar el nombre del archivo para evitar problemas
+        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+        // Validar que es una imagen
+        if (!esImagen(originalFilename)) {
+            throw new IOException("Solo se permiten archivos de imagen");
+        }
+        
+        // Crear un nombre único para evitar colisiones
+        String filename = UUID.randomUUID().toString() + "_" + originalFilename;
+        
+        // Construir la ruta completa donde se guardará el archivo
+        Path targetLocation = fileStoragePath.resolve(filename);
+        
+        // Guardar el archivo en el servidor
+        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        
+        // Construir y retornar la URL para acceder al archivo
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/uploads/")
+                .path(filename)
+                .toUriString();
+                
+        return fileDownloadUri;
+    }
+    
+    private boolean esImagen(String filename) {
+        // Verificar extensiones comunes de imágenes
+        String[] extensionesImagen = {".jpg", ".jpeg", ".png", ".gif", ".bmp"};
+        String lowercaseFilename = filename.toLowerCase();
+        
+        for (String extension : extensionesImagen) {
+            if (lowercaseFilename.endsWith(extension)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     public void eliminarImagen(String imageUrl) throws IOException {
         if (imageUrl == null || imageUrl.isEmpty()) {
             throw new IOException("URL de imagen inválida");
         }
-
-        Path filePath = Paths.get(UPLOAD_DIR, imageUrl.replace("/uploads/", ""));
+        
+        // Obtener solo el nombre del archivo de la URL
+        String filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+        
+        // Construir la ruta completa del archivo a eliminar
+        Path filePath = fileStoragePath.resolve(filename);
+        
+        // Eliminar el archivo si existe
         Files.deleteIfExists(filePath);
     }
 }

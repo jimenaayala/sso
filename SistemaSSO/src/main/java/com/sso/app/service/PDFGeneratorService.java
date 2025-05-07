@@ -8,6 +8,7 @@ import com.sso.app.entity.ItemRecepcion;
 import com.sso.app.entity.Cliente;
 import com.sso.app.entity.Equipo;
 import com.sso.app.entity.TipoEquipo;
+import com.sso.app.entity.Imagen;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -329,22 +330,93 @@ public class PDFGeneratorService {
             imagenesTitle.setSpacingBefore(10);
             document.add(imagenesTitle);
             
-            PdfPTable imagenesTable = new PdfPTable(1);
+            PdfPTable imagenesTable = new PdfPTable(2); // 2 columnas para mostrar imágenes en par
             imagenesTable.setWidthPercentage(100);
             
-            PdfPCell imagenesCell = new PdfPCell();
-            imagenesCell.setPadding(10);
-            imagenesCell.setBorderColor(COLOR_PRINCIPAL);
-            imagenesCell.setBorderWidth(1f);
-            imagenesCell.setBackgroundColor(COLOR_SECUNDARIO);
-            
+            // Párrafo con información de cantidad de imágenes
             Paragraph imagenesInfo = new Paragraph("Cantidad de imágenes: " + recepcion.getImagenes().size(), BOLD_FONT);
-            imagenesCell.addElement(imagenesInfo);
-            imagenesTable.addCell(imagenesCell);
+            PdfPCell infoCell = new PdfPCell(imagenesInfo);
+            infoCell.setColspan(2);
+            infoCell.setPadding(10);
+            infoCell.setBorderColor(COLOR_PRINCIPAL);
+            infoCell.setBorderWidth(1f);
+            infoCell.setBackgroundColor(COLOR_SECUNDARIO);
+            imagenesTable.addCell(infoCell);
+            
+            // Agregar cada imagen al PDF
+            for (Imagen imagen : recepcion.getImagenes()) {
+                try {
+                    // Solo incluir imágenes marcadas para publicar
+                    if (imagen.isPublicar()) {
+                        // Crear la celda para la imagen
+                        PdfPCell imagenCell = new PdfPCell();
+                        imagenCell.setPadding(5);
+                        imagenCell.setBorderColor(COLOR_PRINCIPAL);
+                        imagenCell.setBorderWidth(0.5f);
+                        
+                        // Intentar cargar la imagen desde la URL
+                        Image img = null;
+                        try {
+                            // Intentar cargar la imagen desde la URL
+                            if (imagen.getUrl() != null && !imagen.getUrl().isEmpty()) {
+                                // Validar si la URL es local o remota
+                                if (imagen.getUrl().startsWith("http")) {
+                                    // URL remota
+                                    img = Image.getInstance(java.net.URI.create(imagen.getUrl()).toURL());
+                                } else {
+                                    // Path local - ajustar según cómo se almacenan las imágenes
+                                    img = Image.getInstance(imagen.getUrl());
+                                }
+                                
+                                // Escalar la imagen
+                                float maxWidth = 250f; // Ancho máximo
+                                float maxHeight = 200f; // Alto máximo
+                                
+                                if (img.getWidth() > maxWidth || img.getHeight() > maxHeight) {
+                                    img.scaleToFit(maxWidth, maxHeight);
+                                }
+                                
+                                // Centrar la imagen en la celda
+                                img.setAlignment(Element.ALIGN_CENTER);
+                                imagenCell.addElement(img);
+                                
+                                // Agregar descripción si existe
+                                if (imagen.getDescripcion() != null && !imagen.getDescripcion().isEmpty()) {
+                                    Paragraph descripcion = new Paragraph(imagen.getDescripcion(), NORMAL_FONT);
+                                    descripcion.setAlignment(Element.ALIGN_CENTER);
+                                    imagenCell.addElement(descripcion);
+                                }
+                            } else {
+                                // Si no hay URL, mostrar mensaje
+                                Paragraph noImage = new Paragraph("[Imagen no disponible]", NORMAL_FONT);
+                                noImage.setAlignment(Element.ALIGN_CENTER);
+                                imagenCell.addElement(noImage);
+                            }
+                        } catch (Exception e) {
+                            // En caso de error al cargar la imagen
+                            Paragraph errorMsg = new Paragraph("[Error al cargar imagen: " + e.getMessage() + "]", NORMAL_FONT);
+                            errorMsg.setAlignment(Element.ALIGN_CENTER);
+                            imagenCell.addElement(errorMsg);
+                        }
+                        
+                        // Agregar la celda a la tabla
+                        imagenesTable.addCell(imagenCell);
+                    }
+                } catch (Exception e) {
+                    // Manejar errores generales
+                    PdfPCell errorCell = new PdfPCell(new Paragraph("Error procesando imagen: " + e.getMessage(), NORMAL_FONT));
+                    errorCell.setColspan(2);
+                    imagenesTable.addCell(errorCell);
+                }
+            }
+            
+            // Si hay un número impar de imágenes, agregar una celda vacía para completar la última fila
+            if (imagenesTable.getRows().size() % 2 != 0) {
+                imagenesTable.addCell(new PdfPCell());
+            }
             
             document.add(imagenesTable);
-        }
-    }
+        }    }
     
     private void addItemRecepcionDetails(Document document, ItemRecepcion item) throws DocumentException {
         // Título para los componentes
