@@ -5,7 +5,7 @@ import com.itextpdf.text.pdf.*;
 import com.sso.app.entity.Orden;
 import com.sso.app.entity.Recepcion;
 import com.sso.app.entity.ItemRecepcion;
-import com.sso.app.entity.Cliente;
+import com.sso.app.entity.Cliente;git 
 import com.sso.app.entity.Equipo;
 import com.sso.app.entity.TipoEquipo;
 import com.sso.app.entity.Imagen;
@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.core.io.ClassPathResource;
 
 @Service
@@ -71,6 +73,50 @@ public class PDFGeneratorService {
         // Información de la recepción si existe
         if (orden.getRecepcion() != null) {
             addRecepcionInformation(document, orden.getRecepcion());
+        }
+        
+        // Información del cliente si existe
+        if (orden.getCliente() != null) {
+            addClienteInformation(document, orden.getCliente());
+        }
+        
+        // Información del equipo si existe
+        if (orden.getEquipo() != null) {
+            addEquipoInformation(document, orden.getEquipo());
+        }
+        
+        // Información de inspecciones si existen
+        if (orden.getInspeccionPcpVh60() != null) {
+            addInspeccionInformation(document, "Inspección VH60", orden.getInspeccionPcpVh60());
+        }
+        
+        if (orden.getInspeccionPcpMiniG() != null) {
+            addInspeccionInformation(document, "Inspección MiniG", orden.getInspeccionPcpMiniG());
+        }
+        
+        if (orden.getInspeccionPcpDV1() != null) {
+            addInspeccionInformation(document, "Inspección DV1", orden.getInspeccionPcpDV1());
+        }
+        
+        if (orden.getInspeccionPcpCougar() != null) {
+            addInspeccionInformation(document, "Inspección Cougar", orden.getInspeccionPcpCougar());
+        }
+        
+        // Información de ensayos si existen
+        if (orden.getEnsayoVh60() != null) {
+            addEnsayoInformation(document, "Ensayo VH60", orden.getEnsayoVh60());
+        }
+        
+        if (orden.getEnsayoMiniG() != null) {
+            addEnsayoInformation(document, "Ensayo MiniG", orden.getEnsayoMiniG());
+        }
+        
+        if (orden.getEnsayoDv1() != null) {
+            addEnsayoInformation(document, "Ensayo DV1", orden.getEnsayoDv1());
+        }
+        
+        if (orden.getEnsayoCougar() != null) {
+            addEnsayoInformation(document, "Ensayo Cougar", orden.getEnsayoCougar());
         }
         
         document.close();
@@ -325,34 +371,43 @@ public class PDFGeneratorService {
         
         // Información sobre las imágenes
         if (recepcion.getImagenes() != null && !recepcion.getImagenes().isEmpty()) {
-            Paragraph imagenesTitle = new Paragraph("Imágenes Adjuntas", SUBTITLE_FONT);
-            imagenesTitle.setAlignment(Element.ALIGN_LEFT);
-            imagenesTitle.setSpacingBefore(10);
-            document.add(imagenesTitle);
+            // Filtrar solo las imágenes marcadas como publicar=true
+            List<Imagen> imagenesToShow = recepcion.getImagenes().stream()
+                .filter(Imagen::isPublicar)
+                .collect(Collectors.toList());
             
-            PdfPTable imagenesTable = new PdfPTable(2); // 2 columnas para mostrar imágenes en par
-            imagenesTable.setWidthPercentage(100);
-            
-            // Párrafo con información de cantidad de imágenes
-            Paragraph imagenesInfo = new Paragraph("Cantidad de imágenes: " + recepcion.getImagenes().size(), BOLD_FONT);
-            PdfPCell infoCell = new PdfPCell(imagenesInfo);
-            infoCell.setColspan(2);
-            infoCell.setPadding(10);
-            infoCell.setBorderColor(COLOR_PRINCIPAL);
-            infoCell.setBorderWidth(1f);
-            infoCell.setBackgroundColor(COLOR_SECUNDARIO);
-            imagenesTable.addCell(infoCell);
-            
-            // Agregar cada imagen al PDF
-            for (Imagen imagen : recepcion.getImagenes()) {
-                try {
-                    // Solo incluir imágenes marcadas para publicar
-                    if (imagen.isPublicar()) {
+            // Solo mostrar sección de imágenes si hay imágenes para mostrar
+            if (!imagenesToShow.isEmpty()) {
+                Paragraph imagenesTitle = new Paragraph("Imágenes Adjuntas", SUBTITLE_FONT);
+                imagenesTitle.setAlignment(Element.ALIGN_LEFT);
+                imagenesTitle.setSpacingBefore(10);
+                document.add(imagenesTitle);
+                
+                PdfPTable imagenesTable = new PdfPTable(2); // 2 columnas para mostrar imágenes en par
+                imagenesTable.setWidthPercentage(100);
+                imagenesTable.setSpacingBefore(10);
+                
+                // Quitar bordes externos de la tabla
+                imagenesTable.getDefaultCell().setBorderWidth(0);
+                
+                // Párrafo con información de cantidad de imágenes
+                Paragraph imagenesInfo = new Paragraph("Cantidad de imágenes: " + imagenesToShow.size(), BOLD_FONT);
+                PdfPCell infoCell = new PdfPCell(imagenesInfo);
+                infoCell.setColspan(2);
+                infoCell.setPadding(10);
+                infoCell.setBorderColor(COLOR_PRINCIPAL);
+                infoCell.setBorderWidth(1f);
+                infoCell.setBackgroundColor(COLOR_SECUNDARIO);
+                imagenesTable.addCell(infoCell);
+                
+                // Agregar cada imagen al PDF
+                for (Imagen imagen : imagenesToShow) {
+                    try {
                         // Crear la celda para la imagen
                         PdfPCell imagenCell = new PdfPCell();
                         imagenCell.setPadding(5);
-                        imagenCell.setBorderColor(COLOR_PRINCIPAL);
-                        imagenCell.setBorderWidth(0.5f);
+                        // Quitar bordes de las celdas individuales
+                        imagenCell.setBorderWidth(0);
                         
                         // Intentar cargar la imagen desde la URL
                         Image img = null;
@@ -401,22 +456,25 @@ public class PDFGeneratorService {
                         
                         // Agregar la celda a la tabla
                         imagenesTable.addCell(imagenCell);
+                    } catch (Exception e) {
+                        // Manejar errores generales
+                        PdfPCell errorCell = new PdfPCell(new Paragraph("Error procesando imagen: " + e.getMessage(), NORMAL_FONT));
+                        errorCell.setColspan(2);
+                        imagenesTable.addCell(errorCell);
                     }
-                } catch (Exception e) {
-                    // Manejar errores generales
-                    PdfPCell errorCell = new PdfPCell(new Paragraph("Error procesando imagen: " + e.getMessage(), NORMAL_FONT));
-                    errorCell.setColspan(2);
-                    imagenesTable.addCell(errorCell);
                 }
+                
+                // Si hay un número impar de imágenes, agregar una celda vacía para completar la última fila
+                if (imagenesTable.getRows().size() % 2 != 0) {
+                    PdfPCell emptyCell = new PdfPCell();
+                    emptyCell.setBorderWidth(0); // Sin bordes para la celda vacía
+                    imagenesTable.addCell(emptyCell);
+                }
+                
+                document.add(imagenesTable);
             }
-            
-            // Si hay un número impar de imágenes, agregar una celda vacía para completar la última fila
-            if (imagenesTable.getRows().size() % 2 != 0) {
-                imagenesTable.addCell(new PdfPCell());
-            }
-            
-            document.add(imagenesTable);
-        }    }
+        }
+    }
     
     private void addItemRecepcionDetails(Document document, ItemRecepcion item) throws DocumentException {
         // Título para los componentes
@@ -491,43 +549,202 @@ public class PDFGeneratorService {
     
     private void addComponentRow(PdfPTable table, String componentName, boolean estado, 
             String requerimiento, String observacion) {
-        
-        // Crear celda para el nombre del componente con bordes y padding
-        PdfPCell componentCell = new PdfPCell(new Phrase(componentName, BOLD_FONT));
+        // Celda para el nombre del componente
+        PdfPCell componentCell = new PdfPCell(new Phrase(componentName, NORMAL_FONT));
         componentCell.setPadding(5);
-        componentCell.setBorderColor(COLOR_PRINCIPAL);
-        table.addCell(componentCell);
         
-        // Estado (OK/No OK) con color según corresponda
-        String estadoText = estado ? "OK" : "No OK";
-        Font estadoFont = estado ? STATUS_OK_FONT : STATUS_NO_OK_FONT;
+        // Celda para el estado (OK/NO OK)
+        PdfPCell estadoCell = new PdfPCell();
+        estadoCell.setPadding(5);
+        estadoCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         
-        PdfPCell statusCell = new PdfPCell(new Phrase(estadoText, estadoFont));
-        statusCell.setPadding(5);
-        statusCell.setBorderColor(COLOR_PRINCIPAL);
-        statusCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(statusCell);
-        
-        // Observaciones y requerimientos con formato
-        String obsText = "";
-        if (requerimiento != null && !requerimiento.isEmpty()) {
-            obsText += "Requerimiento: " + requerimiento + "\n";
+        Phrase estadoPhrase;
+        if (estado) {
+            estadoPhrase = new Phrase("OK", STATUS_OK_FONT);
+        } else {
+            estadoPhrase = new Phrase("NO OK", STATUS_NO_OK_FONT);
         }
-        if (observacion != null && !observacion.isEmpty()) {
-            obsText += "Observación: " + observacion;
-        }
+        estadoCell.addElement(estadoPhrase);
         
-        if (obsText.isEmpty()) {
-            obsText = "N/A";
-        }
-        
-        PdfPCell obsCell = new PdfPCell(new Phrase(obsText, NORMAL_FONT));
+        // Celda para observaciones y requerimientos
+        PdfPCell obsCell = new PdfPCell();
         obsCell.setPadding(5);
-        obsCell.setBorderColor(COLOR_PRINCIPAL);
+        
+        Paragraph obsContent = new Paragraph();
+        if (requerimiento != null && !requerimiento.isEmpty()) {
+            obsContent.add(new Chunk("Requerimiento: ", BOLD_FONT));
+            obsContent.add(new Chunk(requerimiento, NORMAL_FONT));
+            obsContent.add(Chunk.NEWLINE);
+        }
+        
+        if (observacion != null && !observacion.isEmpty()) {
+            obsContent.add(new Chunk("Observación: ", BOLD_FONT));
+            obsContent.add(new Chunk(observacion, NORMAL_FONT));
+        }
+        
+        obsCell.addElement(obsContent);
+        
+        table.addCell(componentCell);
+        table.addCell(estadoCell);
         table.addCell(obsCell);
     }
     
     /**
+     * Añade información de inspección al PDF
+     */
+    private void addInspeccionInformation(Document document, String title, Object inspeccion) throws DocumentException {
+        Paragraph inspeccionTitle = new Paragraph(title, SUBTITLE_FONT);
+        inspeccionTitle.setAlignment(Element.ALIGN_LEFT);
+        inspeccionTitle.setSpacingBefore(10);
+        document.add(inspeccionTitle);
+        
+        // Crear un fondo para la tabla con bordes de color
+        PdfPTable backgroundTable = new PdfPTable(1);
+        backgroundTable.setWidthPercentage(100);
+        
+        PdfPCell backgroundCell = new PdfPCell();
+        backgroundCell.setPadding(10);
+        backgroundCell.setBorderColor(COLOR_PRINCIPAL);
+        backgroundCell.setBorderWidth(1f);
+        backgroundCell.setBackgroundColor(COLOR_SECUNDARIO);
+        
+        // Tabla con los detalles de la inspección
+        PdfPTable inspeccionTable = new PdfPTable(2);
+        inspeccionTable.setWidthPercentage(100);
+        
+        // Configurar anchos de columna
+        try {
+            float[] columnWidths = {1f, 3f};
+            inspeccionTable.setWidths(columnWidths);
+            
+            // Agregar método para extraer dinámicamente propiedades del objeto
+            java.lang.reflect.Method[] methods = inspeccion.getClass().getMethods();
+            for (java.lang.reflect.Method method : methods) {
+                String methodName = method.getName();
+                if (methodName.startsWith("get") && !methodName.equals("getClass")) {
+                    try {
+                        String propertyName = methodName.substring(3);
+                        // Primera letra en minúscula para mostrarlo más amigable
+                        propertyName = propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1);
+                        
+                        Object value = method.invoke(inspeccion);
+                        if (value != null) {
+                            // Si es una entidad, mostrar solo su ID
+                            if (value instanceof Orden || value instanceof Recepcion) {
+                                // Skip relaciones inversas para evitar recursión
+                                continue;
+                            }
+                            
+                            // Si es una colección de imágenes, procesarlas
+                            if (methodName.equals("getImagenes") && value instanceof java.util.Collection) {
+                                // Las imágenes se manejan por separado, saltamos
+                                continue;
+                            }
+                            
+                            String valueStr = value.toString();
+                            // Para valores booleanos, convertir a Sí/No
+                            if (value instanceof Boolean) {
+                                valueStr = ((Boolean)value) ? "Sí" : "No";
+                            }
+                            
+                            addStyledTableRow(inspeccionTable, propertyName + ":", valueStr);
+                        }
+                    } catch (Exception e) {
+                        // Ignorar errores al acceder a propiedades
+                        continue;
+                    }
+                }
+            }
+            
+            // Mostrar imágenes asociadas si las hubiera
+            try {
+                java.lang.reflect.Method getImagenes = inspeccion.getClass().getMethod("getImagenes");
+                Object imagenesObj = getImagenes.invoke(inspeccion);
+                if (imagenesObj != null && imagenesObj instanceof java.util.Collection) {
+                    @SuppressWarnings("unchecked")
+                    java.util.Collection<Imagen> imagenes = (java.util.Collection<Imagen>) imagenesObj;
+                    if (!imagenes.isEmpty()) {
+                        // Filtrar solo las imágenes marcadas como publicar=true
+                        List<Imagen> imagenesToShow = imagenes.stream()
+                            .filter(Imagen::isPublicar)
+                            .collect(Collectors.toList());
+                        
+                        if (!imagenesToShow.isEmpty()) {
+                            // Mostrar imágenes
+                            PdfPCell imagesTitle = new PdfPCell(new Phrase("IMÁGENES", HEADER_FONT));
+                            imagesTitle.setBackgroundColor(COLOR_PRINCIPAL);
+                            imagesTitle.setColspan(2);
+                            imagesTitle.setPadding(5);
+                            imagesTitle.setHorizontalAlignment(Element.ALIGN_CENTER);
+                            inspeccionTable.addCell(imagesTitle);
+                            
+                            for (Imagen imagen : imagenesToShow) {
+                                if (imagen.getUrl() != null && !imagen.getUrl().isEmpty()) {
+                                    try {
+                                        // Crear celda para la imagen
+                                        PdfPCell imageCell = new PdfPCell();
+                                        imageCell.setColspan(2);
+                                        imageCell.setBorderWidth(0); // Sin bordes
+                                        imageCell.setPadding(5);
+                                        
+                                        // Cargar la imagen
+                                        Image img;
+                                        if (imagen.getUrl().startsWith("http")) {
+                                            img = Image.getInstance(java.net.URI.create(imagen.getUrl()).toURL());
+                                        } else {
+                                            img = Image.getInstance(imagen.getUrl());
+                                        }
+                                        
+                                        // Escalar la imagen
+                                        float maxWidth = 300f;
+                                        float maxHeight = 200f;
+                                        if (img.getWidth() > maxWidth || img.getHeight() > maxHeight) {
+                                            img.scaleToFit(maxWidth, maxHeight);
+                                        }
+                                        
+                                        img.setAlignment(Element.ALIGN_CENTER);
+                                        imageCell.addElement(img);
+                                        
+                                        // Agregar descripción si existe
+                                        if (imagen.getDescripcion() != null && !imagen.getDescripcion().isEmpty()) {
+                                            Paragraph desc = new Paragraph(imagen.getDescripcion(), NORMAL_FONT);
+                                            desc.setAlignment(Element.ALIGN_CENTER);
+                                            imageCell.addElement(desc);
+                                        }
+                                        
+                                        inspeccionTable.addCell(imageCell);
+                                    } catch (Exception e) {
+                                        // Ignorar errores al cargar imágenes
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // No hay método getImagenes o error al acceder
+            }
+            
+        } catch (DocumentException e) {
+            // Error al configurar la tabla
+        }
+        
+        backgroundCell.addElement(inspeccionTable);
+        backgroundTable.addCell(backgroundCell);
+        document.add(backgroundTable);
+        document.add(Chunk.NEWLINE);
+    }
+    
+    /**
+     * Añade información de ensayo al PDF
+     */
+    private void addEnsayoInformation(Document document, String title, Object ensayo) throws DocumentException {
+        // Utilizamos el mismo método que para inspecciones, ya que la estructura es similar
+        addInspeccionInformation(document, title, ensayo);
+    }
+    
+    /**
+     * Añade una sección con la información detallada del cliente
      * Agrega una sección con la información detallada del cliente
      */
     private void addClienteInformation(Document document, Cliente cliente) throws DocumentException {

@@ -73,7 +73,18 @@ public class RecepcionController {
             @PathVariable Long recepcionId,
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "descripcion", required = false, defaultValue = "") String descripcion,
-            @RequestParam(value = "publicar", required = false, defaultValue = "true") boolean publicar) {
+            @RequestParam(value = "publicar", required = false) String publicarStr) {
+        
+        // Convertir string a boolean para manejar mejor los valores desde form-data
+        boolean publicar = true; // valor por defecto
+        if (publicarStr != null) {
+            publicar = Boolean.parseBoolean(publicarStr);
+        }
+        
+        // Log para depuración
+        System.out.println("Descripción recibida: '" + descripcion + "'");
+        System.out.println("Publicar recibido (String): '" + publicarStr + "'");
+        System.out.println("Publicar convertido (boolean): '" + publicar + "'");
         
         try {
             // Verificar si la recepción existe
@@ -89,10 +100,17 @@ public class RecepcionController {
             // Crear y guardar la entidad Imagen con sus relaciones
             Imagen imagen = new Imagen();
             imagen.setUrl(imageUrl);
+            System.out.println("Asignando descripción: '" + descripcion + "'");
             imagen.setDescripcion(descripcion);
+            System.out.println("Verificando descripción asignada: '" + imagen.getDescripcion() + "'");
             imagen.setPublicar(publicar);
             imagen.setRecepcion(recepcion);
-            Imagen imagenGuardada = imagenRepository.save(imagen);
+            
+            // Guardar y forzar flush para asegurar la persistencia inmediata
+            Imagen imagenGuardada = imagenRepository.saveAndFlush(imagen);
+            
+            System.out.println("Imagen guardada. ID: " + imagenGuardada.getId());
+            System.out.println("Descripción persistida: '" + imagenGuardada.getDescripcion() + "'");
 
             // Crear respuesta con detalles completos
             Map<String, Object> response = new HashMap<>();

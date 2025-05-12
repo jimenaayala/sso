@@ -23,8 +23,29 @@ public class Imagen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
-    private boolean publicar;
-    private String descripcion;
+    
+    @Column(name = "publicar")
+    private boolean imagenPublicar;
+    
+    @Column(name = "descripcion")
+    private String imagenDescripcion;
+    
+    // Getters y setters explícitos para garantizar la persistencia correcta
+    public String getDescripcion() {
+        return imagenDescripcion;
+    }
+    
+    public void setDescripcion(String descripcion) {
+        this.imagenDescripcion = descripcion;
+    }
+    
+    public boolean isPublicar() {
+        return imagenPublicar;
+    }
+    
+    public void setPublicar(boolean publicar) {
+        this.imagenPublicar = publicar;
+    }
 
     @ManyToOne
     @JoinColumn(name = "recepcion_id", nullable = true)
