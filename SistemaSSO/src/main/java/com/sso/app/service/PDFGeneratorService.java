@@ -5,7 +5,7 @@ import com.itextpdf.text.pdf.*;
 import com.sso.app.entity.Orden;
 import com.sso.app.entity.Recepcion;
 import com.sso.app.entity.ItemRecepcion;
-import com.sso.app.entity.Cliente;git 
+import com.sso.app.entity.Cliente;
 import com.sso.app.entity.Equipo;
 import com.sso.app.entity.TipoEquipo;
 import com.sso.app.entity.Imagen;

@@ -110,7 +110,7 @@ public class RecepcionController {
             Imagen imagenGuardada = imagenRepository.saveAndFlush(imagen);
             
             System.out.println("Imagen guardada. ID: " + imagenGuardada.getId());
-            System.out.println("Descripción persistida: '" + imagenGuardada.getDescripcion() + "'");
+            System.out.println("Descrigit pción persistida: '" + imagenGuardada.getDescripcion() + "'");
 
             // Crear respuesta con detalles completos
             Map<String, Object> response = new HashMap<>();
