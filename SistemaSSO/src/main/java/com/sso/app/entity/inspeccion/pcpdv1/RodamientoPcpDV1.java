@@ -1,5 +1,4 @@
 package com.sso.app.entity.inspeccion.pcpdv1;
-import com.sso.app.entity.inspeccion.EstadoRodamiento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

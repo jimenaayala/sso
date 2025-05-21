@@ -1,5 +1,4 @@
 package com.sso.app.entity.inspeccion.pcpminig;
-import com.sso.app.entity.inspeccion.EstadoLubricante;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
