@@ -3,7 +3,6 @@ package com.sso.app.service;
 import com.sso.app.entity.Imagen;
 import com.sso.app.entity.Orden;
 import com.sso.app.entity.Recepcion;
-import com.sso.app.repository.ImagenRepository;
 import com.sso.app.repository.OrdenRepository;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Service
 public class EliminacionAutomaticaService {
-
+/*
     private final OrdenRepository ordenRepository;
     private final ImagenRepository imagenRepository;
     private final ImagenService imagenService;
@@ -62,5 +61,5 @@ public class EliminacionAutomaticaService {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }
