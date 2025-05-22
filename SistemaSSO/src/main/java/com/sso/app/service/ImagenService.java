@@ -1,5 +1,9 @@
 package com.sso.app.service;
 
+import com.sso.app.controller.dto.ImagenDTO;
+import com.sso.app.entity.Imagen;
+import com.sso.app.repository.ImagenRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -11,16 +15,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
 import jakarta.annotation.PostConstruct;
 
 @Service
+
 public class ImagenService {
+    private final ImagenRepository imagenRepository;
 
     @Value("${file.upload-dir:uploads}")
     private String uploadDir;
     
     private Path fileStoragePath;
+
+    public ImagenService(ImagenRepository imagenRepository) {
+        this.imagenRepository = imagenRepository;
+    }
     
     @PostConstruct
     public void init() {
@@ -89,5 +100,15 @@ public class ImagenService {
         
         // Eliminar el archivo si existe
         Files.deleteIfExists(filePath);
+    }
+    public List<ImagenDTO> obtenerImagenesPorRecepcion(Long recepcionId) {
+        return imagenRepository.findByRecepcionId(recepcionId).stream()
+                .map(img -> new ImagenDTO(
+                        img.getId(),
+                        img.getUrl(),
+                        img.getDescripcion(),
+                        img.isPublicar()
+                ))
+                .toList();
     }
 }

@@ -1,5 +1,6 @@
 package com.sso.app.controller;
 
+import com.sso.app.controller.dto.ImagenDTO;
 import com.sso.app.entity.Imagen;
 import com.sso.app.entity.Recepcion;
 import com.sso.app.repository.ImagenRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -127,4 +129,10 @@ public class RecepcionController {
                     .body("Error al subir la imagen: " + e.getMessage());
         }
     }
+
+    @GetMapping("/buscaImagenes/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenes(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorRecepcion(id));
+    }
+
 }

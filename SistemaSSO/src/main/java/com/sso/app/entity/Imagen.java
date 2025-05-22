@@ -29,7 +29,10 @@ public class Imagen {
     
     @Column(name = "descripcion")
     private String imagenDescripcion;
-    
+
+    public Imagen(String url, String descripcion, boolean imagenPublicar) {
+    }
+
     // Getters y setters explícitos para garantizar la persistencia correcta
     public String getDescripcion() {
         return imagenDescripcion;
