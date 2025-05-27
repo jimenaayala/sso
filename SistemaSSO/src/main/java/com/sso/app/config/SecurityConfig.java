@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults()) // Autenticación básica
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sin estado
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers(HttpMethod.POST).permitAll()
                         .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers(HttpMethod.PUT).permitAll()

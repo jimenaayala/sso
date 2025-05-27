@@ -1,5 +1,4 @@
 package com.sso.app.entity.inspeccion.pcpcougarcd50;
-import com.sso.app.entity.inspeccion.EstadoTransmision;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

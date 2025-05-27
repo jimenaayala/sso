@@ -1,7 +1,6 @@
 package com.sso.app.entity.inspeccion.pcpminig;
 
 
-import com.sso.app.entity.inspeccion.EstadoItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

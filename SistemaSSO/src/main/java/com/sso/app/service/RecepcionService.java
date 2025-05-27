@@ -6,19 +6,17 @@ import com.sso.app.entity.Recepcion;
 import com.sso.app.repository.RecepcionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class RecepcionService {
 
     private final RecepcionRepository recepcionRepository;
-
-    public RecepcionService(RecepcionRepository recepcionRepository) {
-        this.recepcionRepository = recepcionRepository;
-    }
 
     @Transactional
     public Recepcion guardarOActualizarRecepcion(Recepcion recepcion) {

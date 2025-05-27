@@ -1,8 +1,12 @@
 package com.sso.app.entity.inspeccion.pcpvh60;
 
+import com.sso.app.entity.Imagen;
 import com.sso.app.entity.inspeccion.ItemPolea;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,6 +20,10 @@ public class InspeccionPcpVh60 {
     private Long id;
     private String comentario;
     private boolean eliminado=false;
+
+    @OneToMany(mappedBy = "inspeccionPcpVh60", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Imagen> imagenesVH60 = new ArrayList<>();
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lubricantes_id")

@@ -1,4 +1,14 @@
 package com.sso.app.controller.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record ImagenDTO(Long id, String url, String descripcion, boolean publicar) {}
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ImagenDTO {
+    private String url;
+    private String descripcion;
+    private boolean publicar;
+}
