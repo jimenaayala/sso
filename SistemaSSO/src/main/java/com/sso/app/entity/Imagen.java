@@ -1,5 +1,6 @@
 package com.sso.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sso.app.entity.inspeccion.pcpcougarcd50.InspeccionPcpCougar;
 import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDV1;
 import com.sso.app.entity.inspeccion.pcpminig.InspeccionPcpMiniG;
@@ -27,5 +28,11 @@ public class Imagen {
 
     @ManyToOne
     @JoinColumn(name = "recepcion_id")
+    @JsonIgnore
     private Recepcion recepcion;
+
+    @ManyToOne
+    @JoinColumn(name = "inspeccionVH60_id")
+    @JsonIgnore
+    private InspeccionPcpVh60 inspeccionPcpVh60;
 }
