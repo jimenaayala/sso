@@ -20,8 +20,8 @@ public class ImagenController {
         this.imagenService = imagenService;
     }
 
-    @PostMapping("/subir")
-    public ResponseEntity<String> subirImagen(
+    @PostMapping("/subirRecepcion")
+    public ResponseEntity<String> subirImagenRecepcion(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("publicar") boolean publicar,
@@ -35,7 +35,26 @@ public class ImagenController {
     }
 
     @GetMapping("/recepcion/{id}")
-    public ResponseEntity<List<ImagenDTO>> listarImagenes(@PathVariable Long id) {
+    public ResponseEntity<List<ImagenDTO>> listarImagenesRecepcion(@PathVariable Long id) {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorRecepcion(id));
+    }
+
+    @PostMapping("/subirInspeccionVh60")
+    public ResponseEntity<String> subirImagenInspeccionVh60(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar,
+            @RequestParam("inspeccionPcpVh60Id") Long inspeccionPcpVh60Id) {
+        try{
+            Imagen imagen = imagenService.guardarImagenPcpVh60(file, descripcion, publicar, inspeccionPcpVh60Id);
+            return ResponseEntity.ok("imagen guardar: " + imagen.getUrl());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/inspeccionPcpVh60/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenesInspeccionVh60(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionVh60(id));
     }
 }

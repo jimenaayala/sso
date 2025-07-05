@@ -32,7 +32,7 @@ public class Imagen {
     private Recepcion recepcion;
 
     @ManyToOne
-    @JoinColumn(name = "inspeccionVH60_id")
+    @JoinColumn(name = "inspeccionPcpVh60_id")
     @JsonIgnore
     private InspeccionPcpVh60 inspeccionPcpVh60;
 }
