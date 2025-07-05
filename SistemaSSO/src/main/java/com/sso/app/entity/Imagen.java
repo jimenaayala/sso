@@ -35,4 +35,10 @@ public class Imagen {
     @JoinColumn(name = "inspeccionPcpVh60_id")
     @JsonIgnore
     private InspeccionPcpVh60 inspeccionPcpVh60;
+
+    @ManyToOne
+    @JoinColumn(name = "inspeccionPcpMiniG_id")
+    @JsonIgnore
+    private InspeccionPcpMiniG inspeccionPcpMiniG;
+
 }

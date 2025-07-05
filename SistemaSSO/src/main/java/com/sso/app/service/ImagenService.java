@@ -3,8 +3,10 @@ package com.sso.app.service;
 import com.sso.app.controller.dto.ImagenDTO;
 import com.sso.app.entity.Imagen;
 import com.sso.app.entity.Recepcion;
+import com.sso.app.entity.inspeccion.pcpminig.InspeccionPcpMiniG;
 import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
 import com.sso.app.repository.ImagenRepository;
+import com.sso.app.repository.InspeccionPcpMiniGRepository;
 import com.sso.app.repository.InspeccionPcpVh60Repository;
 import com.sso.app.repository.RecepcionRepository;
 import lombok.AllArgsConstructor;
@@ -27,17 +29,22 @@ public class ImagenService {
     private final ImagenRepository imagenRepository;
     private final RecepcionRepository recepcionRepository;
     private final InspeccionPcpVh60Repository inspeccionPcpVh60Repository;
+    private final InspeccionPcpMiniGRepository inspeccionPcpMiniGRepository;
 
     @Value("${upload.dir:uploads}")
     private String uploadDir;
 
-    public ImagenService(ImagenRepository imagenRepository, RecepcionRepository recepcionRepository, InspeccionPcpVh60Repository inspeccionPcpVh60Repository) {
+    public ImagenService(ImagenRepository imagenRepository,
+                         RecepcionRepository recepcionRepository,
+                         InspeccionPcpVh60Repository inspeccionPcpVh60Repository,
+                         InspeccionPcpMiniGRepository inspeccionPcpMiniGRepository) {
         this.imagenRepository = imagenRepository;
         this.recepcionRepository = recepcionRepository;
         this.inspeccionPcpVh60Repository = inspeccionPcpVh60Repository;
+        this.inspeccionPcpMiniGRepository = inspeccionPcpMiniGRepository;
     }
 
-    public Imagen guardarImagen(MultipartFile file, String descripcion, boolean publicar, Long recepcionId) throws IOException {
+    public Imagen guardarImagenRecepcion(MultipartFile file, String descripcion, boolean publicar, Long recepcionId) throws IOException {
         Recepcion recepcion = recepcionRepository.findById(recepcionId)
                 .orElseThrow(() -> new RuntimeException("Recepcion no encontrada"));
 
@@ -83,6 +90,30 @@ public class ImagenService {
 
     public List<ImagenDTO> obtenerImagenesPorInspeccionVh60(Long inspeccionVh60Id) {
         return imagenRepository.findByInspeccionPcpVh60Id(inspeccionVh60Id).stream()
+                .map(img -> new ImagenDTO(img.getUrl(), img.getDescripcion(), img.isPublicar()))
+                .toList();
+    }
+
+    public Imagen guardarImagenPcpMiniG(MultipartFile file, String descripcion, boolean publicar, Long inspeccionPcpMiniGId) throws IOException {
+        InspeccionPcpMiniG inspeccionPcpMiniG = inspeccionPcpMiniGRepository.findById(inspeccionPcpMiniGId)
+                .orElseThrow(() -> new RuntimeException("InspeccionMiniG no encontrada"));
+
+        String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
+
+        Files.createDirectories(Paths.get(uploadDir));
+        Files.copy(file.getInputStream(), Paths.get(ruta), StandardCopyOption.REPLACE_EXISTING);
+
+        Imagen imagen = new Imagen();
+        imagen.setUrl("/uploads/" + nombreArchivo);
+        imagen.setDescripcion(descripcion);
+        imagen.setPublicar(publicar);
+        imagen.setInspeccionPcpMiniG(inspeccionPcpMiniG);
+
+        return imagenRepository.save(imagen);
+    }
+    public List<ImagenDTO> obtenerImagenesPorInspeccionMiniG(Long inspeccionMiniGId) {
+        return imagenRepository.findByInspeccionPcpMiniGId(inspeccionMiniGId).stream()
                 .map(img -> new ImagenDTO(img.getUrl(), img.getDescripcion(), img.isPublicar()))
                 .toList();
     }
