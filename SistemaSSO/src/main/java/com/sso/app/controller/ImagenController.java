@@ -71,4 +71,47 @@ public class ImagenController {
             throw new RuntimeException(e);
         }
     }
+
+    @GetMapping("/inspeccionPcpMiniG/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenesInspeccionMiniG(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionMiniG(id));
+    }
+
+    @PostMapping("/subirInspeccionCougar")
+    public ResponseEntity<String> subirImagenInspeccionCougar(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar,
+            @RequestParam("inspeccionPcpCougarId") Long inspeccionPcpCougarId) {
+        try{
+            Imagen imagen = imagenService.guardarImagenPcpCougar(file, descripcion, publicar, inspeccionPcpCougarId);
+            return ResponseEntity.ok("imagen guardar: " + imagen.getUrl());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/inspeccionPcpCougar/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenesInspeccionCougar(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionCougar(id));
+    }
+
+    @PostMapping("/subirInspeccionDv1")
+    public ResponseEntity<String> subirImagenInspeccionDv1(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar,
+            @RequestParam("inspeccionPcpDv1Id") Long inspeccionPcpDv1Id) {
+        try{
+            Imagen imagen = imagenService.guardarImagenPcpDv1(file, descripcion, publicar, inspeccionPcpDv1Id);
+            return ResponseEntity.ok("imagen guardar: " + imagen.getUrl());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/inspeccionPcpDv1/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenesInspeccionDv1(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionDv1(id));
+    }
 }

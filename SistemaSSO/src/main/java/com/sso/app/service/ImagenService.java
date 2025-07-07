@@ -3,12 +3,11 @@ package com.sso.app.service;
 import com.sso.app.controller.dto.ImagenDTO;
 import com.sso.app.entity.Imagen;
 import com.sso.app.entity.Recepcion;
+import com.sso.app.entity.inspeccion.pcpcougarcd50.InspeccionPcpCougar;
+import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDV1;
 import com.sso.app.entity.inspeccion.pcpminig.InspeccionPcpMiniG;
 import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
-import com.sso.app.repository.ImagenRepository;
-import com.sso.app.repository.InspeccionPcpMiniGRepository;
-import com.sso.app.repository.InspeccionPcpVh60Repository;
-import com.sso.app.repository.RecepcionRepository;
+import com.sso.app.repository.*;
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +29,8 @@ public class ImagenService {
     private final RecepcionRepository recepcionRepository;
     private final InspeccionPcpVh60Repository inspeccionPcpVh60Repository;
     private final InspeccionPcpMiniGRepository inspeccionPcpMiniGRepository;
+    private final InspeccionPcpCoguarRepository inspeccionPcpCoguarRepository;
+    private final InspeccionPcpDv1Repository inspeccionPcpDv1Repository;
 
     @Value("${upload.dir:uploads}")
     private String uploadDir;
@@ -37,11 +38,15 @@ public class ImagenService {
     public ImagenService(ImagenRepository imagenRepository,
                          RecepcionRepository recepcionRepository,
                          InspeccionPcpVh60Repository inspeccionPcpVh60Repository,
-                         InspeccionPcpMiniGRepository inspeccionPcpMiniGRepository) {
+                         InspeccionPcpMiniGRepository inspeccionPcpMiniGRepository,
+                         InspeccionPcpCoguarRepository inspeccionPcpCoguarRepository,
+                         InspeccionPcpDv1Repository inspeccionPcpDv1Repository) {
         this.imagenRepository = imagenRepository;
         this.recepcionRepository = recepcionRepository;
         this.inspeccionPcpVh60Repository = inspeccionPcpVh60Repository;
         this.inspeccionPcpMiniGRepository = inspeccionPcpMiniGRepository;
+        this.inspeccionPcpCoguarRepository = inspeccionPcpCoguarRepository;
+        this.inspeccionPcpDv1Repository = inspeccionPcpDv1Repository;
     }
 
     public Imagen guardarImagenRecepcion(MultipartFile file, String descripcion, boolean publicar, Long recepcionId) throws IOException {
@@ -114,6 +119,56 @@ public class ImagenService {
     }
     public List<ImagenDTO> obtenerImagenesPorInspeccionMiniG(Long inspeccionMiniGId) {
         return imagenRepository.findByInspeccionPcpMiniGId(inspeccionMiniGId).stream()
+                .map(img -> new ImagenDTO(img.getUrl(), img.getDescripcion(), img.isPublicar()))
+                .toList();
+    }
+
+    public Imagen guardarImagenPcpCougar(MultipartFile file, String descripcion, boolean publicar, Long inspeccionPcpCougarId) throws IOException {
+        InspeccionPcpCougar inspeccionPcpCougar = inspeccionPcpCoguarRepository.findById(inspeccionPcpCougarId)
+                .orElseThrow(() -> new RuntimeException("InspeccionCougar no encontrada"));
+
+        String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
+
+        Files.createDirectories(Paths.get(uploadDir));
+        Files.copy(file.getInputStream(), Paths.get(ruta), StandardCopyOption.REPLACE_EXISTING);
+
+        Imagen imagen = new Imagen();
+        imagen.setUrl("/uploads/" + nombreArchivo);
+        imagen.setDescripcion(descripcion);
+        imagen.setPublicar(publicar);
+        imagen.setInspeccionPcpCougar(inspeccionPcpCougar);
+
+        return imagenRepository.save(imagen);
+    }
+
+    public List<ImagenDTO> obtenerImagenesPorInspeccionCougar(Long inspeccionCougarId) {
+        return imagenRepository.findByInspeccionPcpCougarId(inspeccionCougarId).stream()
+                .map(img -> new ImagenDTO(img.getUrl(), img.getDescripcion(), img.isPublicar()))
+                .toList();
+    }
+
+    public Imagen guardarImagenPcpDv1(MultipartFile file, String descripcion, boolean publicar, Long inspeccionPcpDv1Id) throws IOException {
+        InspeccionPcpDV1 inspeccionPcpDv1 = inspeccionPcpDv1Repository.findById(inspeccionPcpDv1Id)
+                .orElseThrow(() -> new RuntimeException("Inspeccion Dv1 no encontrada"));
+
+        String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
+
+        Files.createDirectories(Paths.get(uploadDir));
+        Files.copy(file.getInputStream(), Paths.get(ruta), StandardCopyOption.REPLACE_EXISTING);
+
+        Imagen imagen = new Imagen();
+        imagen.setUrl("/uploads/" + nombreArchivo);
+        imagen.setDescripcion(descripcion);
+        imagen.setPublicar(publicar);
+        imagen.setInspeccionPcpDV1(inspeccionPcpDv1);
+
+        return imagenRepository.save(imagen);
+    }
+
+    public List<ImagenDTO> obtenerImagenesPorInspeccionDv1(Long inspeccionDv1Id) {
+        return imagenRepository.findByInspeccionPcpDv1Id(inspeccionDv1Id).stream()
                 .map(img -> new ImagenDTO(img.getUrl(), img.getDescripcion(), img.isPublicar()))
                 .toList();
     }

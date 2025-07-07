@@ -41,4 +41,14 @@ public class Imagen {
     @JsonIgnore
     private InspeccionPcpMiniG inspeccionPcpMiniG;
 
+    @ManyToOne
+    @JoinColumn(name = "inspeccionPcpCougar_id")
+    @JsonIgnore
+    private InspeccionPcpCougar inspeccionPcpCougar;
+
+    @ManyToOne
+    @JoinColumn(name = "inspeccionPcpDV1_id")
+    @JsonIgnore
+    private InspeccionPcpDV1 inspeccionPcpDV1;
+
 }
