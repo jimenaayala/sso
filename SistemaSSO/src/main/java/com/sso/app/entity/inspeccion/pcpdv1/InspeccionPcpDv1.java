@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InspeccionPcpDV1 {
+public class InspeccionPcpDv1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

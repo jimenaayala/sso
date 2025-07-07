@@ -2,7 +2,7 @@ package com.sso.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sso.app.entity.inspeccion.pcpcougarcd50.InspeccionPcpCougar;
-import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDV1;
+import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDv1;
 import com.sso.app.entity.inspeccion.pcpminig.InspeccionPcpMiniG;
 import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
 import jakarta.persistence.*;
@@ -47,8 +47,8 @@ public class Imagen {
     private InspeccionPcpCougar inspeccionPcpCougar;
 
     @ManyToOne
-    @JoinColumn(name = "inspeccionPcpDV1_id")
+    @JoinColumn(name = "inspeccionPcpDv1_id")
     @JsonIgnore
-    private InspeccionPcpDV1 inspeccionPcpDV1;
+    private InspeccionPcpDv1 inspeccionPcpDv1;
 
 }

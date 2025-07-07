@@ -6,7 +6,7 @@ import com.sso.app.entity.ensayo.EnsayoDv1;
 import com.sso.app.entity.ensayo.EnsayoMiniG;
 import com.sso.app.entity.ensayo.EnsayoVh60;
 import com.sso.app.entity.inspeccion.pcpcougarcd50.InspeccionPcpCougar;
-import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDV1;
+import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDv1;
 import com.sso.app.entity.inspeccion.pcpminig.InspeccionPcpMiniG;
 import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
 import jakarta.persistence.*;
@@ -61,7 +61,7 @@ public class Orden {
 
     @ManyToOne
     @JoinColumn(name = "inspeccionPcpDV1_id")
-    private InspeccionPcpDV1 inspeccionPcpDV1;
+    private InspeccionPcpDv1 inspeccionPcpDV1;
 
     @ManyToOne
     @JoinColumn(name = "inspeccionPcpCougar_id")

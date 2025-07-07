@@ -4,11 +4,10 @@ import com.sso.app.controller.dto.ImagenDTO;
 import com.sso.app.entity.Imagen;
 import com.sso.app.entity.Recepcion;
 import com.sso.app.entity.inspeccion.pcpcougarcd50.InspeccionPcpCougar;
-import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDV1;
+import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDv1;
 import com.sso.app.entity.inspeccion.pcpminig.InspeccionPcpMiniG;
 import com.sso.app.entity.inspeccion.pcpvh60.InspeccionPcpVh60;
 import com.sso.app.repository.*;
-import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -101,7 +100,7 @@ public class ImagenService {
 
     public Imagen guardarImagenPcpMiniG(MultipartFile file, String descripcion, boolean publicar, Long inspeccionPcpMiniGId) throws IOException {
         InspeccionPcpMiniG inspeccionPcpMiniG = inspeccionPcpMiniGRepository.findById(inspeccionPcpMiniGId)
-                .orElseThrow(() -> new RuntimeException("InspeccionMiniG no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Inspeccion MiniG no encontrada"));
 
         String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
         String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
@@ -125,7 +124,7 @@ public class ImagenService {
 
     public Imagen guardarImagenPcpCougar(MultipartFile file, String descripcion, boolean publicar, Long inspeccionPcpCougarId) throws IOException {
         InspeccionPcpCougar inspeccionPcpCougar = inspeccionPcpCoguarRepository.findById(inspeccionPcpCougarId)
-                .orElseThrow(() -> new RuntimeException("InspeccionCougar no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Inspeccion Cougar no encontrada"));
 
         String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
         String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
@@ -149,7 +148,7 @@ public class ImagenService {
     }
 
     public Imagen guardarImagenPcpDv1(MultipartFile file, String descripcion, boolean publicar, Long inspeccionPcpDv1Id) throws IOException {
-        InspeccionPcpDV1 inspeccionPcpDv1 = inspeccionPcpDv1Repository.findById(inspeccionPcpDv1Id)
+        InspeccionPcpDv1 inspeccionPcpDv1 = inspeccionPcpDv1Repository.findById(inspeccionPcpDv1Id)
                 .orElseThrow(() -> new RuntimeException("Inspeccion Dv1 no encontrada"));
 
         String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
@@ -162,7 +161,7 @@ public class ImagenService {
         imagen.setUrl("/uploads/" + nombreArchivo);
         imagen.setDescripcion(descripcion);
         imagen.setPublicar(publicar);
-        imagen.setInspeccionPcpDV1(inspeccionPcpDv1);
+        imagen.setInspeccionPcpDv1(inspeccionPcpDv1);
 
         return imagenRepository.save(imagen);
     }

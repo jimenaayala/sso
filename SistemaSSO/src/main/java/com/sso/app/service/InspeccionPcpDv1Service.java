@@ -1,6 +1,6 @@
 package com.sso.app.service;
 
-import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDV1;
+import com.sso.app.entity.inspeccion.pcpdv1.InspeccionPcpDv1;
 import com.sso.app.repository.InspeccionPcpDv1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,18 +16,18 @@ public class InspeccionPcpDv1Service {
 
     // Crear una nueva inspección con entidades relacionadas
     @Transactional
-    public InspeccionPcpDV1 crearInspeccion(InspeccionPcpDV1 inspeccion) {
+    public InspeccionPcpDv1 crearInspeccion(InspeccionPcpDv1 inspeccion) {
         // Al guardar inspeccion, también se guardan las entidades relacionadas gracias a CascadeType.ALL
         return inspeccionRepository.save(inspeccion);
     }
 
     // Actualizar una inspección existente
     @Transactional
-    public InspeccionPcpDV1 actualizarInspeccion(Long id, InspeccionPcpDV1 inspeccionNueva) {
-        Optional<InspeccionPcpDV1> inspeccionExistente = inspeccionRepository.findById(id);
+    public InspeccionPcpDv1 actualizarInspeccion(Long id, InspeccionPcpDv1 inspeccionNueva) {
+        Optional<InspeccionPcpDv1> inspeccionExistente = inspeccionRepository.findById(id);
 
         if (inspeccionExistente.isPresent()) {
-            InspeccionPcpDV1 inspeccion = inspeccionExistente.get();
+            InspeccionPcpDv1 inspeccion = inspeccionExistente.get();
 
             // Actualizamos cada entidad relacionada
             inspeccion.setComentario(inspeccionNueva.getComentario());
@@ -45,12 +45,12 @@ public class InspeccionPcpDv1Service {
     }
 
     // Obtener inspección por ID
-    public InspeccionPcpDV1 obtenerInspeccionPorId(Long id) {
+    public InspeccionPcpDv1 obtenerInspeccionPorId(Long id) {
         return inspeccionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Inspección no encontrada con ID: " + id));
     }
     // Obtener todas las inspecciones
-    public List<InspeccionPcpDV1> obtenerTodasInspecciones() {
+    public List<InspeccionPcpDv1> obtenerTodasInspecciones() {
         return inspeccionRepository.findAll();
     }
 }
