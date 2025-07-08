@@ -4,6 +4,7 @@ import com.sso.app.controller.dto.ImagenDTO;
 import com.sso.app.entity.Imagen;
 import com.sso.app.service.ImagenService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,7 @@ public class ImagenController {
         this.imagenService = imagenService;
     }
 
-    @PostMapping("/subirRecepcion")
+    @PostMapping(value = "/subirRecepcion", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenRecepcion(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
@@ -39,17 +40,17 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorRecepcion(id));
     }
 
-    @PostMapping("/subirInspeccionVh60")
+    @PostMapping(value = "/subirInspeccionVh60", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenInspeccionVh60(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("publicar") boolean publicar,
             @RequestParam("inspeccionPcpVh60Id") Long inspeccionPcpVh60Id) {
-        try{
+        try {
             Imagen imagen = imagenService.guardarImagenPcpVh60(file, descripcion, publicar, inspeccionPcpVh60Id);
-            return ResponseEntity.ok("imagen guardar: " + imagen.getUrl());
+            return ResponseEntity.ok("Imagen guardada: " + imagen.getUrl());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
@@ -58,17 +59,17 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionVh60(id));
     }
 
-    @PostMapping("/subirInspeccionMiniG")
+    @PostMapping(value = "/subirInspeccionMiniG", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenInspeccionMiniG(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("publicar") boolean publicar,
             @RequestParam("inspeccionPcpMiniGId") Long inspeccionPcpMiniGId) {
-        try{
+        try {
             Imagen imagen = imagenService.guardarImagenPcpMiniG(file, descripcion, publicar, inspeccionPcpMiniGId);
-            return ResponseEntity.ok("imagen guardar: " + imagen.getUrl());
+            return ResponseEntity.ok("Imagen guardada: " + imagen.getUrl());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
@@ -77,17 +78,17 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionMiniG(id));
     }
 
-    @PostMapping("/subirInspeccionCougar")
+    @PostMapping(value = "/subirInspeccionCougar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenInspeccionCougar(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("publicar") boolean publicar,
             @RequestParam("inspeccionPcpCougarId") Long inspeccionPcpCougarId) {
-        try{
+        try {
             Imagen imagen = imagenService.guardarImagenPcpCougar(file, descripcion, publicar, inspeccionPcpCougarId);
-            return ResponseEntity.ok("imagen guardar: " + imagen.getUrl());
+            return ResponseEntity.ok("Imagen guardada: " + imagen.getUrl());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
@@ -96,17 +97,17 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionCougar(id));
     }
 
-    @PostMapping("/subirInspeccionDv1")
+    @PostMapping(value = "/subirInspeccionDv1", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenInspeccionDv1(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("publicar") boolean publicar,
             @RequestParam("inspeccionPcpDv1Id") Long inspeccionPcpDv1Id) {
-        try{
+        try {
             Imagen imagen = imagenService.guardarImagenPcpDv1(file, descripcion, publicar, inspeccionPcpDv1Id);
-            return ResponseEntity.ok("imagen guardar: " + imagen.getUrl());
+            return ResponseEntity.ok("Imagen guardada: " + imagen.getUrl());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
@@ -115,3 +116,4 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionDv1(id));
     }
 }
+
