@@ -7,16 +7,20 @@ import com.sso.app.entity.securityentity.RoleEnum;
 import com.sso.app.entity.securityentity.UserEntity;
 import com.sso.app.repository.securityRepository.RoleRepository;
 import com.sso.app.repository.securityRepository.UserRepository;
+import com.sso.app.security.jwt.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.BadCredentialsException;
+
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +32,7 @@ public class UserController {
 
     private final UserRepository userRepository;
 
+    private final JwtUtil jwtUtil;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -74,26 +79,46 @@ UserEntity userEntity = UserEntity.builder()
 
 
 
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+//        try {
+//            // Crea un token de autenticación con el nombre de usuario y contraseña proporcionados
+//            UsernamePasswordAuthenticationToken authenticationToken =
+//                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+//
+//            // Autentica al usuario
+//            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+//
+//            // Establece el contexto de seguridad
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//            // Aquí puedes devolver algún tipo de respuesta de éxito o información adicional
+//            return ResponseEntity.ok("Login successful");
+//
+//        } catch (BadCredentialsException e) {
+//            System.out.println("Error: " + HttpStatus.UNAUTHORIZED.value() + " - " + e.getMessage());
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+//        }
+//    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         try {
-            // Crea un token de autenticación con el nombre de usuario y contraseña proporcionados
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
-
-            // Autentica al usuario
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
-            // Establece el contexto de seguridad
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
+            );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // Aquí puedes devolver algún tipo de respuesta de éxito o información adicional
-            return ResponseEntity.ok("Login successful");
-
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String token = jwtUtil.generateToken(userDetails);
+            return ResponseEntity.ok(Collections.singletonMap("token", token));
         } catch (BadCredentialsException e) {
-            System.out.println("Error: " + HttpStatus.UNAUTHORIZED.value() + " - " + e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
+    @GetMapping("/protected")
+    public ResponseEntity<String> testProtectedEndpoint() {
+        return ResponseEntity.ok("✅ Acceso permitido con JWT");
+    }
+
 
 }

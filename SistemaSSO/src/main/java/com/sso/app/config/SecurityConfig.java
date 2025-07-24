@@ -1,5 +1,6 @@
 package com.sso.app.config;
 
+import com.sso.app.security.jwt.JwtAuthFilter;
 import com.sso.app.service.servicesecurity.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -26,24 +28,38 @@ import org.springframework.security.config.Customizer;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        return httpSecurity
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración de CORS
+//                .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF si no usas formularios
+//                .httpBasic(Customizer.withDefaults()) // Autenticación básica
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sin estado
+//                .authorizeHttpRequests(authz -> authz
+//                        .requestMatchers("/uploads/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST).permitAll()
+//                        .requestMatchers(HttpMethod.GET).permitAll()
+//                        .requestMatchers(HttpMethod.PUT).permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll() // Permitir el login sin autenticación previa
+//                        // .requestMatchers(HttpMethod.POST, "/users/create").hasAnyRole("ADMIN") // Restringir este endpoint a "ADMIN"
+//                        .anyRequest().authenticated() // El resto de endpoints requieren autenticación
+//                )
+//                .build();
+//    }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthFilter jwtAuthFilter) throws Exception {
         return httpSecurity
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración de CORS
-                .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF si no usas formularios
-                .httpBasic(Customizer.withDefaults()) // Autenticación básica
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sin estado
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/uploads/**").permitAll()
-                        .requestMatchers(HttpMethod.POST).permitAll()
-                        .requestMatchers(HttpMethod.GET).permitAll()
-                        .requestMatchers(HttpMethod.PUT).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll() // Permitir el login sin autenticación previa
-                        // .requestMatchers(HttpMethod.POST, "/users/create").hasAnyRole("ADMIN") // Restringir este endpoint a "ADMIN"
-                        .anyRequest().authenticated() // El resto de endpoints requieren autenticación
+                        .requestMatchers("/api/login", "/api/createUser").permitAll()
+                        .anyRequest().authenticated()
                 )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
