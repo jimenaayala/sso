@@ -39,6 +39,20 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorRecepcion(id));
     }
 
+    @PutMapping("/modificarRecepcion")
+    public ResponseEntity<String> modificarImagenRecepcion(
+            @RequestParam("imagenId") Long imagenId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenRecepcion(imagenId, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/subirInspeccionVh60")
     public ResponseEntity<String> subirImagenInspeccionVh60(
             @RequestParam("file") MultipartFile file,
@@ -56,6 +70,20 @@ public class ImagenController {
     @GetMapping("/inspeccionPcpVh60/{id}")
     public ResponseEntity<List<ImagenDTO>> listarImagenesInspeccionVh60(@PathVariable Long id) {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionVh60(id));
+    }
+
+    @PutMapping("/modificarInspeccionVh60")
+    public ResponseEntity<String> modificarImagenVh60(
+            @RequestParam("imagenId") Long imagenId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenPcpVh60(imagenId, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
 
     @PostMapping("/subirInspeccionMiniG")
@@ -77,6 +105,20 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionMiniG(id));
     }
 
+    @PutMapping("/modificarInspeccionMiniG")
+    public ResponseEntity<String> modificarImagenMiniG(
+            @RequestParam("imagenId") Long imagenId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenPcpMiniG(imagenId, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/subirInspeccionCougar")
     public ResponseEntity<String> subirImagenInspeccionCougar(
             @RequestParam("file") MultipartFile file,
@@ -96,6 +138,20 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionCougar(id));
     }
 
+    @PutMapping("/modificarInspeccionCougar")
+    public ResponseEntity<String> modificarImagenCougar(
+            @RequestParam("imagenId") Long imagenId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenPcpCougar(imagenId, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/subirInspeccionDv1")
     public ResponseEntity<String> subirImagenInspeccionDv1(
             @RequestParam("file") MultipartFile file,
@@ -113,5 +169,19 @@ public class ImagenController {
     @GetMapping("/inspeccionPcpDv1/{id}")
     public ResponseEntity<List<ImagenDTO>> listarImagenesInspeccionDv1(@PathVariable Long id) {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionDv1(id));
+    }
+
+    @PutMapping("/modificarInspeccionDv1")
+    public ResponseEntity<String> modificarImagenDv1(
+            @RequestParam("imagenId") Long imagenId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenPcpDv1(imagenId, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
 }

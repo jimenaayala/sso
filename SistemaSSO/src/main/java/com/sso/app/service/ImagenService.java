@@ -66,6 +66,22 @@ public class ImagenService {
 
         return imagenRepository.save(imagen);
     }
+    public Imagen modificarImagenRecepcion(Long imagenId, MultipartFile file, String descripcion, boolean publicar) throws IOException {
+        Imagen imagen = imagenRepository.findById(imagenId)
+                .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
+
+        String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
+
+        Files.createDirectories(Paths.get(uploadDir));
+        Files.copy(file.getInputStream(), Paths.get(ruta), StandardCopyOption.REPLACE_EXISTING);
+
+        imagen.setUrl("/uploads/" + nombreArchivo);
+        imagen.setDescripcion(descripcion);
+        imagen.setPublicar(publicar);
+
+        return imagenRepository.save(imagen);
+    }
 
     public List<ImagenDTO> obtenerImagenesPorRecepcion(Long recepcionId) {
         return imagenRepository.findByRecepcionId(recepcionId).stream()
@@ -88,6 +104,23 @@ public class ImagenService {
         imagen.setDescripcion(descripcion);
         imagen.setPublicar(publicar);
         imagen.setInspeccionPcpVh60(inspeccionPcpVh60);
+
+        return imagenRepository.save(imagen);
+    }
+
+    public Imagen modificarImagenPcpVh60(Long imagenId, MultipartFile file, String descripcion, boolean publicar) throws IOException {
+        Imagen imagen = imagenRepository.findById(imagenId)
+                .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
+
+        String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
+
+        Files.createDirectories(Paths.get(uploadDir));
+        Files.copy(file.getInputStream(), Paths.get(ruta), StandardCopyOption.REPLACE_EXISTING);
+
+        imagen.setUrl("/uploads/" + nombreArchivo);
+        imagen.setDescripcion(descripcion);
+        imagen.setPublicar(publicar);
 
         return imagenRepository.save(imagen);
     }
@@ -116,6 +149,24 @@ public class ImagenService {
 
         return imagenRepository.save(imagen);
     }
+
+    public Imagen modificarImagenPcpMiniG(Long imagenId, MultipartFile file, String descripcion, boolean publicar) throws IOException {
+        Imagen imagen = imagenRepository.findById(imagenId)
+                .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
+
+        String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
+
+        Files.createDirectories(Paths.get(uploadDir));
+        Files.copy(file.getInputStream(), Paths.get(ruta), StandardCopyOption.REPLACE_EXISTING);
+
+        imagen.setUrl("/uploads/" + nombreArchivo);
+        imagen.setDescripcion(descripcion);
+        imagen.setPublicar(publicar);
+
+        return imagenRepository.save(imagen);
+    }
+
     public List<ImagenDTO> obtenerImagenesPorInspeccionMiniG(Long inspeccionMiniGId) {
         return imagenRepository.findByInspeccionPcpMiniGId(inspeccionMiniGId).stream()
                 .map(img -> new ImagenDTO(img.getUrl(), img.getDescripcion(), img.isPublicar()))
@@ -137,6 +188,22 @@ public class ImagenService {
         imagen.setDescripcion(descripcion);
         imagen.setPublicar(publicar);
         imagen.setInspeccionPcpCougar(inspeccionPcpCougar);
+
+        return imagenRepository.save(imagen);
+    }
+    public Imagen modificarImagenPcpCougar(Long imagenId, MultipartFile file, String descripcion, boolean publicar) throws IOException {
+        Imagen imagen = imagenRepository.findById(imagenId)
+                .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
+
+        String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
+
+        Files.createDirectories(Paths.get(uploadDir));
+        Files.copy(file.getInputStream(), Paths.get(ruta), StandardCopyOption.REPLACE_EXISTING);
+
+        imagen.setUrl("/uploads/" + nombreArchivo);
+        imagen.setDescripcion(descripcion);
+        imagen.setPublicar(publicar);
 
         return imagenRepository.save(imagen);
     }
@@ -162,6 +229,23 @@ public class ImagenService {
         imagen.setDescripcion(descripcion);
         imagen.setPublicar(publicar);
         imagen.setInspeccionPcpDv1(inspeccionPcpDv1);
+
+        return imagenRepository.save(imagen);
+    }
+
+    public Imagen modificarImagenPcpDv1(Long imagenId, MultipartFile file, String descripcion, boolean publicar) throws IOException {
+        Imagen imagen = imagenRepository.findById(imagenId)
+                .orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
+
+        String nombreArchivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String ruta = new File(".").getCanonicalPath() + File.separator + uploadDir + File.separator + nombreArchivo;
+
+        Files.createDirectories(Paths.get(uploadDir));
+        Files.copy(file.getInputStream(), Paths.get(ruta), StandardCopyOption.REPLACE_EXISTING);
+
+        imagen.setUrl("/uploads/" + nombreArchivo);
+        imagen.setDescripcion(descripcion);
+        imagen.setPublicar(publicar);
 
         return imagenRepository.save(imagen);
     }
