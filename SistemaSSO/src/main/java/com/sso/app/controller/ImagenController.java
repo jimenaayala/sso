@@ -4,6 +4,7 @@ import com.sso.app.controller.dto.ImagenDTO;
 import com.sso.app.entity.Imagen;
 import com.sso.app.service.ImagenService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,7 @@ public class ImagenController {
         this.imagenService = imagenService;
     }
 
-    @PostMapping("/subirRecepcion")
+    @PostMapping(value = "/subirRecepcion", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenRecepcion(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
@@ -39,7 +40,7 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorRecepcion(id));
     }
 
-    @PutMapping("/modificarRecepcion")
+    @PutMapping(value = "/modificarRecepcion", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> modificarImagenRecepcion(
             @RequestParam("imagenId") Long imagenId,
             @RequestParam("file") MultipartFile file,
@@ -53,7 +54,7 @@ public class ImagenController {
         }
     }
 
-    @PostMapping("/subirInspeccionVh60")
+    @PostMapping(value = "/subirInspeccionVh60", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenInspeccionVh60(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
@@ -72,7 +73,7 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionVh60(id));
     }
 
-    @PutMapping("/modificarInspeccionVh60")
+    @PutMapping(value = "/modificarInspeccionVh60", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> modificarImagenVh60(
             @RequestParam("imagenId") Long imagenId,
             @RequestParam("file") MultipartFile file,
@@ -86,7 +87,7 @@ public class ImagenController {
         }
     }
 
-    @PostMapping("/subirInspeccionMiniG")
+    @PostMapping(value = "/subirInspeccionMiniG", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenInspeccionMiniG(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
@@ -105,7 +106,7 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionMiniG(id));
     }
 
-    @PutMapping("/modificarInspeccionMiniG")
+    @PutMapping(value = "/modificarInspeccionMiniG", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> modificarImagenMiniG(
             @RequestParam("imagenId") Long imagenId,
             @RequestParam("file") MultipartFile file,
@@ -119,7 +120,7 @@ public class ImagenController {
         }
     }
 
-    @PostMapping("/subirInspeccionCougar")
+    @PostMapping(value = "/subirInspeccionCougar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenInspeccionCougar(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
@@ -138,7 +139,7 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionCougar(id));
     }
 
-    @PutMapping("/modificarInspeccionCougar")
+    @PutMapping(value = "/modificarInspeccionCougar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> modificarImagenCougar(
             @RequestParam("imagenId") Long imagenId,
             @RequestParam("file") MultipartFile file,
@@ -152,7 +153,7 @@ public class ImagenController {
         }
     }
 
-    @PostMapping("/subirInspeccionDv1")
+    @PostMapping(value = "/subirInspeccionDv1", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> subirImagenInspeccionDv1(
             @RequestParam("file") MultipartFile file,
             @RequestParam("descripcion") String descripcion,
@@ -171,7 +172,7 @@ public class ImagenController {
         return ResponseEntity.ok(imagenService.obtenerImagenesPorInspeccionDv1(id));
     }
 
-    @PutMapping("/modificarInspeccionDv1")
+    @PutMapping(value = "/modificarInspeccionDv1", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> modificarImagenDv1(
             @RequestParam("imagenId") Long imagenId,
             @RequestParam("file") MultipartFile file,
