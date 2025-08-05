@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/ensayopminig")
+@RequestMapping("/api/ensayos/minig")
 public class EnsayoMiniGController {
     @Autowired
     private EnsayoMiniGService ensayoMiniGService;

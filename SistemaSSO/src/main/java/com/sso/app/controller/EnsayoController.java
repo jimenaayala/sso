@@ -11,9 +11,10 @@ import java.util.List;  // Importación necesaria
 import java.util.Optional;  // Importación necesaria
 
 @RestController
-@RequestMapping("api/ensayo")
+@RequestMapping("api/ensayos")
 @AllArgsConstructor
 @CrossOrigin
+// REVISAR ES VIEJO 1ra ETAPA
 
 public class EnsayoController extends BaseController<Ensayo> {
     private EnsayoService ensayoService;

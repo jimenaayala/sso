@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/orden")
+@RequestMapping("api/ordenes")
 @AllArgsConstructor
 @CrossOrigin
 public class OrdenController extends BaseController<Orden>{
@@ -45,7 +45,7 @@ public class OrdenController extends BaseController<Orden>{
     }
 
 
-    @GetMapping("cliente/{id}")
+    @GetMapping("{id}/clientes")
     public ResponseEntity<List<Orden>> findAllActiveByClienteId(@PathVariable Long id) {
         List<Orden> ordenesClientes = ordenService.getActiveOrdenesByClienteId(id);
         return ResponseEntity.ok(ordenesClientes);

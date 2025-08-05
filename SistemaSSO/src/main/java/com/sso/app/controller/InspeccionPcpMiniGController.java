@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/inspeccionespcpminig")
+@RequestMapping("/api/inspecciones/minig")
 public class InspeccionPcpMiniGController {
 
     @Autowired

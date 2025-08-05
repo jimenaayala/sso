@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/salida")
+@RequestMapping("api/salidas")
 @AllArgsConstructor
 @CrossOrigin
 public class SalidaController extends BaseController<Salida> {

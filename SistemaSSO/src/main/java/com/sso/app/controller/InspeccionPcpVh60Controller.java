@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/inspeccionesvh60")
+@RequestMapping("/api/inspecciones/vh60")
 @AllArgsConstructor
 public class InspeccionPcpVh60Controller {
 

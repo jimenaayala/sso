@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/inspeccionescoguar")
+@RequestMapping("/api/inspecciones/cougar")
 public class InspeccionPcpCoguarController {
     @Autowired
     private InspeccionPcpCoguarService inspeccionService;

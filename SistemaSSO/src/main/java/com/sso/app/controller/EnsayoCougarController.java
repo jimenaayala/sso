@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ensayopcougar")
+@RequestMapping("/api/ensayos/cougar")
 @AllArgsConstructor
 public class EnsayoCougarController {
     private final EnsayoCougarService ensayoCougarService;

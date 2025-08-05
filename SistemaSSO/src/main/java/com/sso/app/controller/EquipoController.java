@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/equipo")
+@RequestMapping("api/equipos")
 @AllArgsConstructor
 @CrossOrigin
 public class EquipoController extends BaseController<Equipo> {

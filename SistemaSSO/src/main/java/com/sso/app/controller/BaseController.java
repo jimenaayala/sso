@@ -43,7 +43,7 @@ public abstract class BaseController<T> {
         return ResponseEntity.ok(updatedEntity);
     }
 
-    @PutMapping("/softdelete/{id}")
+    @PutMapping("/{id}/softdelete")
     public ResponseEntity<Void> softDelete(@PathVariable Long id) {
         try {
             deleteById(id);
