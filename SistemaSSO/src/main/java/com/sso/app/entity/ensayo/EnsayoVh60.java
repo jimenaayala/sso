@@ -1,7 +1,11 @@
 package com.sso.app.entity.ensayo;
 
+import com.sso.app.entity.Imagen;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,6 +17,9 @@ public class EnsayoVh60 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "ensayoVh60", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Imagen> imagenesVh60 = new ArrayList<>();
 
     // RPM 100
     private double rpm100CurrentF;        // Frecuencia actual a 100 RPM

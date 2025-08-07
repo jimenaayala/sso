@@ -191,4 +191,142 @@ public class ImagenController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
+
+    // --- ENSAYO COUGAR ---
+    @PostMapping(value = "/ensayo/cougar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> subirImagenEnsayoCougar(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar,
+            @RequestParam("ensayoCougarId") Long id) {
+        try {
+            Imagen imagen = imagenService.guardarImagenEnsayoCougar(file, descripcion, publicar, id);
+            return ResponseEntity.ok("imagen guardada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/ensayo/cougar/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenesEnsayoCougar(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorEnsayoCougar(id));
+    }
+
+    @PutMapping(value = "/ensayo/cougar/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> modificarImagenEnsayoCougar(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenEnsayoCougar(id, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    // --- ENSAYO DV1 ---
+    @PostMapping(value = "/ensayo/dv1", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> subirImagenEnsayoDv1(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar,
+            @RequestParam("ensayoDv1Id") Long id) {
+        try {
+            Imagen imagen = imagenService.guardarImagenEnsayoDv1(file, descripcion, publicar, id);
+            return ResponseEntity.ok("imagen guardada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/ensayo/dv1/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenesEnsayoDv1(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorEnsayoDv1(id));
+    }
+
+    @PutMapping(value = "/ensayo/dv1/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> modificarImagenEnsayoDv1(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenEnsayoDv1(id, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    // --- ENSAYO MINIG ---
+    @PostMapping(value = "/ensayo/minig", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> subirImagenEnsayoMiniG(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar,
+            @RequestParam("ensayoMiniGId") Long id) {
+        try {
+            Imagen imagen = imagenService.guardarImagenEnsayoMiniG(file, descripcion, publicar, id);
+            return ResponseEntity.ok("imagen guardada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/ensayo/minig/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenesEnsayoMiniG(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorEnsayoMiniG(id));
+    }
+
+    @PutMapping(value = "/ensayo/minig/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> modificarImagenEnsayoMiniG(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenEnsayoMiniG(id, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+
+    // --- ENSAYO VH60 ---
+    @PostMapping(value = "/ensayo/vh60", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> subirImagenEnsayoVh60(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar,
+            @RequestParam("ensayoVh60Id") Long id) {
+        try {
+            Imagen imagen = imagenService.guardarImagenEnsayoVh60(file, descripcion, publicar, id);
+            return ResponseEntity.ok("imagen guardada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/ensayo/vh60/{id}")
+    public ResponseEntity<List<ImagenDTO>> listarImagenesEnsayoVh60(@PathVariable Long id) {
+        return ResponseEntity.ok(imagenService.obtenerImagenesPorEnsayoVh60(id));
+    }
+
+    @PutMapping(value = "/ensayo/vh60/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> modificarImagenEnsayoVh60(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("publicar") boolean publicar) {
+        try {
+            Imagen imagen = imagenService.modificarImagenEnsayoVh60(id, file, descripcion, publicar);
+            return ResponseEntity.ok("Imagen modificada: " + imagen.getUrl());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
 }

@@ -12,4 +12,8 @@ public interface ImagenRepository extends JpaRepository<Imagen, Long> {
     List<Imagen> findByInspeccionPcpMiniGId(Long inspeccionPcpMiniGId);
     List<Imagen> findByInspeccionPcpCougarId(Long inspeccionPcpCougarId);
     List<Imagen> findByInspeccionPcpDv1Id(Long inspeccionPcpDv1Id);
+    List<Imagen> findByEnsayoCougarId(Long ensayoCougarId);
+    List<Imagen> findByEnsayoDv1Id(Long ensayoDv1Id);
+    List<Imagen> findByEnsayoMiniGId(Long ensayoMiniGId);
+    List<Imagen> findByEnsayoVh60Id(Long ensayoVh60Id);
 }

@@ -1,7 +1,11 @@
 package com.sso.app.entity.ensayo;
 
+import com.sso.app.entity.Imagen;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,6 +18,9 @@ public class EnsayoDv1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "ensayoDv1", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Imagen> imagenesDv1 = new ArrayList<>();
 
     // === EstadoEnsayo fields for each pressure ===
     // Presion 10
