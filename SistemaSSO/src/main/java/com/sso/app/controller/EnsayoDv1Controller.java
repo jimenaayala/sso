@@ -23,7 +23,7 @@ public class EnsayoDv1Controller {
     @PostMapping
     public ResponseEntity<EnsayoDv1> crearEnsayo(@RequestBody EnsayoDv1 ensayo) {
 
-        EnsayoDv1 nuevoEnsayo = this.ensayoDv1Service.crearEnsayoDv1(ensayo);
+        EnsayoDv1 nuevoEnsayo = this.ensayoDv1Service.guardarEnsayo(ensayo);
         return ResponseEntity.ok(nuevoEnsayo);
     }
     // Endpoint para actualizar un ensayo
@@ -31,7 +31,7 @@ public class EnsayoDv1Controller {
     public ResponseEntity<EnsayoDv1> actualizarEnsayo(
             @PathVariable Long id,
             @RequestBody EnsayoDv1 ensayo) {
-        EnsayoDv1 ensayoActualizado = this.ensayoDv1Service.modificarEnsayoDv1(id, ensayo);
+        EnsayoDv1 ensayoActualizado = this.ensayoDv1Service.actualizarEnsayo(id, ensayo);
         return ResponseEntity.ok(ensayoActualizado);
     }
 
