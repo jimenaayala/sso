@@ -1,6 +1,7 @@
 package com.sso.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sso.app.entity.UCL.RecepcionUCL;
 import com.sso.app.entity.ensayo.EnsayoCougar;
 import com.sso.app.entity.ensayo.EnsayoDv1;
 import com.sso.app.entity.ensayo.EnsayoMiniG;
@@ -34,6 +35,11 @@ public class Imagen {
     @JoinColumn(name = "recepcion_id")
     @JsonIgnore
     private Recepcion recepcion;
+
+    @ManyToOne
+    @JoinColumn(name = "recepcionUCL_id")
+    @JsonIgnore
+    private RecepcionUCL recepcionUCL;
 
     @ManyToOne
     @JoinColumn(name = "inspeccionPcpVh60_id")
