@@ -1,6 +1,6 @@
 package com.sso.app.controller;
 
-import com.sso.app.entity.UCL.RecepcionUCL;
+import com.sso.app.entity.UCLRecepcion.RecepcionUCL;
 import com.sso.app.service.RecepcionUCLService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.sso.app.repository.UCL;
 
-import com.sso.app.entity.UCL.ItemRecepcionUCL;
+import com.sso.app.entity.UCLRecepcion.ItemRecepcionUCL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

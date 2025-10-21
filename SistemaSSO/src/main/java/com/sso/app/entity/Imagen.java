@@ -1,7 +1,7 @@
 package com.sso.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sso.app.entity.UCL.RecepcionUCL;
+import com.sso.app.entity.UCLRecepcion.RecepcionUCL;
 import com.sso.app.entity.ensayo.EnsayoCougar;
 import com.sso.app.entity.ensayo.EnsayoDv1;
 import com.sso.app.entity.ensayo.EnsayoMiniG;

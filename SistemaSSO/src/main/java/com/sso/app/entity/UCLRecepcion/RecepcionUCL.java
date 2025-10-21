@@ -1,4 +1,4 @@
-package com.sso.app.entity.UCL;
+package com.sso.app.entity.UCLRecepcion;
 
 import com.sso.app.entity.Imagen;
 import jakarta.persistence.*;

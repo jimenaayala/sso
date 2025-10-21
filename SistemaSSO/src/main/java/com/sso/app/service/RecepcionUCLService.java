@@ -1,7 +1,7 @@
 package com.sso.app.service;
 
-import com.sso.app.entity.UCL.ItemRecepcionUCL;
-import com.sso.app.entity.UCL.RecepcionUCL;
+import com.sso.app.entity.UCLRecepcion.ItemRecepcionUCL;
+import com.sso.app.entity.UCLRecepcion.RecepcionUCL;
 import com.sso.app.repository.UCL.RecepcionUCLRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

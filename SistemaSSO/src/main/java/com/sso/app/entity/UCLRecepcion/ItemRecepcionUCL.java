@@ -1,4 +1,4 @@
-package com.sso.app.entity.UCL;
+package com.sso.app.entity.UCLRecepcion;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +18,7 @@ public class ItemRecepcionUCL {
     private Long id;
 
     // Tensores
-    private boolean tensoresEstado;
+    private boolean tensoresEstado;  //ok o falta
     private String tensoresRequerimiento;
     private String tensoresObservacion;
 

@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequestMapping("api/clientes")
 @AllArgsConstructor
 @CrossOrigin
-public class ClienteController extends BaseController<Cliente>{
+public class    ClienteController extends BaseController<Cliente>{
 
     private final ClienteService clienteService;
 
