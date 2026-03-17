@@ -43,6 +43,4 @@ public class EnsayoController extends BaseController<Ensayo> {
         entity.setId(id);
     }
 
-
-
 }

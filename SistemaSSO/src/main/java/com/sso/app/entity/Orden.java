@@ -1,6 +1,8 @@
 package com.sso.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sso.app.entity.InspeccionUCL.InspeccionUCL;
+import com.sso.app.entity.UCLRecepcion.RecepcionUCL;
 import com.sso.app.entity.ensayo.EnsayoCougar;
 import com.sso.app.entity.ensayo.EnsayoDv1;
 import com.sso.app.entity.ensayo.EnsayoMiniG;
@@ -90,6 +92,15 @@ public class Orden {
     @ManyToOne
     @JoinColumn(name = "ensayoCougar_id")
     private EnsayoCougar ensayoCougar;
+
+    @ManyToOne
+    @JoinColumn (name = "recepcionUCL_id")
+    private RecepcionUCL recepcionUCL;
+
+    @ManyToOne
+    @JoinColumn (name = "inspeccionUCL_id")
+    private InspeccionUCL inspeccionUCL;
+
     //@ManyToOne
     //@JoinColumn(name = "salida_id")
     // private Salida salidaEtapa;
